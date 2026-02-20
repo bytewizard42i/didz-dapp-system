@@ -1,0 +1,288 @@
+PROOF OF HUMAN FOR THE AI ERA
+
+BlockSign Verify
+
+Advanced Video Liveness Detection. Privacy-first, real-time identity verification combining document
+scanning, multi-factor liveness detection, AI-driven questionnaires, and speech verification into a single
+seamless workflow. No video, images, or biometric data stored.
+Privacy-First
+
+Zero Storage
+
+Real-Time
+
+AI-Powered
+
+GDPR Ready
+
+CCPA Compliant
+
+The AI Shift
+Artificial intelligence is advancing at a parabolic rate. Deepfakes, synthetic voices, and AI-generated
+identities are becoming indistinguishable from real humans. The question is no longer "what can AI
+do?" but "how do we prove a human is real?"
+Every critical digital process will require verified human presence. Not just passwords. Not just biometrics.
+A real-time, privacy-preserving proof that a living human is behind the screen.
+
+Where Proof of Human Is Critical
+Login & Authentication
+Verify a real person is signing in, not an AI bot
+or deepfake replay attack.
+
+eSign Documents
+Ensure the individual digitally signing
+contracts and legal documents is a verified
+human.
+
+Release of Transactions & Funds
+Authorize high-value financial transactions
+with confirmed human presence before funds
+move.
+
+Apply for Funds or Credit
+Confirm human identity when applying for
+loans, grants, or financial products to prevent
+synthetic fraud.
+
+Access Restricted Systems
+Gate access to sensitive systems, classified
+data, or privileged operations behind live
+human verification.
+
+Regulatory Compliance
+Meet KYC, AML, and identity verification
+mandates with auditable proof of human
+presence.
+
+Product Overview
+BlockSign Verify combines four core capabilities into a unified verification platform that confirms human
+identity in under two minutes.
+
+Prechecks & Quality Gates
+Video quality analysis and resolution
+validation
+Face detection and face-in-frame
+positioning
+Lighting assessment for optimal capture
+Video stream and FPS monitoring
+
+Data Extraction & OCR
+ID cards, passports, driver licenses
+OCR extraction via Tesseract / AI
+Auto-detection of document type
+Front and back capture with flip delay
+
+Chatbot Verification
+Interactive questionnaire for onboarding
+Data aggregation and cross-referencing
+Document data validation via live responses
+Customizable question catalogs
+
+Liveness Detection
+Multi-factor video and voice analysis
+Real-time confidence scoring
+Anti-spoofing with 3D parallax
+8-factor weighted liveness score
+
+Voice & Speech Liveness Detection
+Users are presented with 5 random words that must be spoken in the given order. The system verifies
+speech through multiple channels simultaneously.
+
+How It Works
+5 random words displayed in sequence
+Words must be spoken in the exact given
+order
+Real-time speech recognition via Web
+Speech API
+Audio volume monitoring with visual
+feedback
+Cross-validation with lip movement on
+video feed
+
+Why It Matters
+Defeats pre-recorded audio attacks
+Random word order prevents memorized
+scripts
+Volume analysis detects synthetic audio
+playback
+Lip-sync verification adds a visual layer
+Combined with video liveness for multimodal proof
+
+Video & Face Liveness Detection
+Multi-signal analysis from the video feed detects genuine human presence and defeats spoofing
+attempts including printed photos, screen replays, and 3D masks.
+
+Eye Blink Rate Detection
+Natural blink patterns measured via Eye
+Aspect Ratio (EAR) analysis from 68-point
+facial landmarks. Detects absence of blinking
+in static images and unnatural blink rates.
+
+Heartbeat Detection (rPPG)
+Remote photoplethysmography extracts
+pulse signal from subtle skin color changes in
+the forehead region. FFT analysis isolates
+cardiac rhythm in the 48-180 BPM range.
+
+3D Parallax Analysis
+Detects natural depth variation in face
+movement that flat screens and printed
+photos cannot replicate. Measures inter-frame
+displacement patterns for 3D presence proof.
+
+Face Micro-Movements
+Subtle involuntary facial movements that
+distinguish live faces from static images.
+Analyzes frame-to-frame landmark drift for
+natural micro-motion signatures.
+
+Face Movement Challenge
+Random prompts to turn head left/right, look
+up/down, nod, or blink on command. Verifies
+real-time control and responsiveness of a live
+subject.
+
+Signal Quality & Consistency
+Continuous monitoring of rPPG signal quality,
+BPM consistency across windows, and
+frequency peak prominence to ensure reliable
+measurements throughout the session.
+
+8-Factor Liveness Analysis
+Each factor contributes a weighted score to the overall liveness confidence. A minimum threshold of 60%
+combined confidence is required for verification.
+BPM Detection
+Signal Quality
+Consistency
+Prominence
+Blink Rate
+3D Parallax
+Micro-Movement
+Challenge Score
+
+Total: 100% weighted across 8 independent signals. Behavioral factors (blink, parallax, micromovement, challenge) account for 62% of the score, making spoofing extremely difficult.
+
+10%
+10%
+8%
+10%
+15%
+17%
+15%
+15%
+
+5-Step Verification Workflow
+1 System Check
+
+Camera access, video quality, face detection and framing, lighting assessment, and FPS validation.
+Ensures optimal conditions before verification begins.
+
+2 ID Document Scan
+
+ID card, passport, or driver license capture (front and back) with OCR extraction. AI-powered field
+validation and auto-detection of document type.
+
+3 Liveness Detection
+
+rPPG pulse detection, eye blink rate, 3D parallax, micro-movements, face movement challenges, and
+speech verification run simultaneously for multi-factor proof of human presence.
+
+4 Chat Verification
+
+AI chatbot questionnaire for onboarding data aggregation. Cross-references extracted document data
+with live user responses for identity confirmation.
+
+5 Complete
+
+Comprehensive verification report generated with all factor scores, document data, and session
+metadata. Downloadable as PDF or JSON for audit trails.
+
+Privacy by Design
+BlockSign Verify is built on a zero-storage architecture. No video frames, images, or biometric
+templates are ever stored or transmitted. All processing happens in real-time with ephemeral data
+that is discarded immediately after the session ends.
+Principle
+No Video Storage
+
+Implementation
+All frames processed in memory only, never written to disk
+
+No Biometric Templates
+
+No facial embeddings, voiceprints, or fingerprints saved
+
+Ephemeral Processing
+
+Time-series data exists only during active session
+
+Session Isolation
+
+Each verification session is independent and fully discarded
+
+GDPR & CCPA
+
+Full compliance with data protection regulations
+
+Audit Reports
+
+Verification outcome reports without raw biometric data
+
+Technology Stack
+Frontend
+React + TypeScript
+face-api.js (68-point
+landmarks)
+Web Speech API
+Web Audio API (volume)
+MediaDevices API
+(camera)
+
+Backend
+Node.js + Express
+WebSocket (real-time)
+FFT signal processing
+rPPG analysis pipeline
+Gemini AI (OCR)
+
+Architecture
+WebSocket streaming
+Ephemeral session data
+Sub-second analysis
+No database required
+REST API ready
+
+Enterprise Integration
+Reporting & Audit
+PDF verification reports with full breakdown
+JSON export for system integration
+8-factor confidence scoring
+Session metadata and timestamps
+
+User Experience
+Auto-detection and auto-capture
+Real-time visual feedback overlays
+Volume monitoring during speech
+Guided step-by-step workflow
+
+Integration
+REST API for backend integration
+WebSocket for real-time streaming
+Customizable verification flows
+White-label ready
+
+Configuration
+Customizable question catalogs
+Adjustable confidence thresholds
+Configurable challenge types
+Multi-language support ready
+
+Proof of Human. Built for the AI Era.
+Ready to secure your critical processes?
+
+Contact us to learn more about BlockSign Verify.
+BlockSign GmbH
+c/o TechHub K67, Kasernenstr. 67, 40213 Dusseldorf, Deutschland
+
+info@blocksign.io
+
+

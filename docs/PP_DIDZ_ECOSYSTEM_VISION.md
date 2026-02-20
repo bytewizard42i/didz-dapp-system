@@ -154,6 +154,8 @@ We need a **single source of truth** for:
 
 ## 🔗 Related Documents
 
+- [KYCz Biometric Verification](./KYCZ_BIOMETRIC_VERIFICATION.md) — Zero-knowledge KYC with 8-factor biometric liveness for DIDz
+- [KYCz App Repo](https://github.com/bytewizard42i/KYCz_us_app) — Implementation repo for KYCz
 - [Fi Standards for DIDs, TIs, and RAs](https://github.com/bytewizard42i/AgenticDID_io_me_MAIN/blob/main/docs-nerds-only/Fi%20_Standards-AKA-FIST/FI_STANDARDS_FOR_DIDS_TIS_AND_RAS.md)
 - [PP DIDz Vision Manifesto](https://github.com/bytewizard42i/AgenticDID_io_me_MAIN/blob/main/docs-nerds-only/Fi%20_Standards-AKA-FIST/PP_DIDZ_VISION_MANIFESTO.md)
 - [Oracle Standards](https://github.com/bytewizard42i/AgenticDID_io_me_MAIN/blob/main/docs-nerds-only/Fi%20_Standards-AKA-FIST/ORACLE_STANDARDS.md)
