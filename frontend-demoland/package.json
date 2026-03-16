@@ -1,0 +1,8 @@
+{
+  "name": "didz-io-demoland",
+  "version": "0.1.0",
+  "description": "DIDz.io demoLand frontend — Anonymous Digital Identity on Midnight",
+  "main": "server.js",
+  "scripts": { "dev": "node server.js", "start": "node server.js" },
+  "dependencies": { "express": "^4.18.2", "cors": "^2.8.5" }
+}

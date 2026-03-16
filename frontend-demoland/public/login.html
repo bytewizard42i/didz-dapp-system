@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDz.io — Sign In</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Rajdhani',sans-serif;background:#0a0814;color:#c4b8e8;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+        body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(124,58,237,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.03) 1px,transparent 1px);background-size:40px 40px;z-index:0}
+        body::after{content:'';position:fixed;bottom:10%;right:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(124,58,237,0.1),transparent 70%);border-radius:50%;z-index:0}
+        .c{position:relative;z-index:1;width:100%;max-width:480px;padding:24px;animation:fu .5s ease-out}@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+        .logo{text-align:center;margin-bottom:28px}.logo-i{width:64px;height:64px;border-radius:16px;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:12px;box-shadow:0 0 30px rgba(124,58,237,0.2)}
+        .logo-t{font-size:28px;font-weight:700;letter-spacing:2px;color:#fff}.logo-t span{color:#a78bfa}.logo-s{font-size:13px;color:rgba(196,184,232,0.5);margin-top:4px}
+        .banner{background:linear-gradient(135deg,rgba(255,191,0,0.15),rgba(255,140,0,0.1));border:1px solid rgba(255,191,0,0.3);color:#ffbf00;text-align:center;padding:6px;border-radius:8px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px}
+        .card{background:rgba(10,8,20,0.9);border:1px solid rgba(124,58,237,0.12);border-radius:16px;padding:28px;backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+        .sl{font-size:11px;font-weight:600;color:rgba(167,139,250,0.7);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+        .mg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+        .mb{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;cursor:pointer;transition:all .2s;color:inherit;font-family:inherit;text-align:center}.mb:hover{border-color:rgba(167,139,250,0.3);background:rgba(124,58,237,0.05)}.mb.active{border-color:rgba(167,139,250,0.5);background:rgba(124,58,237,0.1);box-shadow:0 0 12px rgba(124,58,237,0.15)}
+        .mb .ic{font-size:22px}.mb .lb{font-size:12px;font-weight:600;color:rgba(255,255,255,0.8)}.mb .bd{font-size:8px;font-weight:700;text-transform:uppercase;padding:2px 5px;border-radius:3px;background:rgba(167,139,250,0.15);color:rgba(167,139,250,0.9)}
+        .fg{margin-bottom:14px}.fl{display:block;font-size:12px;font-weight:600;color:rgba(196,184,232,0.6);margin-bottom:6px}
+        .fi{width:100%;padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:14px;outline:none;transition:all .2s}.fi:focus{border-color:rgba(167,139,250,0.5);box-shadow:0 0 0 3px rgba(124,58,237,0.12)}.fi::placeholder{color:rgba(196,184,232,0.25)}
+        .bp{width:100%;padding:12px;background:linear-gradient(135deg,#7c3aed,#6d28d9);border:none;border-radius:10px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;margin-top:8px;transition:all .2s}.bp:hover{opacity:.9;box-shadow:0 0 20px rgba(124,58,237,0.3)}.bp:disabled{opacity:.5;cursor:not-allowed}
+        .st{text-align:center;padding:10px;font-family:'Space Mono',monospace;font-size:12px;color:#a78bfa;margin-top:12px;display:none}
+        .er{padding:10px 14px;background:rgba(255,60,60,0.1);border:1px solid rgba(255,60,60,0.2);border-radius:10px;color:#ff6b6b;font-size:13px;margin-top:12px;display:none}
+        .dc{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px 14px;margin-bottom:16px}.dc-t{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(196,184,232,0.4);margin-bottom:6px}.dc-r{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.5);margin:2px 0}.dc-r span{color:#a78bfa;cursor:pointer}.dc-r span:hover{text-decoration:underline}
+        .af{text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05)}.af a{color:#a78bfa;text-decoration:none;font-weight:600;font-size:13px}.af p{font-size:11px;color:rgba(196,184,232,0.3);margin-top:8px}
+        .tf{text-align:center;margin-top:16px;font-size:10px;color:rgba(196,184,232,0.2);text-transform:uppercase;letter-spacing:1.5px}
+        @keyframes spin{to{transform:rotate(360deg)}}.sp{width:16px;height:16px;border:2px solid rgba(167,139,250,0.2);border-top-color:#a78bfa;border-radius:50%;animation:spin .6s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px}
+    </style>
+</head>
+<body>
+    <div class="c">
+        <div class="logo"><div class="logo-i">🆔</div><div class="logo-t">DIDz<span>.io</span></div><div class="logo-s">Anonymous Digital Identity on Midnight</div></div>
+        <div class="banner">🎭 Demo Mode — All Authentication is Simulated 🎭</div>
+        <div class="card">
+            <div class="sl">Authentication Method</div><div class="mg" id="mg"></div>
+            <div class="dc" id="dc"><div class="dc-t">Demo Credentials</div><div class="dc-r">Email: <span onclick="fillDemo()">demo@didz.io</span></div><div class="dc-r">Password: <span onclick="fillDemo()">any password works</span></div></div>
+            <div id="ef"><div class="fg"><label class="fl">Email</label><input type="email" class="fi" id="email" placeholder="user@didz.io"></div><div class="fg"><label class="fl">Password</label><input type="password" class="fi" id="password" placeholder="Enter password"></div></div>
+            <button class="bp" id="lb" onclick="handleLogin()">Sign In</button><div class="st" id="status"></div><div class="er" id="error"></div>
+            <div class="af"><a href="/signup.html">Don't have an account? Create one</a><p>DIDz.io v0.1.0 — Midnight Blockchain</p></div>
+        </div>
+        <div class="tf">Self-Sovereign Identity · Zero-Knowledge Proofs · Full Privacy Control</div>
+    </div>
+    <script src="auth.js"></script>
+    <script>
+        let method='email';const M=[{id:'email',l:'Email',i:'📧'},{id:'pgp-key',l:'PGP Key',i:'🔐',b:'Most Secure'},{id:'yubikey',l:'YubiKey',i:'🔐',b:'FIDO2'},{id:'did-wallet',l:'DID Wallet',i:'🆔',b:'Self-Sovereign'},{id:'trezor',l:'Trezor 5',i:'🔑',b:'Ed25519'},{id:'biometric',l:'Biometric',i:'👆',b:'FIDO2'},{id:'chrome-oauth',l:'Google',i:'🌐'},{id:'brave-oauth',l:'Brave',i:'🦁'}];
+        const g=document.getElementById('mg');M.forEach(m=>{const b=document.createElement('button');b.className='mb'+(m.id==='email'?' active':'');b.id='b-'+m.id;b.onclick=()=>pick(m.id);b.innerHTML='<span class="ic">'+m.i+'</span><span class="lb">'+m.l+'</span>'+(m.b?'<span class="bd">'+m.b+'</span>':'');g.appendChild(b)});
+        function pick(id){method=id;document.querySelectorAll('.mb').forEach(b=>b.classList.remove('active'));document.getElementById('b-'+id).classList.add('active');document.getElementById('ef').style.display=id==='email'?'block':'none';document.getElementById('dc').style.display=id==='email'?'block':'none';document.getElementById('error').style.display='none';document.getElementById('status').style.display='none'}
+        function fillDemo(){document.getElementById('email').value='demo@didz.io';document.getElementById('password').value='demo'}
+        async function handleLogin(){const btn=document.getElementById('lb'),st=document.getElementById('status'),er=document.getElementById('error');er.style.display='none';btn.disabled=true;try{st.style.display='block';if(method!=='email'){await dioRunSim(method,msg=>{st.innerHTML='<span class="sp"></span>'+msg})}else{st.innerHTML='<span class="sp"></span>Authenticating...';await new Promise(r=>setTimeout(r,800))}dioLogin(method,document.getElementById('email').value||'demo@didz.io');st.innerHTML='✓ Success! Redirecting...';setTimeout(()=>{window.location.href='/'},500)}catch(e){er.textContent=e.message;er.style.display='block';st.style.display='none';btn.disabled=false}}
+    </script>
+</body>
+</html>

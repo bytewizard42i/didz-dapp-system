@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIDz.io — Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Rajdhani',sans-serif;background:#0a0814;color:#c4b8e8;min-height:100vh}
+        body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(124,58,237,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.02) 1px,transparent 1px);background-size:40px 40px;z-index:0}
+        .header{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid rgba(124,58,237,0.1);background:rgba(10,8,20,0.95);backdrop-filter:blur(12px)}
+        .header-left{display:flex;align-items:center;gap:12px}.header-icon{font-size:24px}.header-title{font-size:20px;font-weight:700;color:#fff;letter-spacing:1px}.header-title span{color:#a78bfa}
+        .header-right{display:flex;align-items:center;gap:16px}.user-name{font-size:13px;color:rgba(255,255,255,0.7)}
+        .demo-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(255,191,0,0.15);color:#ffbf00;border:1px solid rgba(255,191,0,0.3);text-transform:uppercase;letter-spacing:1px}
+        .logout-btn{padding:6px 14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:12px;cursor:pointer;transition:all .2s}.logout-btn:hover{background:rgba(255,60,60,0.1);color:#ff6b6b}
+        .main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:32px}
+        .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+        .stat-card{background:rgba(10,8,20,0.85);border:1px solid rgba(124,58,237,0.1);border-radius:14px;padding:20px}.stat-label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(196,184,232,0.4);margin-bottom:8px}.stat-value{font-size:32px;font-weight:700;color:#fff}.stat-sub{font-size:12px;color:rgba(167,139,250,0.7);margin-top:4px}
+        .section{margin-bottom:32px}.section-title{font-size:16px;font-weight:600;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px}.section-title .icon{font-size:20px}
+        .did-card{background:rgba(10,8,20,0.85);border:1px solid rgba(124,58,237,0.15);border-radius:14px;padding:24px;margin-bottom:20px}
+        .did-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(167,139,250,0.5);margin-bottom:8px}
+        .did-uri{font-family:'Space Mono',monospace;font-size:14px;color:#a78bfa;word-break:break-all;margin-bottom:12px}
+        .did-meta{display:flex;gap:16px;flex-wrap:wrap}
+        .did-meta-item{font-size:12px;color:rgba(196,184,232,0.5)}.did-meta-item span{color:rgba(255,255,255,0.7);font-weight:600}
+        .cred-list{display:flex;flex-direction:column;gap:10px}
+        .cred-item{display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(10,8,20,0.85);border:1px solid rgba(124,58,237,0.08);border-radius:12px;transition:all .2s}.cred-item:hover{border-color:rgba(124,58,237,0.2)}
+        .ci-icon{width:40px;height:40px;border-radius:10px;background:rgba(124,58,237,0.12);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+        .ci-info{flex:1}.ci-name{font-size:14px;font-weight:600;color:rgba(255,255,255,0.85)}.ci-detail{font-size:12px;color:rgba(196,184,232,0.4);margin-top:2px}
+        .ci-status{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+        .ci-status.active{background:rgba(34,197,94,0.1);color:#22c55e;border:1px solid rgba(34,197,94,0.2)}
+        .ci-status.pending{background:rgba(167,139,250,0.1);color:#a78bfa;border:1px solid rgba(167,139,250,0.2)}
+        .ci-status.revoked{background:rgba(255,60,60,0.1);color:#ff6b6b;border:1px solid rgba(255,60,60,0.2)}
+        .ci-issuer{font-size:11px;color:rgba(196,184,232,0.3);font-family:'Space Mono',monospace;white-space:nowrap}
+        .features{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .feat-card{padding:16px;background:rgba(10,8,20,0.85);border:1px solid rgba(124,58,237,0.08);border-radius:12px}
+        .feat-title{font-size:14px;font-weight:600;color:rgba(255,255,255,0.8);margin-bottom:6px;display:flex;align-items:center;gap:8px}.feat-desc{font-size:12px;color:rgba(196,184,232,0.4);line-height:1.5}
+        .eco-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+        .eco-card{background:rgba(10,8,20,0.85);border:1px solid rgba(124,58,237,0.08);border-radius:12px;padding:16px;text-align:center;transition:all .2s}.eco-card:hover{border-color:rgba(124,58,237,0.2)}
+        .eco-icon{font-size:28px;margin-bottom:8px}.eco-name{font-size:13px;font-weight:600;color:rgba(255,255,255,0.7)}.eco-status{font-size:10px;color:rgba(167,139,250,0.6);margin-top:4px}
+        .footer{text-align:center;padding:24px;font-size:10px;color:rgba(196,184,232,0.2);text-transform:uppercase;letter-spacing:1.5px;position:relative;z-index:1}
+        @media(max-width:768px){.stats,.eco-grid{grid-template-columns:1fr 1fr}.features{grid-template-columns:1fr}.main{padding:16px}}
+    </style>
+</head>
+<body>
+    <div class="header"><div class="header-left"><span class="header-icon">🆔</span><span class="header-title">DIDz<span>.io</span></span></div><div class="header-right"><span class="demo-badge">Demo Mode</span><span class="user-name" id="user-name"></span><button class="logout-btn" onclick="dioLogout()">Sign Out</button></div></div>
+    <div class="main">
+        <div class="stats">
+            <div class="stat-card"><div class="stat-label">Your DIDs</div><div class="stat-value">3</div><div class="stat-sub">Across 2 ecosystems</div></div>
+            <div class="stat-card"><div class="stat-label">Credentials</div><div class="stat-value">12</div><div class="stat-sub">8 active, 4 expired</div></div>
+            <div class="stat-card"><div class="stat-label">Verifications</div><div class="stat-value">247</div><div class="stat-sub">Zero PII revealed</div></div>
+            <div class="stat-card"><div class="stat-label">Trust Score</div><div class="stat-value">98</div><div class="stat-sub">Composite reputation</div></div>
+        </div>
+
+        <div class="did-card">
+            <div class="did-label">Primary DID</div>
+            <div class="did-uri">did:prism:abc123def456ghi789jkl012mno345pqr678stu901vwx234yz</div>
+            <div class="did-meta">
+                <div class="did-meta-item">Method: <span>did:prism</span></div>
+                <div class="did-meta-item">Created: <span>Jan 2025</span></div>
+                <div class="did-meta-item">Key Type: <span>Ed25519</span></div>
+                <div class="did-meta-item">Status: <span style="color:#22c55e">Active</span></div>
+            </div>
+        </div>
+
+        <div class="section"><div class="section-title"><span class="icon">🔗</span> Ecosystem Connections</div>
+            <div class="eco-grid">
+                <div class="eco-card"><div class="eco-icon">🌙</div><div class="eco-name">Midnight</div><div class="eco-status">Primary · Active</div></div>
+                <div class="eco-card"><div class="eco-icon">💙</div><div class="eco-name">Cardano</div><div class="eco-status">Linked · Identus</div></div>
+                <div class="eco-card"><div class="eco-icon">💎</div><div class="eco-name">Ethereum</div><div class="eco-status">ENS Mapped</div></div>
+                <div class="eco-card"><div class="eco-icon">🔐</div><div class="eco-name">Enterprise</div><div class="eco-status">Available</div></div>
+            </div>
+        </div>
+
+        <div class="section"><div class="section-title"><span class="icon">📜</span> Verifiable Credentials</div>
+            <div class="cred-list">
+                <div class="cred-item"><div class="ci-icon">🎓</div><div class="ci-info"><div class="ci-name">University Degree — Computer Science</div><div class="ci-detail">Verifiable Credential · Issued by MIT · zk-proof enabled</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:mit...</span></div>
+                <div class="cred-item"><div class="ci-icon">🏛️</div><div class="ci-info"><div class="ci-name">KYC Level 3 — Identity Verified</div><div class="ci-detail">Government ID + Liveness check · KYCz issued</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:kycz...</span></div>
+                <div class="cred-item"><div class="ci-icon">💼</div><div class="ci-info"><div class="ci-name">Professional License — Software Engineer</div><div class="ci-detail">State Board credential · Annual renewal</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:state...</span></div>
+                <div class="cred-item"><div class="ci-icon">🏥</div><div class="ci-info"><div class="ci-name">Health Insurance — Active Coverage</div><div class="ci-detail">safeHealthData attestation · HIPAA compliant</div></div><span class="ci-status pending">Renewing</span><span class="ci-issuer">did:prism:shd...</span></div>
+                <div class="cred-item"><div class="ci-icon">🗳️</div><div class="ci-info"><div class="ci-name">Voter Registration — District 7B</div><div class="ci-detail">GeoZ location proof · Selective disclosure only</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:geoz...</span></div>
+            </div>
+        </div>
+
+        <div class="section"><div class="section-title"><span class="icon">🛡️</span> Identity Features</div>
+            <div class="features">
+                <div class="feat-card"><div class="feat-title">🆔 Self-Sovereign Identity</div><div class="feat-desc">You own your identity. No company, government, or platform can revoke your DID. Only you control it.</div></div>
+                <div class="feat-card"><div class="feat-title">🔐 Selective Disclosure</div><div class="feat-desc">Prove specific attributes without revealing everything. "I'm over 18" without showing your birthdate.</div></div>
+                <div class="feat-card"><div class="feat-title">⛓️ Cross-Chain Identity</div><div class="feat-desc">One identity across Midnight, Cardano, Ethereum, and enterprise systems. Portable and interoperable.</div></div>
+                <div class="feat-card"><div class="feat-title">🧮 zk-Proof Verification</div><div class="feat-desc">All credential checks use zero-knowledge proofs. Verifiers learn the answer, never the underlying data.</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">DIDz.io v0.1.0 · Midnight Blockchain · Self-Sovereign Identity · Verifiable Credentials · Zero-Knowledge Proofs</div>
+    <script src="auth.js"></script><script>const s=dioRequireAuth();if(s)document.getElementById('user-name').textContent=s.displayName;</script>
+</body>
+</html>
