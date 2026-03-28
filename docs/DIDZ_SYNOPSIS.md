@@ -1,6 +1,7 @@
 # The DIDz DApp System — What We're Building and Why It Matters
 
 **Author**: John Santi (bytewizard42i) — Founder, EnterpriseZK Labs  
+**Credentials**: Midnight NightForce Bravo | Midnight Academy Triple Certified | Cardano Certified Blockchain Associate | Emurgo Certified Blockchain Business Consultant | Midnight Ambassador | Midnight Aliit (inactive)  
 **With**: Penny 🎀, Alice 🌟, Cassie 💜, Casie 🌙, Cara ✨  
 **Date**: March 2, 2026
 
