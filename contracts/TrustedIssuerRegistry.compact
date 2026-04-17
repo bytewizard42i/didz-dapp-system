@@ -1,0 +1,354 @@
+// ============================================================================
+// DIDz.io — TrustedIssuerRegistry.compact
+// ============================================================================
+//
+// The on-chain registry of Trusted Issuers for the DIDz ecosystem.
+//
+// PURPOSE
+//   Any party can issue attestations to DIDs via DIDzRegistry.attestToDid().
+//   But not all issuers deserve equal trust. This contract lets an admin
+//   (the Foundation, a DAO, or governance contract in later versions)
+//   maintain a vetted list of issuers classified along three axes:
+//
+//     1. TYPE   — What kind of entity is the issuer?
+//                 (INDIVIDUAL, CORPORATION, GOVERNMENT_ENTITY, INSTITUTION,
+//                  COOPERATIVE, DAO)
+//
+//     2. DOMAIN — What subject matter can they attest to?
+//                 (e.g., hash("FINANCIAL"), hash("MEDICAL"), hash("LEGAL"),
+//                  hash("VETERINARY"), hash("EDUCATION"), etc.)
+//                 Issuers with multiple domains register multiple profiles.
+//
+//     3. ASSURANCE — How much should a verifier trust their attestations?
+//                    (SELF_DECLARED < PEER_REVIEWED < REGULATED_ENTITY <
+//                     SYSTEM_CRITICAL)
+//
+// WHY SEPARATE FROM DIDzRegistry
+//   Keeping the issuer registry independent from the DID registry means:
+//     - Consumers don't have to run Trusted Issuer checks unless they want
+//       higher-assurance verification
+//     - Protocol-level attestations remain permissionless (the permission
+//       layer is OPT-IN for verifiers)
+//     - The issuer model can evolve (DAO governance, delegated trust, web
+//       of trust, etc.) without migrating every DID record
+//
+// HOW VERIFIERS USE IT
+//   When a verifier receives an attestation claim, they:
+//     1. Call DIDzRegistry.verifyAttestation() to confirm it's on-chain
+//        and valid
+//     2. Read the issuerKey from the Attestation record
+//     3. Call this contract's isIssuerApprovedForDomain(issuerKey, domain)
+//        or meetsMinimumAssurance(issuerKey, domain, level)
+//     4. Only accept attestations from issuers who meet their bar
+//
+// ADMIN MODEL (MVP)
+//   A single `adminKey` (captured at deploy time) holds approval authority.
+//   Future versions will replace this with:
+//     - Multi-sig via multiple admin keys
+//     - DAO-governed approval proposals
+//     - Delegated domain-specific admin keys (e.g., a Medical Council admin
+//       for the MEDICAL domain only)
+//
+// COMPILER
+//   - compactc v0.30.0 (validated via the hosted Compact playground)
+//   - Language pragma: >= 0.16 && <= 0.21
+// ============================================================================
+
+pragma language_version >= 0.16 && <= 0.21;
+
+import CompactStandardLibrary;
+
+// ============================================================================
+// THREE-AXIS ISSUER MODEL
+// ============================================================================
+
+// Axis 1: What kind of entity is the issuer?
+// Matches the three-axis model documented in
+// TRUSTED_ISSUER_AGENT_ARCHITECTURE.md.
+export enum IssuerType {
+  INDIVIDUAL,          // A single accredited person (notary, doctor, lawyer)
+  CORPORATION,         // A business entity (bank, hospital, employer)
+  GOVERNMENT_ENTITY,   // A government body (DMV, tax agency, passport office)
+  INSTITUTION,         // Non-profit/academic (university, charity, standards body)
+  COOPERATIVE,         // Member-owned (credit union, industry co-op)
+  DAO                  // Decentralized autonomous organization
+}
+
+// Axis 3: How much should verifiers trust this issuer?
+// Four tiers, ordered from least to most trustworthy.
+export enum AssuranceLevel {
+  SELF_DECLARED,       // 0 — Unverified. The issuer claims to be who they say.
+  PEER_REVIEWED,       // 1 — Community-verified via web-of-trust mechanisms.
+  REGULATED_ENTITY,    // 2 — A regulated institution (bank, hospital, gov).
+  SYSTEM_CRITICAL      // 3 — Foundational infrastructure (AgenticDID Foundation,
+                       //     identity-critical government agencies, etc.)
+}
+
+// Approval state machine. Pending → Approved → (optionally) Revoked.
+export enum ApprovalStatus {
+  PENDING,             // 0 — Registered but not yet approved by admin
+  APPROVED,            // 1 — Admin has approved; consumers may trust
+  REVOKED              // 2 — Admin has revoked; consumers must not trust
+}
+
+// ============================================================================
+// DATA STRUCTURES
+// ============================================================================
+
+// One profile per (issuerKey, primaryDomain) pair. An issuer with multiple
+// domains registers multiple profiles.
+struct IssuerProfile {
+  issuerKey: ZswapCoinPublicKey;   // The issuer's wallet key (authentication)
+  issuerType: Uint<8>;              // IssuerType cast as Uint<8>
+  primaryDomain: Bytes<32>;         // e.g., hash("FINANCIAL") or pad(32, "MEDICAL")
+  assuranceLevel: Uint<8>;          // AssuranceLevel cast as Uint<8>
+  profileCommit: Bytes<32>;         // Commitment to off-chain profile metadata
+                                    // (legal name, website, contact, logos, etc.)
+  registeredAt: Uint<64>;           // Unix timestamp of self-registration
+  approvedAt: Uint<64>;              // Unix timestamp of admin approval (0 if pending)
+  status: Uint<8>;                  // ApprovalStatus cast as Uint<8>
+}
+
+// Hash inputs for deterministic key derivation.
+struct IssuerKeyCommitInput {
+  separator: Bytes<32>;
+  issuerKey: ZswapCoinPublicKey;
+}
+
+struct IssuerKeyHashInput {
+  separator: Bytes<32>;
+  issuerKeyHash: Bytes<32>;         // Pre-hashed issuer key
+  primaryDomain: Bytes<32>;
+}
+
+// ============================================================================
+// LEDGER STATE
+// ============================================================================
+
+// The primary issuer registry. Map key is hash(issuerKey, primaryDomain).
+export ledger issuerProfiles: Map<Bytes<32>, IssuerProfile>;
+
+// Public metrics.
+export ledger totalIssuersRegistered: Counter;
+export ledger totalIssuersApproved: Counter;
+
+// The admin who can approve/revoke issuers. Captured at deploy time.
+sealed ledger adminKey: ZswapCoinPublicKey;
+
+// ============================================================================
+// CONSTRUCTOR
+// ============================================================================
+
+constructor() {
+  adminKey = ownPublicKey();
+}
+
+// ============================================================================
+// INTERNAL HELPERS
+// ============================================================================
+
+// Hash a ZswapCoinPublicKey to Bytes<32>. We do this to avoid passing
+// ZswapCoinPublicKey directly into the composite hash input, which would
+// make the hash input struct order-sensitive on a Compact internal type.
+circuit hashIssuerKey(issuerKey: ZswapCoinPublicKey): Bytes<32> {
+  return persistentHash<IssuerKeyCommitInput>(IssuerKeyCommitInput {
+    separator: pad(32, "didz:issuer-key:v1"),
+    issuerKey: issuerKey
+  });
+}
+
+// Derive the map key for an (issuerKey, primaryDomain) slot.
+circuit computeIssuerSlotKey(
+  issuerKey: ZswapCoinPublicKey,
+  primaryDomain: Bytes<32>
+): Bytes<32> {
+  return persistentHash<IssuerKeyHashInput>(IssuerKeyHashInput {
+    separator: pad(32, "didz:issuer-slot:v1"),
+    issuerKeyHash: hashIssuerKey(issuerKey),
+    primaryDomain: primaryDomain
+  });
+}
+
+// ============================================================================
+// CIRCUITS — ISSUER LIFECYCLE
+// ============================================================================
+
+// Self-registration. Any wallet can register an issuer profile for itself
+// in a given domain. Status starts PENDING; the admin must approve before
+// verifiers will trust attestations from this issuer.
+//
+// Returns the composite slotKey so the caller can reference their registration.
+export circuit registerIssuer(
+  issuerType: Uint<8>,
+  primaryDomain: Bytes<32>,
+  assuranceLevel: Uint<8>,
+  profileCommit: Bytes<32>,
+  currentTime: Uint<64>
+): Bytes<32> {
+  const callerKey = ownPublicKey();
+  const slotKey = computeIssuerSlotKey(callerKey, primaryDomain);
+
+  assert(!issuerProfiles.member(disclose(slotKey)),
+    "Issuer already registered for this domain");
+
+  // Validate assurance level is in range.
+  assert(disclose(assuranceLevel) <= (3 as Uint<8>),
+    "Assurance level must be 0-3");
+
+  const profile = IssuerProfile {
+    issuerKey: callerKey,
+    issuerType: issuerType,
+    primaryDomain: primaryDomain,
+    assuranceLevel: assuranceLevel,
+    profileCommit: profileCommit,
+    registeredAt: currentTime,
+    approvedAt: 0,
+    status: 0  // PENDING
+  };
+
+  issuerProfiles.insert(disclose(slotKey), disclose(profile));
+  totalIssuersRegistered.increment(1);
+
+  return disclose(slotKey);
+}
+
+// Admin-only approval. Moves a PENDING profile to APPROVED, so verifiers
+// start trusting attestations from this issuer in this domain.
+export circuit approveIssuer(
+  issuerKey: ZswapCoinPublicKey,
+  primaryDomain: Bytes<32>,
+  currentTime: Uint<64>
+): [] {
+  assert(ownPublicKey() == adminKey, "Only admin can approve issuers");
+
+  const slotKey = computeIssuerSlotKey(issuerKey, primaryDomain);
+  assert(issuerProfiles.member(disclose(slotKey)), "Issuer profile not found");
+
+  const profile = issuerProfiles.lookup(disclose(slotKey));
+  assert(disclose(profile.status) == (0 as Uint<8>),
+    "Issuer is not in pending state");
+
+  const updated = IssuerProfile {
+    issuerKey: profile.issuerKey,
+    issuerType: profile.issuerType,
+    primaryDomain: profile.primaryDomain,
+    assuranceLevel: profile.assuranceLevel,
+    profileCommit: profile.profileCommit,
+    registeredAt: profile.registeredAt,
+    approvedAt: currentTime,
+    status: 1  // APPROVED
+  };
+
+  issuerProfiles.insert(disclose(slotKey), disclose(updated));
+  totalIssuersApproved.increment(1);
+}
+
+// Admin-only revocation. Marks an issuer as untrusted going forward.
+// Historical attestations remain in DIDzRegistry for audit purposes, but
+// verifiers querying this contract will see the issuer as revoked and
+// should reject any future attestations from them.
+export circuit revokeIssuer(
+  issuerKey: ZswapCoinPublicKey,
+  primaryDomain: Bytes<32>
+): [] {
+  assert(ownPublicKey() == adminKey, "Only admin can revoke issuers");
+
+  const slotKey = computeIssuerSlotKey(issuerKey, primaryDomain);
+  assert(issuerProfiles.member(disclose(slotKey)), "Issuer profile not found");
+
+  const profile = issuerProfiles.lookup(disclose(slotKey));
+  assert(disclose(profile.status) != (2 as Uint<8>),
+    "Issuer already revoked");
+
+  const updated = IssuerProfile {
+    issuerKey: profile.issuerKey,
+    issuerType: profile.issuerType,
+    primaryDomain: profile.primaryDomain,
+    assuranceLevel: profile.assuranceLevel,
+    profileCommit: profile.profileCommit,
+    registeredAt: profile.registeredAt,
+    approvedAt: profile.approvedAt,
+    status: 2  // REVOKED
+  };
+
+  issuerProfiles.insert(disclose(slotKey), disclose(updated));
+}
+
+// Admin-only. Upgrade or downgrade an issuer's assurance level in a
+// domain. Useful when an issuer transitions (e.g., a CORPORATION gets
+// regulated and moves from PEER_REVIEWED to REGULATED_ENTITY, or a
+// previously system-critical issuer has a breach and is downgraded).
+export circuit updateAssuranceLevel(
+  issuerKey: ZswapCoinPublicKey,
+  primaryDomain: Bytes<32>,
+  newAssuranceLevel: Uint<8>
+): [] {
+  assert(ownPublicKey() == adminKey, "Only admin can change assurance level");
+  assert(disclose(newAssuranceLevel) <= (3 as Uint<8>),
+    "Assurance level must be 0-3");
+
+  const slotKey = computeIssuerSlotKey(issuerKey, primaryDomain);
+  assert(issuerProfiles.member(disclose(slotKey)), "Issuer profile not found");
+  const profile = issuerProfiles.lookup(disclose(slotKey));
+
+  const updated = IssuerProfile {
+    issuerKey: profile.issuerKey,
+    issuerType: profile.issuerType,
+    primaryDomain: profile.primaryDomain,
+    assuranceLevel: newAssuranceLevel,
+    profileCommit: profile.profileCommit,
+    registeredAt: profile.registeredAt,
+    approvedAt: profile.approvedAt,
+    status: profile.status
+  };
+
+  issuerProfiles.insert(disclose(slotKey), disclose(updated));
+}
+
+// ============================================================================
+// CIRCUITS — CONSUMER-FACING QUERIES
+// ============================================================================
+
+// The primary question a verifier asks: "Is this issuer approved to attest
+// in this domain?" Returns true only for APPROVED status.
+export circuit isIssuerApprovedForDomain(
+  issuerKey: ZswapCoinPublicKey,
+  primaryDomain: Bytes<32>
+): Boolean {
+  const slotKey = computeIssuerSlotKey(issuerKey, primaryDomain);
+  if (!issuerProfiles.member(disclose(slotKey))) {
+    return false;
+  }
+  const profile = issuerProfiles.lookup(disclose(slotKey));
+  return disclose(profile.status) == (1 as Uint<8>);
+}
+
+// Raw profile getter — for consumers that want to inspect the issuer's type,
+// assurance level, and approval timestamps.
+export circuit getIssuerProfile(
+  issuerKey: ZswapCoinPublicKey,
+  primaryDomain: Bytes<32>
+): IssuerProfile {
+  const slotKey = computeIssuerSlotKey(issuerKey, primaryDomain);
+  assert(issuerProfiles.member(disclose(slotKey)), "Issuer profile not found");
+  return issuerProfiles.lookup(disclose(slotKey));
+}
+
+// Higher-bar check: is this issuer APPROVED AND at or above a minimum
+// assurance tier? Useful when a verifier only trusts regulated issuers
+// (minAssuranceLevel = REGULATED_ENTITY = 2) for certain domains.
+export circuit meetsMinimumAssurance(
+  issuerKey: ZswapCoinPublicKey,
+  primaryDomain: Bytes<32>,
+  minAssuranceLevel: Uint<8>
+): Boolean {
+  const slotKey = computeIssuerSlotKey(issuerKey, primaryDomain);
+  if (!issuerProfiles.member(disclose(slotKey))) {
+    return false;
+  }
+  const profile = issuerProfiles.lookup(disclose(slotKey));
+  if (disclose(profile.status) != (1 as Uint<8>)) {
+    return false;
+  }
+  return disclose(profile.assuranceLevel) >= disclose(minAssuranceLevel);
+}
