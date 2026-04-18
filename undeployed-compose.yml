@@ -1,0 +1,57 @@
+# Local Midnight stack for DIDz.io development.
+# Run: docker compose -f undeployed-compose.yml up -d
+# Stop: docker compose -f undeployed-compose.yml down
+#
+# Ports:
+#   6300 — proof server
+#   8088 — pubsub indexer
+#   9944 — local Midnight node
+#
+# After this stack is up, the didz-ui + identity-provider-api can connect
+# to localhost endpoints for end-to-end local testing.
+
+services:
+  proof-server:
+    container_name: 'didz-proof-server'
+    image: 'midnightnetwork/proof-server:3.0.6'
+    ports:
+      - '6300:6300'
+    restart: unless-stopped
+
+  indexer:
+    container_name: 'didz-indexer'
+    image: 'midnightnetwork/midnight-pubsub-indexer:2.3.0'
+    platform: linux/amd64
+    ports:
+      - '8088:8088'
+    command: ['-Dlogback.configurationFile=logback-json-file.xml']
+    environment:
+      LOG_LEVEL: 'INFO'
+      LEDGER_NETWORK_ID: 'Undeployed'
+      SUBSTRATE_NODE_WS_URL: 'ws://node:9944'
+      OTEL_JAVAAGENT_ENABLED: 'false'
+    healthcheck:
+      test: ['CMD', 'egrep', '"Block .* was stored at height 0"', '/tmp/app_logs/server.log']
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    depends_on:
+      node:
+        condition: service_started
+    restart: unless-stopped
+
+  node:
+    container_name: 'didz-node'
+    image: 'midnightnetwork/midnight-node:0.8.0'
+    platform: linux/amd64
+    ports:
+      - '9944:9944'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:9944/health']
+      interval: 2s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    environment:
+      CFG_PRESET: 'dev'
+    restart: unless-stopped

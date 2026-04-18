@@ -1,0 +1,8 @@
+{
+  "networkId": "Undeployed",
+  "proofServerUrl": "http://localhost:6300",
+  "indexerUrl": "http://localhost:8088",
+  "identityProviderUrl": "http://localhost:3000",
+  "didzRegistryAddress": "",
+  "trustedIssuerRegistryAddress": ""
+}

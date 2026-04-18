@@ -1,0 +1,33 @@
+{
+  "name": "@didz/identity-provider-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DIDz.io Identity Provider (IDP) API — issues Schnorr-signed credentials that DIDz.io contracts verify in ZK",
+  "type": "module",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc --project tsconfig.build.json",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@didz/didz-api": "workspace:*",
+    "express": "^5.0.1",
+    "helmet": "^8.0.0",
+    "cors": "^2.8.5",
+    "pino": "^10.1.0",
+    "pino-http": "^10.3.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "tsx": "^4.19.2"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "@didz/didz-contract",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TypeScript bindings + Vitest simulators for DIDzRegistry + TrustedIssuerRegistry Compact contracts",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./managed/didz-registry": {
+      "types": "./dist/managed/didz-registry/index.d.ts",
+      "import": "./dist/managed/didz-registry/index.js",
+      "default": "./dist/managed/didz-registry/index.js"
+    },
+    "./managed/trusted-issuer-registry": {
+      "types": "./dist/managed/trusted-issuer-registry/index.d.ts",
+      "import": "./dist/managed/trusted-issuer-registry/index.js",
+      "default": "./dist/managed/trusted-issuer-registry/index.js"
+    }
+  },
+  "scripts": {
+    "compact": "compact compile ../contracts/DIDzRegistry.compact src/managed/didz-registry && compact compile ../contracts/TrustedIssuerRegistry.compact src/managed/trusted-issuer-registry",
+    "build": "rm -rf dist && tsc --project tsconfig.build.json && cp -Rf ./src/managed ./dist/managed 2>/dev/null || true",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@midnight-ntwrk/compact-runtime": "0.14.0",
+    "@midnight-ntwrk/ledger-v7": "7.0.0"
+  }
+}
