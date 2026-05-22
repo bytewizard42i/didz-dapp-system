@@ -38,10 +38,26 @@ The answer is **mathematically guaranteed to be correct** — not "probably corr
 
 ---
 
+## Subjects of DIDz — Who (or What) Can Have an Identity
+
+DIDz is a **polymorphic identity substrate**. The same core registry and trusted-issuer machinery serves any entity that needs verifiable, privacy-preserving identity. Each subject type is a tier built on the same foundation, not a separate system.
+
+| Tier | Subject | Real-world examples | DIDzMonolith vertical |
+|------|---------|--------------------|-----------------------|
+| **Human** | Individual people | Citizens, customers, patients, voters, employees | DIDz.io (this repo), KYCz |
+| **Organization** | Businesses, institutions, governments | Companies, universities, hospitals, agencies, NGOs | DIDz.io org tier, EnterpriseZK Labs |
+| **Agent** | Autonomous Ai agents | LLM agents, automated services, delegated workers | [AgenticDID](https://github.com/bytewizard42i/AgenticDID_io_me) |
+| **Animal** | Living non-human subjects | Companion animals, equine athletes, livestock, exotics | [PetProData](https://github.com/bytewizard42i/petProData), [EquinePro](https://github.com/bytewizard42i/equineProData) |
+| **Object / RWA** | Real-world assets and instruments | Artworks, deeds, vehicles, equipment, supply-chain SKUs, scientific instruments | (cross-cutting; see [Edda Labs RWA Patterns](docs/EDDALABS_RWA_PATTERNS_FOR_DIDZ.md)) |
+
+For non-human subjects (animals, objects, RWAs), the **Holder role is fulfilled by a custodian or owner** — a human or organization that controls the subject's DIDz wallet on its behalf. The Trust Triangle below applies identically; only the binding mechanism differs (microchip, RFID, serial number, geolocation, or biometric for the custodian).
+
+---
+
 ## How It Works — The Trust Triangle
 
-### 1. The Holder (You)
-You create a pseudonymous digital identity — a **DIDz** — bound to you through biometrics (fingerprint, face scan, pulse/ox). Your private data is stored in **encrypted private state** on the Midnight blockchain. No one can see it. Not even us.
+### 1. The Holder (You, or a Subject You Custody)
+You create a pseudonymous digital identity — a **DIDz** — bound to a subject through an appropriate primitive: biometrics (fingerprint, face scan, pulse/ox) for humans, microchip or RFID for animals, serial number or cryptographic anchor for objects and RWAs. Private data is stored in **encrypted private state** on the Midnight blockchain. No one can see it. Not even us. For non-human subjects, a custodian (human or organization) holds the wallet on the subject's behalf.
 
 ### 2. The Trusted Issuer (DMV, Bank, Hospital, Government...)
 Trusted institutions verify your identity traditionally — scan your license, check your passport — and then **attest** to those facts on-chain. They don't store your data. They cryptographically sign that they verified it, and that signature lives in your private state.
@@ -115,9 +131,9 @@ DIDz organizes credentials in a folderized smart contract structure:
 
 ## Target Sectors
 
-DIDz transforms identity across **12 sectors**:
+DIDz transforms identity across **12+ sectors**:
 
-DeFi · Government · Education · Enterprise · Commerce · Supply Chain · Medical · Passports & Travel · Military & Security · Law Enforcement · Intelligence Systems · Polling & Voting
+DeFi · Government · Education · Enterprise · Commerce · Supply Chain · Medical · Passports & Travel · Military & Security · Law Enforcement · Intelligence Systems · Polling & Voting · Real-World Assets (art, deeds, vehicles, equipment) · Animal Health & Provenance (companion, equine, livestock) · Autonomous Agents
 
 ---
 
@@ -135,6 +151,8 @@ DIDz.io is the **foundation layer** — everything else builds on top:
 | **[PopCork](https://github.com/bytewizard42i/PopCork)** | Social media platform | DIDz-verified speakers and participants |
 | **[DownMan](https://github.com/bytewizard42i/DownMan)** | Crypto estate planning | DIDz-authenticated Shamir secret sharing |
 | **[safeHealthData.me](https://github.com/bytewizard42i/safeHealthData_me)** | Private health records | DIDz-protected medical data with selective disclosure |
+| **[PetProData](https://github.com/bytewizard42i/petProData)** | Companion animal records & identity | DIDz Animal-tier subject — persistent identity across ownership transfers |
+| **[EquinePro](https://github.com/bytewizard42i/equineProData)** | Equine identity, provenance, RWA | DIDz Animal-tier + RWA — lineage, breeding rights, tokenized economic interests |
 | **[GeoZ](https://github.com/bytewizard42i/GeoZ_us_app_Midnight-Oracle)** | Geolocation oracle | Privacy-preserving location proofs for DIDz (jurisdiction, residency) |
 | **[MidnightVitals](https://github.com/bytewizard42i/MidnightVitals)** | Real-time diagnostics | Cross-cutting debugging/monitoring for all DIDz-powered apps |
 

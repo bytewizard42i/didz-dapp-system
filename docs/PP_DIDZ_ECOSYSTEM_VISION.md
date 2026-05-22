@@ -69,7 +69,8 @@ Designed to work with:
    - Google, Amazon, DMV, Universities, Hospitals
    
 2. **DIDz DApp** → Issues credentials to holders
-   - Individuals and AI agents
+   - Individuals, organizations (businesses, institutions, governments), Ai agents, animals (via custodians), and objects/RWAs (via custodians)
+   - Non-human subjects bind through microchip, RFID, serial number, or cryptographic anchor; a human or organization holds the wallet on their behalf
    
 3. **Verifiers** → Accept ZK proofs
    - Employers, services, governments
