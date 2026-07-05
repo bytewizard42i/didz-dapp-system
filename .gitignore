@@ -55,3 +55,6 @@ didz-ui/public/config.local.json
 
 # ----- Midnight private state (browser LevelDB simulators leak here during tests) -----
 private-state-store/
+
+# Windows Mark-of-the-Web sidecars (never commit)
+*:Zone.Identifier
