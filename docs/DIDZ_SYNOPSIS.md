@@ -45,6 +45,8 @@ The DIDz DApp System has three roles:
 ### 1. The Holder (You)
 You create a pseudonymous digital identity — a **DIDz** — that's bound to you through biometrics (fingerprint, face scan, pulse/ox). Your private data (name, DOB, address, credentials) is stored in **encrypted private state** on the Midnight blockchain. No one can see it. No one can access it. Not even us.
 
+**There is exactly one type of DIDz.** The same identity primitive serves every subject: humans (biometric binding), organizations, AI agents (via AgenticDID delegation), animals, and real-world assets (via custodians — microchip, RFID, serial number, or cryptographic anchor, with a human or organization holding the wallet on the subject's behalf). What differs is never the DIDz itself, only the **credential types** attached to it (immutable vs. rescindable) and the binding method. One primitive, infinite subjects.
+
 ### 2. The Trusted Issuer (DMV, Bank, Hospital, Government...)
 Trusted institutions verify your identity the traditional way — scan your license, check your passport, verify your bank account — and then **attest** to those facts on-chain. But here's the key: they don't store your data. They cryptographically sign that they verified it, and that signature lives in your private state. You carry the proof. They carry nothing.
 
@@ -119,6 +121,14 @@ DIDz.io is the **foundation layer** — the bedrock that every other product bui
 | **MidnightVitals** | Real-time diagnostics | Cross-cutting debugging/monitoring for all DIDz-powered apps |
 
 Every one of these products inherits the privacy guarantees of DIDz. Build once, verify everywhere.
+
+**Architecture plan (updated July 2026)** — the layered stack:
+
+1. **Midnight Passport** (IOG/ARC) as the account/custody/naming *substrate* — we track and align with it rather than reinvent seedless onboarding.
+2. **DIDz** as the hierarchical privacy wallet and ZKQuery layer — one DIDz type, folderized credentials, RWA latitude built in from day one (equineProData, petProData, and helixchain are the first asset verticals).
+3. **AgenticDID** as the delegation layer — designed in from the start, not bolted on. Its scoped-grant engine is compiled and its protocol spec is being prepared for proposal to the Decentralized Identity Foundation as the privacy-preserving delegation profile of the agentic identity stack (see `AgenticDID/docs/DIF_STANDARDIZATION_PLAN.md`).
+
+Interfaces follow open standards (W3C DID/VC, DIF Presentation Exchange, did:peer pairwise semantics) so any standards-compliant wallet or verifier interoperates — the zero-knowledge machinery stays under the hood.
 
 ---
 
