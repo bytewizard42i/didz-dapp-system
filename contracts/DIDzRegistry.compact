@@ -1,420 +1,378 @@
-// ============================================================================
-// DIDz.io — DIDzRegistry.compact
-// ============================================================================
-//
-// The root DID registry for the EnterpriseZK DApp ecosystem.
-//
-// PURPOSE
-//   Every entity in the DIDz monolith that needs a decentralized identity
-//   (human, AI agent, animal, organization, device, object) registers a DID
-//   here. This contract is the on-chain source of truth for:
-//     - Whether a DID exists and is active
-//     - Who controls a DID (the owner public key)
-//     - What kind of entity a DID represents
-//     - On-chain attestations that Trusted Issuers have made about the DID
-//
-// CONSUMERS
-//   - AgenticDID       → corporate AI agent identities
-//   - KYCz             → independent, but interop-able via attestations
-//   - petProData       → animal DIDs (pets)
-//   - equineProData    → animal DIDs (horses)
-//   - safeHealthData   → human health data anchored to a DID
-//   - selectConnect    → privacy-preserving contact cards bound to a DID
-//   - ProMingle        → professional networking with verified credentials
-//   - SouLink          → social identity linking
-//   - realVote         → voter identity and one-person-one-vote
-//   - DiscoveryManagement, sharedScience_me, SilentLedger, SentinelAI,
-//     proofOrBluff, CareToCoin, HuddleBridge, DownMan, PopCork, GeoZ, etc.
-//
-// INTEGRATION PATTERN (MVP)
-//   Consumer DApps accept a `didId: Bytes<32>` as input, then call DIDz.io's
-//   exported circuits (`isDidActive`, `verifyAttestation`, `resolveDid`)
-//   off-chain via the shared TypeScript SDK. True on-chain cross-contract
-//   calls are a future phase once the pattern is validated on the current
-//   compiler.
-//
-// RELATIONSHIP TO OTHER PROTOCOLS
-//   - KYCz is a SIBLING protocol, not a dependency. KYCz proves govt-issued
-//     facts about a subject (DOB, residency, etc.) without revealing them.
-//     DIDz.io assigns and manages identities. They can interoperate via the
-//     attestation mechanism (a KYCz issuer can attest to a DID that holds a
-//     KYCz anchor), but neither requires the other.
-//   - SentinelDID's `issueDid(kycHash, time)` pattern was an early POC of
-//     this contract. SentinelDID is archived; its ideas live on here.
-//   - AgenticDIDRegistry (in the AgenticDID repo) currently maintains its
-//     own agent registry for preprod-testing velocity. A future refactor
-//     will wire AgenticDID through DIDz.io's TrustedIssuerRegistry so that
-//     only approved issuers can mint agent DIDs.
-//
-// W3C STANDARDS ALIGNMENT
-//   This contract is designed to be compatible with the `did:midnight` DID
-//   method. DID documents are reconstructed off-chain from:
-//     - The `DidRecord` stored here (core metadata)
-//     - Public verification keys from the `ownerKey` field
-//     - Service endpoints maintained off-chain by the DID subject
-//     - Verifiable Credentials issued via the attestation mechanism
-//   References:
-//     - W3C DID Core 1.0:    https://www.w3.org/TR/did-core/
-//     - W3C VC Data Model 2.0: https://www.w3.org/TR/vc-data-model-2.0/
-//     - Decentralized Identity Foundation: https://identity.foundation/
-//
-// PRIVACY MODEL
-//   - DID records are PUBLIC by design. A DID document is meant to be
-//     globally resolvable. Nothing sensitive lives in `DidRecord`.
-//   - Attestations commit to OFF-CHAIN claim data via a hash
-//     (`attestationCommit`). The actual claim (e.g. "Alice is over 21")
-//     stays in the subject's encrypted private state; only the hash is
-//     on-chain. Verifiers prove knowledge of the preimage via ZK proofs.
-//   - Revocation is explicit and queryable; there is no grace period.
-//
-// COMPILER
-//   - compactc v0.30.0 (validated via the hosted Compact playground)
-//   - Language pragma: >= 0.16 && <= 0.21
-// ============================================================================
-
 pragma language_version >= 0.16 && <= 0.23;
 
 import CompactStandardLibrary;
 
-// ============================================================================
-// ENTITY TAXONOMY
-// ============================================================================
-// What KIND of thing does this DID represent? Seven categories cover every
-// consumer product. Extend with OTHER for ad-hoc types rather than adding new
-// enum variants (which would require contract migration).
-
-export enum EntityType {
-  HUMAN,          // A person (safeHealthData, ProMingle, SouLink, realVote, KYCz-bound)
-  AGENT,          // An autonomous AI agent (AgenticDID)
-  ANIMAL,         // A non-human living thing (petProData, equineProData)
-  ORGANIZATION,   // A company, gov agency, foundation, DAO (EnterpriseZK, etc.)
-  DEVICE,         // An IoT device, sensor, vehicle (GeoZ, future SupplyChain)
-  OBJECT,         // An inanimate asset (SilentLedger, DownMan, RWA)
-  OTHER           // Anything else — subject-defined in the commitment
-}
-
-// ============================================================================
-// DATA STRUCTURES
-// ============================================================================
-
-// The core record stored for every DID. PUBLIC — DID documents are public.
-// Anything sensitive about the subject lives off-chain or in a sibling
-// contract (e.g., KYCz for human KYC, petProData for medical records).
-struct DidRecord {
-  entityType: Uint<8>;             // EntityType cast as Uint<8>
-  subjectCommitment: Bytes<32>;    // Subject-controlled commitment binding
-                                   // the subject to this DID. Could be a
-                                   // biometric hash (human), device pubkey
-                                   // (device), microchip ID (pet), etc.
-                                   // Opaque to this contract.
-  ownerKey: ZswapCoinPublicKey;    // Controls this DID — can rotate, deactivate
-  createdAt: Uint<64>;             // Unix timestamp of registration
-  isActive: Boolean;               // False once deactivated
-}
-
-// A Trusted Issuer's on-chain claim about a DID. The claim data itself
-// stays off-chain; only the commitment hash is stored.
+// ===== DIDzRegistry v2: machine (1) — minting permanent DIDz identities =====
 //
-// Examples:
-//   - DMV → ("AGE_VERIFICATION", hash("over_21=true"))
-//   - Vet → ("RABIES_VAX", hash("vaccinated_on=2026-01-15"))
-//   - Uni → ("DEGREE", hash("PhD Computer Science, MIT, 2024"))
-//   - Gov → ("CITIZENSHIP", hash("US citizen, valid until 2030"))
-struct Attestation {
-  attestationType: Bytes<32>;      // e.g., pad(32, "KYC_TIER_2") or a hash
-  attestationCommit: Bytes<32>;    // Commitment to the off-chain claim data
-  issuerKey: ZswapCoinPublicKey;   // Who attested (for later revocation auth)
-  issuedAt: Uint<64>;
-  expiresAt: Uint<64>;             // 0 means "never expires"; check carefully
-  isRevoked: Boolean;
+// WHAT THIS CONTRACT IS
+//   The root identity layer of the four-pillar architecture. Machine (1):
+//   it MINTS permanent identities. Machine (2) — scoped-grant in
+//   midnight-modules — moves authority around; this contract never does.
+//
+// THE RULES THIS CONTRACT ENFORCES (John's rulings, July 2026)
+//   1. NOT A TOKEN. A DIDz is a registry entry. There is NO transfer circuit —
+//      identity is non-transferable BY CONSTRUCTION. Keys rotate and recover;
+//      the identity itself never moves and is NEVER deleted.
+//   2. PERMANENT IDENTITY, TEMPORARY ELIGIBILITY. A DIDz never expires; what
+//      expires is eligibility (POL credential, attestations). Death/dissolution
+//      /destruction are STATUSES on the permanent record, not deletion.
+//   3. PRIVATE BY DEFAULT, PROVABLE ON DEMAND — as much as is reasonable.
+//      Public on-chain:   that a DIDz exists, and its lifecycle status.
+//                         (Verifiers genuinely need these two bits, and they
+//                         reveal nothing about WHO or WHAT the entity is.)
+//      Committed (hidden): entity type, subject binding, owner key, every
+//                         attestation's content and issuer. Each has a ZK
+//                         circuit to prove exactly one fact when the HOLDER
+//                         chooses to share it, and nothing otherwise.
+//
+// LIFECYCLE STATUS TABLE (public, one Uint<8> per DIDz)
+//   0 = active      normal operation
+//   1 = suspended   owner paused it — the ONLY reversible non-active status
+//   2 = deceased    human died      — TERMINAL (authoritative human source is
+//                                     midnight-modules/pol-credential; the SDK
+//                                     bridges the two until cross-contract
+//                                     calls exist)
+//   3 = dissolved   org wound down  — TERMINAL
+//   4 = destroyed   object scrapped — TERMINAL (mirrors RWAz retire_object)
+//
+// WHO CALLS WHAT (call map for debugging)
+//   register_did          <- any wallet (mints; caller's key becomes owner)
+//   assert_i_control      <- the owner: ZK "I control this live DIDz"
+//   prove_entity_type     <- the owner: opt-in reveal of ONE fact (the type)
+//   rotate_owner_key      <- the owner (old key authorizes the new one)
+//   suspend_did           <- the owner        (status 0 -> 1)
+//   reactivate_did        <- the owner        (status 1 -> 0; terminals never)
+//   set_terminal_status   <- the owner OR a registered status authority
+//                            (death-certificate / dissolution flows)
+//   add_status_authority  <- the deployer admin, once per authority
+//   attest_to_did         <- any issuer (trust is the verifier's judgment via
+//                            TrustedIssuerRegistry)
+//   revoke_attestation    <- the SAME issuer that made it
+//   prove_attestation     <- the SUBJECT's owner: opt-in one-bit reveal that a
+//                            specific attestation commitment is live + unexpired
+//   advance_epoch         <- keeper/cron (shared clock pattern)
+//   derive_public_key     <- SDKs, pure helper
+//
+// WHAT PLUGS IN (ecosystem breadcrumbs)
+//   AgenticDID  -> agents anchor here, authority via scoped-grant v2
+//   RWAz        -> objects anchor here, titles move in rwa_registry
+//   KYCz        -> issuers attest KYC tiers as commitments here
+//   pol-credential -> liveness for humans; feeds status 2 via authorities
+//   selectConnect / ProMingle / SouLink / realVote -> consume the proofs
+
+// ---------------------------------------------------------------------------
+// PUBLIC STATE (deliberately minimal — rule 3)
+// ---------------------------------------------------------------------------
+
+// Every DIDz ever minted. NOTHING is ever removed from this set (rule 2).
+export ledger dids: Set<Bytes<32>>;
+
+// didId -> lifecycle status (see table). The only other public fact.
+export ledger did_status: Map<Bytes<32>, Uint<8>>;
+
+// didId -> commitment binding this DIDz to its PRIVATE profile:
+//   H("didz:profile:v2", entityType, subjectCommitment, profileSalt)
+// entity type, subject binding, and salt live with the holder off-chain;
+// prove_entity_type re-derives this in-circuit for selective reveal.
+export ledger did_profile_commitment: Map<Bytes<32>, Bytes<32>>;
+
+// didId -> key COMMITMENT of the current owner (engine pattern — the raw
+// public key is never stored; control is proven in zero knowledge).
+export ledger did_owner: Map<Bytes<32>, Bytes<32>>;
+
+// Attestation slot key H("didz:attest:v2", didId, attestationType) -> the
+// attestation's content commitment. The type itself is already a hash, so
+// even the KIND of attestation is only discoverable by someone who knows
+// what to ask for.
+export ledger attestation_commitment: Map<Bytes<32>, Bytes<32>>;
+
+// slot key -> issuer key commitment (for revocation auth + issuer proofs).
+export ledger attestation_issuer: Map<Bytes<32>, Bytes<32>>;
+
+// slot key -> expiry epoch. Max Uint<64> = never expires.
+export ledger attestation_expiry: Map<Bytes<32>, Uint<64>>;
+
+// slot key -> revoked flag (slots are never deleted — audit trail, rule 2).
+export ledger attestation_revoked: Map<Bytes<32>, Boolean>;
+
+// Key commitments allowed to set TERMINAL statuses besides the owner
+// (e.g. a vital-records authority filing a death certificate).
+export ledger status_authorities: Set<Bytes<32>>;
+
+// The deployer-admin's key commitment (manages status_authorities only).
+export ledger registry_admin: Bytes<32>;
+export ledger registry_admin_claimed: Boolean;
+
+// Public health metrics (aggregate counters leak no individual facts).
+export ledger total_dids_minted: Counter;
+
+// Keeper-driven clock (same pattern as every engine module).
+export ledger epoch: Counter;
+
+// ---------------------------------------------------------------------------
+// PRIVATE INPUTS
+// ---------------------------------------------------------------------------
+
+// The caller's secret key (owner / issuer / authority / admin by context).
+witness local_secret_key(): Bytes<32>;
+
+// ---------------------------------------------------------------------------
+// HELPERS
+// ---------------------------------------------------------------------------
+
+// Shared key derivation across the whole DIDz engine (same domain tag).
+export circuit derive_public_key(sk: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<2, Bytes<32>>>([
+    pad(32, "midnight:mm:pk:"),
+    sk
+  ]);
+}
+
+circuit caller_public_key(): Bytes<32> {
+  return derive_public_key(local_secret_key());
+}
+
+// The private-profile commitment (exported pure so wallets can precompute it,
+// and so prove_entity_type can re-derive it for the selective reveal).
+export circuit derive_profile_commitment(
+  entity_type: Uint<8>,
+  subject_commitment: Bytes<32>,
+  profile_salt: Bytes<32>
+): Bytes<32> {
+  return persistentHash<Vector<4, Bytes<32>>>([
+    pad(32, "didz:profile:v2"),
+    persistentHash<Uint<8>>(entity_type),
+    subject_commitment,
+    profile_salt
+  ]);
+}
+
+// Composite key for one attestation slot: H(domain, didId, type).
+circuit attestation_slot(did_id: Bytes<32>, attestation_type: Bytes<32>): Bytes<32> {
+  return persistentHash<Vector<3, Bytes<32>>>([
+    pad(32, "didz:attest:v2"),
+    did_id,
+    attestation_type
+  ]);
+}
+
+// Shared guard: the DIDz exists, is ACTIVE (status 0), and the caller
+// proves ownership. Every owner-authorized circuit funnels through here.
+circuit check_caller_owns_active_did(did_id: Bytes<32>): [] {
+  assert(dids.member(did_id), "DIDz not found");
+  assert(did_status.lookup(did_id) == 0, "DIDz is not active");
+  assert(
+    disclose(caller_public_key() == did_owner.lookup(did_id)),
+    "Caller does not control this DIDz"
+  );
 }
 
 // ---------------------------------------------------------------------------
-// Hash input structs
-// persistentHash<T>(value) requires a named type. We wrap hash inputs in
-// structs so we get domain separation and deterministic hashing.
+// ADMIN: one-shot claim + terminal-status authorities
 // ---------------------------------------------------------------------------
 
-struct DidIdHashInput {
-  separator: Bytes<32>;            // domain tag: "didz:did:v1"
-  entityType: Uint<8>;
-  subjectCommitment: Bytes<32>;
-  createdAt: Uint<64>;
+export circuit claim_registry_admin(): [] {
+  assert(!registry_admin_claimed, "Registry admin already claimed");
+  registry_admin = disclose(caller_public_key());
+  registry_admin_claimed = true;
 }
 
-struct AttestationKeyHashInput {
-  separator: Bytes<32>;            // domain tag: "didz:attest:v1"
-  didId: Bytes<32>;
-  attestationType: Bytes<32>;
+// Enroll an authority allowed to file terminal statuses (vital records
+// office, corporate registrar, salvage authority...).
+export circuit add_status_authority(authority_public_key: Bytes<32>): [] {
+  assert(disclose(caller_public_key() == registry_admin), "Not the registry admin");
+  status_authorities.insert(disclose(authority_public_key));
 }
 
-// ============================================================================
-// LEDGER STATE
-// ============================================================================
-// All ledger state is PUBLIC — DID documents are public by design. Any
-// private data stays off-chain in the subject's encrypted storage or in a
-// sibling contract's private state.
-
-// The DID registry — didId → full record.
-export ledger dids: Map<Bytes<32>, DidRecord>;
-
-// Attestations keyed by hash(didId || attestationType). Each (DID, type)
-// pair holds at most one active attestation — to replace it, the same
-// issuer overwrites it, or it gets revoked.
-export ledger attestations: Map<Bytes<32>, Attestation>;
-
-// Public metrics for the front page / health-check UIs.
-export ledger totalDidsIssued: Counter;
-export ledger totalAttestationsIssued: Counter;
-
-// Deployer key — recorded at contract creation. Reserved for emergency-only
-// admin operations in future iterations (not exercised in MVP).
-sealed ledger deployerKey: ZswapCoinPublicKey;
-
-// ============================================================================
-// CONSTRUCTOR
-// ============================================================================
-
-constructor() {
-  deployerKey = ownPublicKey();
+export circuit remove_status_authority(authority_public_key: Bytes<32>): [] {
+  assert(disclose(caller_public_key() == registry_admin), "Not the registry admin");
+  status_authorities.remove(disclose(authority_public_key));
 }
 
-// ============================================================================
-// INTERNAL HELPERS
-// ============================================================================
-
-// Derive a deterministic DID ID from entity type, subject commitment, and
-// creation time. Two registrations with the same inputs will collide — that's
-// fine and intentional; the caller retries with a different time.
-circuit computeDidId(
-  entityType: Uint<8>,
-  subjectCommitment: Bytes<32>,
-  createdAt: Uint<64>
-): Bytes<32> {
-  return persistentHash<DidIdHashInput>(DidIdHashInput {
-    separator: pad(32, "didz:did:v1"),
-    entityType: entityType,
-    subjectCommitment: subjectCommitment,
-    createdAt: createdAt
-  });
-}
-
-// Derive the composite attestation key. One slot per (DID, attestationType).
-circuit computeAttestationKey(
-  didId: Bytes<32>,
-  attestationType: Bytes<32>
-): Bytes<32> {
-  return persistentHash<AttestationKeyHashInput>(AttestationKeyHashInput {
-    separator: pad(32, "didz:attest:v1"),
-    didId: didId,
-    attestationType: attestationType
-  });
-}
-
-// ============================================================================
-// CIRCUITS — DID LIFECYCLE
-// ============================================================================
-
-// Register a new DID. The caller's wallet key becomes the initial owner.
-// Anyone can register; gating (if desired) is the responsibility of an
-// upstream contract (e.g., TrustedIssuerRegistry for certain entity types).
-//
-// Returns the freshly minted didId so the caller can immediately use it.
-export circuit registerDid(
-  entityType: Uint<8>,
-  subjectCommitment: Bytes<32>,
-  currentTime: Uint<64>
-): Bytes<32> {
-  const didId = computeDidId(entityType, subjectCommitment, currentTime);
-
-  assert(!dids.member(disclose(didId)), "DID already exists");
-
-  const record = DidRecord {
-    entityType: entityType,
-    subjectCommitment: subjectCommitment,
-    ownerKey: ownPublicKey(),
-    createdAt: currentTime,
-    isActive: true
-  };
-
-  dids.insert(disclose(didId), disclose(record));
-  totalDidsIssued.increment(1);
-
-  return disclose(didId);
-}
-
-// Resolve a DID to its full record. Fails if the DID was never registered.
-// Consumers use this to read owner key, entity type, activity status.
-export circuit resolveDid(didId: Bytes<32>): DidRecord {
-  assert(dids.member(disclose(didId)), "DID not found");
-  return dids.lookup(disclose(didId));
-}
-
-// Lightweight predicate for consumer contracts: is this DID known and
-// currently active? Returns false for both "never registered" and
-// "deactivated" — callers that care about the distinction should call
-// resolveDid instead.
-export circuit isDidActive(didId: Bytes<32>): Boolean {
-  if (!dids.member(disclose(didId))) {
-    return false;
-  }
-  return dids.lookup(disclose(didId)).isActive;
-}
-
-// Deactivate a DID. Owner-authorized. Not reversible — if a subject wants
-// a fresh DID they register a new one. Existing attestations remain visible
-// for historical/audit purposes but consumers should reject them if their
-// anchor DID is inactive.
-export circuit deactivateDid(didId: Bytes<32>): [] {
-  assert(dids.member(disclose(didId)), "DID not found");
-  const record = dids.lookup(disclose(didId));
-  assert(record.isActive, "DID already deactivated");
-  assert(ownPublicKey() == record.ownerKey, "Only the DID owner can deactivate");
-
-  const updated = DidRecord {
-    entityType: record.entityType,
-    subjectCommitment: record.subjectCommitment,
-    ownerKey: record.ownerKey,
-    createdAt: record.createdAt,
-    isActive: false
-  };
-  dids.insert(disclose(didId), disclose(updated));
-}
-
-// Rotate the owner key. Owner-authorized. Required for W3C compliance
-// (section 9.9). The new key takes over authentication immediately; the
-// old key can no longer authorize operations on this DID.
-export circuit rotateOwnerKey(
-  didId: Bytes<32>,
-  newOwnerKey: ZswapCoinPublicKey
+// ---------------------------------------------------------------------------
+// MINT: register a permanent DIDz
+// ---------------------------------------------------------------------------
+// The did_id is caller-supplied (e.g. H(profile commitment, nonce) computed
+// in the wallet) and must be unique. The caller's key commitment becomes the
+// owner. Only TWO public facts appear: the id exists, and it is active.
+export circuit register_did(
+  did_id: Bytes<32>,
+  profile_commitment: Bytes<32>
 ): [] {
-  assert(dids.member(disclose(didId)), "DID not found");
-  const record = dids.lookup(disclose(didId));
-  assert(record.isActive, "DID not active");
-  assert(ownPublicKey() == record.ownerKey, "Only the DID owner can rotate keys");
+  const public_did_id = disclose(did_id);
+  assert(!dids.member(public_did_id), "DIDz id already exists");
 
-  const updated = DidRecord {
-    entityType: record.entityType,
-    subjectCommitment: record.subjectCommitment,
-    ownerKey: newOwnerKey,
-    createdAt: record.createdAt,
-    isActive: record.isActive
-  };
-  dids.insert(disclose(didId), disclose(updated));
+  dids.insert(public_did_id);
+  did_status.insert(public_did_id, 0);                       // born active
+  did_profile_commitment.insert(public_did_id, disclose(profile_commitment));
+  did_owner.insert(public_did_id, disclose(caller_public_key()));
+  total_dids_minted.increment(1);
 }
 
-// ============================================================================
-// CIRCUITS — ATTESTATIONS
-// ============================================================================
+// ---------------------------------------------------------------------------
+// SELECTIVE PROOFS (rule 3: prove one fact, only when the holder chooses)
+// ---------------------------------------------------------------------------
 
-// Issue an attestation about a DID. The caller's wallet key is recorded as
-// the issuer — so any party can be an issuer at the protocol level. Whether
-// a particular issuer is TRUSTED is a question for the verifier (and for
-// the forthcoming TrustedIssuerRegistry contract).
-//
-// If an attestation of this (DID, type) pair already exists:
-//   - The SAME issuer can overwrite it (refresh scenario)
-//   - A DIFFERENT issuer must wait for revocation first (prevents hijack)
-export circuit attestToDid(
-  didId: Bytes<32>,
-  attestationType: Bytes<32>,
-  attestationCommit: Bytes<32>,
-  expiresAt: Uint<64>,
-  currentTime: Uint<64>
-): Bytes<32> {
-  assert(dids.member(disclose(didId)), "DID not found");
-  assert(dids.lookup(disclose(didId)).isActive, "DID not active");
-  assert(expiresAt > currentTime, "Attestation expires in the past");
-
-  const attKey = computeAttestationKey(didId, attestationType);
-
-  if (attestations.member(disclose(attKey))) {
-    const existing = attestations.lookup(disclose(attKey));
-    assert(ownPublicKey() == existing.issuerKey,
-      "Slot taken by another issuer; call revokeAttestation first");
-  }
-
-  const record = Attestation {
-    attestationType: attestationType,
-    attestationCommit: attestationCommit,
-    issuerKey: ownPublicKey(),
-    issuedAt: currentTime,
-    expiresAt: expiresAt,
-    isRevoked: false
-  };
-  attestations.insert(disclose(attKey), disclose(record));
-  totalAttestationsIssued.increment(1);
-
-  return disclose(attKey);
+// ZK proof of control: "I control this DIDz and it is active." One bit out.
+export circuit assert_i_control(did_id: Bytes<32>): [] {
+  check_caller_owns_active_did(disclose(did_id));
 }
 
-// Revoke a previously-issued attestation. Only the original issuer can
-// revoke (preserves non-repudiation). The DID owner can effectively nullify
-// all attestations by deactivating the DID itself.
-export circuit revokeAttestation(
-  didId: Bytes<32>,
-  attestationType: Bytes<32>
+// Opt-in reveal of exactly ONE private fact: the entity type. The owner
+// supplies the private profile pieces; the circuit re-derives the stored
+// commitment, proving the claimed type is the real one — without ever
+// putting the subject binding or salt on-chain.
+export circuit prove_entity_type(
+  did_id: Bytes<32>,
+  claimed_entity_type: Uint<8>,
+  subject_commitment: Bytes<32>,
+  profile_salt: Bytes<32>
 ): [] {
-  const attKey = computeAttestationKey(didId, attestationType);
-
-  assert(attestations.member(disclose(attKey)), "Attestation not found");
-  const record = attestations.lookup(disclose(attKey));
-  assert(!record.isRevoked, "Attestation already revoked");
-  assert(ownPublicKey() == record.issuerKey, "Only the issuer can revoke");
-
-  const updated = Attestation {
-    attestationType: record.attestationType,
-    attestationCommit: record.attestationCommit,
-    issuerKey: record.issuerKey,
-    issuedAt: record.issuedAt,
-    expiresAt: record.expiresAt,
-    isRevoked: true
-  };
-  attestations.insert(disclose(attKey), disclose(updated));
+  const public_did_id = disclose(did_id);
+  check_caller_owns_active_did(public_did_id);
+  assert(
+    disclose(
+      derive_profile_commitment(claimed_entity_type, subject_commitment, profile_salt)
+        == did_profile_commitment.lookup(public_did_id)
+    ),
+    "Profile does not match this DIDz"
+  );
+  // Landing here proves: caller controls the DIDz AND its committed profile
+  // really carries claimed_entity_type. The claimed type is the disclosure.
+  const revealed_type = disclose(claimed_entity_type);
 }
 
-// The primary consumer-facing verification entry point. Returns true iff:
-//   - An attestation exists for (didId, attestationType)
-//   - It is not revoked
-//   - It is not expired
-//   - Its commitment matches what the verifier expects
-// The verifier supplies the expected commitment by hashing the claim data
-// they received off-chain from the subject.
-export circuit verifyAttestation(
-  didId: Bytes<32>,
-  attestationType: Bytes<32>,
-  claimedCommit: Bytes<32>,
-  currentTime: Uint<64>
-): Boolean {
-  const disclosedTime = disclose(currentTime);
-
-  const attKey = computeAttestationKey(didId, attestationType);
-
-  if (!attestations.member(disclose(attKey))) {
-    return false;
-  }
-  const record = attestations.lookup(disclose(attKey));
-  if (record.isRevoked) {
-    return false;
-  }
-  if (record.expiresAt < disclosedTime) {
-    return false;
-  }
-  if (record.attestationCommit != claimedCommit) {
-    return false;
-  }
-  return true;
+// ---------------------------------------------------------------------------
+// KEY ROTATION (W3C DID §9.9) — identity stays, the key moves
+// ---------------------------------------------------------------------------
+export circuit rotate_owner_key(
+  did_id: Bytes<32>,
+  new_owner_public_key: Bytes<32>
+): [] {
+  const public_did_id = disclose(did_id);
+  check_caller_owns_active_did(public_did_id);
+  const public_new_owner = disclose(new_owner_public_key);
+  assert(public_new_owner != pad(32, ""), "New owner key cannot be zero");
+  did_owner.insert(public_did_id, public_new_owner);
 }
 
-// Raw attestation getter — for consumers that need to inspect the issuer
-// key, issuance time, or expiration independently. Fails if the slot is
-// empty; callers can guard with verifyAttestation or check existence via
-// the on-chain indexer.
-export circuit getAttestation(
-  didId: Bytes<32>,
-  attestationType: Bytes<32>
-): Attestation {
-  const attKey = computeAttestationKey(didId, attestationType);
-  assert(attestations.member(disclose(attKey)), "Attestation not found");
-  return attestations.lookup(disclose(attKey));
+// ---------------------------------------------------------------------------
+// LIFECYCLE (rule 2: statuses move, the record never disappears)
+// ---------------------------------------------------------------------------
+
+// Owner pauses their own DIDz (0 -> 1). The only reversible pause.
+export circuit suspend_did(did_id: Bytes<32>): [] {
+  const public_did_id = disclose(did_id);
+  check_caller_owns_active_did(public_did_id);
+  did_status.insert(public_did_id, 1);
+}
+
+// Owner un-pauses (1 -> 0). Terminal statuses can never come back this way.
+export circuit reactivate_did(did_id: Bytes<32>): [] {
+  const public_did_id = disclose(did_id);
+  assert(dids.member(public_did_id), "DIDz not found");
+  assert(did_status.lookup(public_did_id) == 1, "DIDz is not suspended");
+  assert(
+    disclose(caller_public_key() == did_owner.lookup(public_did_id)),
+    "Caller does not control this DIDz"
+  );
+  did_status.insert(public_did_id, 0);
+}
+
+// File a TERMINAL status (2 deceased / 3 dissolved / 4 destroyed).
+// Allowed: the owner (self-report, e.g. an org winding itself down) OR a
+// registered status authority (death-certificate flow). IRREVERSIBLE.
+export circuit set_terminal_status(did_id: Bytes<32>, new_status: Uint<8>): [] {
+  const public_did_id = disclose(did_id);
+  const public_status = disclose(new_status);
+  assert(dids.member(public_did_id), "DIDz not found");
+  assert(public_status >= 2 && public_status <= 4, "Not a terminal status");
+  const current = did_status.lookup(public_did_id);
+  assert(current <= 1, "DIDz already in a terminal status");
+  // The caller's key commitment is disclosed once, then checked against both
+  // authorization paths (ledger-op arguments must be disclosed values).
+  const caller = disclose(caller_public_key());
+  assert(
+    caller == did_owner.lookup(public_did_id)
+      || status_authorities.member(caller),
+    "Caller is neither the owner nor a status authority"
+  );
+  did_status.insert(public_did_id, public_status);
+}
+
+// ---------------------------------------------------------------------------
+// ATTESTATIONS (contents committed; existence discoverable only by type)
+// ---------------------------------------------------------------------------
+
+// An issuer attests something about a DIDz. Content stays off-chain; only
+// its commitment lands here. Slot rules: one live attestation per
+// (DIDz, type); the SAME issuer may refresh; a different issuer must wait
+// for revocation (prevents slot hijack). Pass max Uint<64> for "no expiry".
+export circuit attest_to_did(
+  did_id: Bytes<32>,
+  attestation_type: Bytes<32>,
+  content_commitment: Bytes<32>,
+  expiry_epoch: Uint<64>
+): [] {
+  const public_did_id = disclose(did_id);
+  assert(dids.member(public_did_id), "DIDz not found");
+  assert(did_status.lookup(public_did_id) == 0, "DIDz is not active");
+
+  const slot = attestation_slot(public_did_id, disclose(attestation_type));
+  const issuer = disclose(caller_public_key());
+  // A live slot may only be refreshed by its own issuer.
+  assert(
+    !attestation_commitment.member(slot)
+      || attestation_revoked.lookup(slot)
+      || attestation_issuer.lookup(slot) == issuer,
+    "Slot held by a different issuer - needs revocation first"
+  );
+
+  attestation_commitment.insert(slot, disclose(content_commitment));
+  attestation_issuer.insert(slot, issuer);
+  attestation_expiry.insert(slot, disclose(expiry_epoch));
+  attestation_revoked.insert(slot, false);
+}
+
+// The issuing issuer (and only them) revokes their attestation.
+export circuit revoke_attestation(
+  did_id: Bytes<32>,
+  attestation_type: Bytes<32>
+): [] {
+  const slot = attestation_slot(disclose(did_id), disclose(attestation_type));
+  assert(attestation_commitment.member(slot), "Attestation not found");
+  assert(!attestation_revoked.lookup(slot), "Attestation already revoked");
+  assert(
+    disclose(caller_public_key() == attestation_issuer.lookup(slot)),
+    "Only the issuing issuer can revoke"
+  );
+  attestation_revoked.insert(slot, true);
+}
+
+// SELECTIVE PROOF: the subject's owner proves "this DIDz carries a live,
+// unexpired attestation of this type matching this exact content commitment."
+// The verifier already holds the claimed commitment off-chain (the holder
+// shared the claim data with them); the chain confirms it, one bit out.
+export circuit prove_attestation(
+  did_id: Bytes<32>,
+  attestation_type: Bytes<32>,
+  claimed_content_commitment: Bytes<32>
+): [] {
+  const public_did_id = disclose(did_id);
+  check_caller_owns_active_did(public_did_id);
+  const slot = attestation_slot(public_did_id, disclose(attestation_type));
+  assert(attestation_commitment.member(slot), "Attestation not found");
+  assert(!attestation_revoked.lookup(slot), "Attestation revoked");
+  assert(epoch.read() < attestation_expiry.lookup(slot), "Attestation expired");
+  assert(
+    attestation_commitment.lookup(slot) == disclose(claimed_content_commitment),
+    "Content commitment does not match"
+  );
+}
+
+// ---------------------------------------------------------------------------
+// CLOCK
+// ---------------------------------------------------------------------------
+export circuit advance_epoch(): [] {
+  epoch.increment(1);
 }

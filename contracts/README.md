@@ -1,13 +1,32 @@
 # DIDz.io — On-Chain Contracts
 
-**Status**: MVP — compile-validated, ready for preprod deployment.
+**Status**: v2 — machine (1) of the two-machine architecture, privacy-first.
 **Compiler**: compactc v0.31.1 / compact toolchain v0.5.1
-**Validated**: Jul 5, 2026 via local `compact compile --skip-zk` (both contracts PASS unmodified)
-**New-scope alignment (Jul 2026 four-pillar audit)**: these two contracts ARE the
-DIDz root layer and fit the new architecture as-is. Known gaps tracked in
-`docs/DIDZ_AGENTICDID_IMPLEMENTATION_PLAN.md` Phase R1–R3: richer lifecycle
-statuses (deceased/dissolved/destroyed/…), POL integration
-(`midnight-modules/pol-credential`), and pairwise presentation DIDs.
+**Validated**: Jul 5, 2026 via local `compact compile` — `DIDzRegistry` v2 with
+**full ZK key generation** (14 circuits); `TrustedIssuerRegistry` PASS unmodified.
+
+**v2 rewrite (Jul 5, 2026) — what changed and why**
+
+- **Privacy default (John's ruling)**: public on-chain facts are now ONLY
+  "this DIDz exists" + its lifecycle status. Entity type, subject binding,
+  owner key, and every attestation's content + issuer are **commitments**,
+  each with a selective ZK reveal circuit (`assert_i_control`,
+  `prove_entity_type`, `prove_attestation`) — prove one fact, only when the
+  holder chooses.
+- **Not an NFT**: a DIDz is a registry entry with NO transfer circuit —
+  non-transferable by construction. Keys rotate (`rotate_owner_key`); the
+  identity never moves and is never deleted.
+- **Full lifecycle statuses** (permanent identity, rule of the root layer):
+  `0 active / 1 suspended (reversible) / 2 deceased / 3 dissolved /
+  4 destroyed` — terminals are irreversible and filable by the owner or a
+  registered **status authority** (death-certificate flow; human deaths
+  authoritative in `midnight-modules/pol-credential`, bridged by the SDK).
+- **Keeper epochs** replace caller-supplied timestamps.
+- The v1 MVP lives in `archive/DIDzRegistry_v1_mvp.compact` (compiles, but
+  leaks entity types/owner keys/timestamps — reference only).
+
+`TrustedIssuerRegistry` stays public BY DESIGN: issuers want to be publicly
+discoverable and rated — that is the reasonable exception to privacy-default.
 
 ---
 
@@ -15,7 +34,7 @@ statuses (deceased/dissolved/destroyed/…), POL integration
 
 | Contract | Purpose | Exported Circuits |
 |----------|---------|-------------------|
-| `DIDzRegistry.compact` | The root DID registry. Mints and manages DIDs for every entity type in the ecosystem (human, agent, animal, organization, device, object). Stores on-chain attestations. | `registerDid`, `resolveDid`, `isDidActive`, `deactivateDid`, `rotateOwnerKey`, `attestToDid`, `revokeAttestation`, `verifyAttestation`, `getAttestation` |
+| `DIDzRegistry.compact` | **Machine (1)**: mints permanent, non-transferable DIDz identities for every entity type (human, agent, animal, organization, device, object) with privacy-first attestations. | `register_did`, `assert_i_control`, `prove_entity_type`, `rotate_owner_key`, `suspend_did`, `reactivate_did`, `set_terminal_status`, `attest_to_did`, `revoke_attestation`, `prove_attestation`, `claim_registry_admin`, `add/remove_status_authority`, `advance_epoch` |
 | `TrustedIssuerRegistry.compact` | The on-chain registry of Trusted Issuers classified along three axes: **type** × **domain** × **assurance level**. Lets verifiers gate which attestations they trust. | `registerIssuer`, `approveIssuer`, `revokeIssuer`, `updateAssuranceLevel`, `isIssuerApprovedForDomain`, `getIssuerProfile`, `meetsMinimumAssurance` |
 
 Both contracts are **independent** — neither imports the other. Consumers wire them together off-chain via the shared TypeScript SDK. True on-chain cross-contract composition is a future phase once that pattern is proven against the current compiler.
