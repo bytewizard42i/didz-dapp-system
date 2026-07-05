@@ -92,32 +92,36 @@ issuer registry.
 These are the only places the new material rubs against existing decisions. None
 are fatal. Each has a proposed default; John's ruling is requested in §8.
 
-1. **Naming: `DIDZ` vs `DIDz`.** Alice's docs use all-caps `DIDZ`. The brand and
-   existing repos use `DIDz` / `DIDz.io`. Proposed default: keep the brand spelling
-   `DIDz` in prose and titles; treat `DIDZ` in Alice's imported docs as a verbatim
-   artifact we leave untouched but normalize in all NEW writing.
+1. **Naming: `DIDZ` vs `DIDz`.** ✅ **RESOLVED (John, Jul 5 2026): use `DIDz`
+   always** in all new writing. Alice's imported docs and the verbatim archive
+   stay untouched as historical artifacts.
 
-2. **Human DID "expiry".** John's opening premise was "a human DIDz must expire
-   after X years (death)." Alice's architecture deliberately reverses this: the
-   HumanDIDZ is permanent; the **proof-of-life credential** expires instead.
-   Proposed default: adopt Alice's model (permanent identity + expiring
-   proof-of-life). This is the cleaner, W3C-aligned choice and solves the "dead
-   people voting" problem without destroying history.
+2. **Human DID "expiry".** ✅ **RESOLVED (John, Jul 5 2026)**: permanent
+   identity + expiring **POL (Proof of Life)** credential. Implemented as the
+   `pol-credential` module in `midnight-modules`. Policy:
+   - The HumanDIDz never expires (protects estate/history, blocks fraud-reissue).
+   - **zVoting requires POL within ~1 year** (verifier-side freshness window),
+     plus eligibility credentials and a one-time election grant.
+   - **Age-tier cadence is issuer policy**, not chain logic: routine renewal
+     when young, yearly attestation expected past ~70–80, and claims past ~120
+     are red-flag enhanced-review (in-person / multi-issuer biometric).
+   - `mark_deceased` is irreversible on-chain: dead people cannot vote, ever.
 
-3. **One canonical DID vs pairwise per-counterparty DIDs.** `AGENTICDID_SPEC.md`
-   says agents SHOULD use pairwise `did:peer` DIDs per counterparty for
-   unlinkability. Alice says "one entity, one canonical DID." These are compatible
-   but must be stated together: **one canonical AgenticDID identity, presented as
-   pairwise DIDs per counterparty.** Proposed default: document exactly that so it
-   never reads as a contradiction.
+3. **One canonical DID vs pairwise per-counterparty DIDs.** ✅ **RESOLVED
+   (John delegated, Jul 5 2026)**: both, stated together. One permanent
+   canonical DIDz per entity (the accountability anchor — like your SSN, it
+   never goes on the wire). Pairwise derived DIDs are what counterparties see,
+   one per relationship, so merchants can't collude to track you. Every
+   pairwise DID provably belongs to the canonical one in zero knowledge.
 
-4. **Spend limit semantics: per-action cap vs cumulative budget.** The spec calls
-   `max_amount` a per-action cap. Alice's grocery example ("spend no more than
-   $50") reads like a total budget for the intent. These differ: a per-action cap
-   would let an agent perform several $50 actions. See §7 (context) for why this
-   matters. Proposed default: support both, with an explicit grant field
-   (`limit_kind: per_action | cumulative`), defaulting cumulative for
-   intent-scoped grants.
+4. **Spend limit semantics.** ✅ **RESOLVED (John, Jul 5 2026)**: TWO SEPARATE
+   properties, both optional, both enforced when set — `per_action_cap` and
+   `cumulative_cap` (with on-chain `cumulative_spent` tracking). Implemented in
+   `scoped-grant` v2, which also adds counterparty binding and a standardized
+   **custom-constraints extension slot** (hash-committed off-chain descriptor +
+   X.509-style critical flag) for properties not yet invented — one shared
+   format, unknown-but-critical = reject, so custom stays interoperable.
+   Delegation reserves the child's cumulative budget out of the parent's.
 
 5. **Constitution: shared or per-branch?** Both the DIDz root and AgenticDID
    reference "a constitution." Proposed default: one DIDz root constitution with an
