@@ -50,6 +50,9 @@ import CompactStandardLibrary;
 //   revoke_attestation    <- the SAME issuer that made it
 //   prove_attestation     <- the SUBJECT's owner: opt-in one-bit reveal that a
 //                            specific attestation commitment is live + unexpired
+//   derive_pairwise_did   <- wallets, pure helper (ruling 4: pairwise DIDs)
+//   prove_pairwise_binding<- the owner: opt-in accountability reveal linking
+//                            a pairwise DID back to their canonical DIDz
 //   advance_epoch         <- keeper/cron (shared clock pattern)
 //   derive_public_key     <- SDKs, pure helper
 //
@@ -367,6 +370,76 @@ export circuit prove_attestation(
   assert(
     attestation_commitment.lookup(slot) == disclose(claimed_content_commitment),
     "Content commitment does not match"
+  );
+}
+
+// ---------------------------------------------------------------------------
+// PAIRWISE PRESENTATION DIDs (John's ruling 4)
+// ---------------------------------------------------------------------------
+// THE RULE: one CANONICAL DIDz per entity (the accountability anchor — it is
+// NEVER put on the wire), plus a different PAIRWISE DID for every
+// counterparty you deal with (anti-collusion: two services comparing notes
+// see two unrelated identifiers and cannot link you across them).
+//
+// HOW IT WORKS HERE
+//   1. Pairwise DIDs are DERIVED, not registered. The wallet computes
+//        pairwise = H("didz:pairwise:v1", canonical, counterparty_context, salt)
+//      with derive_pairwise_did and hands it to ONE counterparty. NOTHING is
+//      written on-chain — an on-chain register would itself be a linkage
+//      trail. No state, no linkage. Day-to-day, the counterparty just uses
+//      the pairwise DID with off-chain signatures.
+//   2. ACCOUNTABILITY REVEAL (opt-in, the whole point of the anchor): if the
+//      holder must prove "this pairwise DID is really me" — to a court, an
+//      auditor, or a counterparty upgrading the relationship — they run
+//      prove_pairwise_binding. It re-derives the pairwise from the canonical
+//      in-circuit AND proves they control that canonical and it is ACTIVE.
+//      Disclosing the canonical to THAT verifier is deliberate: this circuit
+//      IS the moment of chosen accountability (rule 3: reveal on demand).
+//
+// HONEST LIMIT (v1): there is no circuit proving "this pairwise DID belongs
+// to SOME active DIDz" without naming which — that needs a Merkle
+// accumulator over the registry (planned; noted in contracts/README). Until
+// then: everyday use = off-chain, reveal = prove_pairwise_binding.
+
+// Pure derivation shared by wallets and prove_pairwise_binding.
+//   counterparty_context: an agreed label for the relationship, e.g.
+//     H("acme-corp.com") — same context every session, same pairwise DID.
+//   pairwise_salt: random per relationship, kept by the holder. Without it,
+//     a counterparty who guesses your canonical could brute-force the link.
+export circuit derive_pairwise_did(
+  canonical_did_id: Bytes<32>,
+  counterparty_context: Bytes<32>,
+  pairwise_salt: Bytes<32>
+): Bytes<32> {
+  return persistentHash<Vector<4, Bytes<32>>>([
+    pad(32, "didz:pairwise:v1"),
+    canonical_did_id,
+    counterparty_context,
+    pairwise_salt
+  ]);
+}
+
+// OPT-IN accountability reveal: "pairwise DID P (which you already know)
+// belongs to canonical DIDz C (revealed to you now), and I control C, and C
+// is active." The verifier learns the canonical — by the holder's choice.
+export circuit prove_pairwise_binding(
+  pairwise_did: Bytes<32>,
+  canonical_did_id: Bytes<32>,
+  counterparty_context: Bytes<32>,
+  pairwise_salt: Bytes<32>
+): [] {
+  // The canonical is the deliberate disclosure of this circuit (see header).
+  const public_canonical = disclose(canonical_did_id);
+  // 1. Caller really controls that canonical DIDz and it is live.
+  check_caller_owns_active_did(public_canonical);
+  // 2. The pairwise DID really derives from it (context + salt stay private;
+  //    only the yes/no of the match is revealed).
+  assert(
+    disclose(
+      derive_pairwise_did(canonical_did_id, counterparty_context, pairwise_salt)
+        == pairwise_did
+    ),
+    "Pairwise DID does not derive from this canonical DIDz"
   );
 }
 

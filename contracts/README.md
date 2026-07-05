@@ -3,7 +3,7 @@
 **Status**: v2 — machine (1) of the two-machine architecture, privacy-first.
 **Compiler**: compactc v0.31.1 / compact toolchain v0.5.1
 **Validated**: Jul 5, 2026 via local `compact compile` — `DIDzRegistry` v2 with
-**full ZK key generation** (14 circuits); `TrustedIssuerRegistry` PASS unmodified.
+**full ZK key generation** (15 circuits); `TrustedIssuerRegistry` PASS unmodified.
 
 **v2 rewrite (Jul 5, 2026) — what changed and why**
 
@@ -22,6 +22,15 @@
   registered **status authority** (death-certificate flow; human deaths
   authoritative in `midnight-modules/pol-credential`, bridged by the SDK).
 - **Keeper epochs** replace caller-supplied timestamps.
+- **Pairwise presentation DIDs (John's ruling 4)**: one canonical DIDz per
+  entity (the accountability anchor, never on the wire) + a different
+  pairwise DID per counterparty (anti-collusion). Pairwise DIDs are
+  **derived, never registered** — an on-chain register would itself be a
+  linkage trail. `derive_pairwise_did` is the shared derivation
+  (`H("didz:pairwise:v1", canonical, counterparty_context, salt)`);
+  `prove_pairwise_binding` is the opt-in accountability reveal (proves the
+  holder controls the ACTIVE canonical behind a pairwise DID, disclosing the
+  canonical to that one verifier by choice).
 - The v1 MVP lives in `archive/DIDzRegistry_v1_mvp.compact` (compiles, but
   leaks entity types/owner keys/timestamps — reference only).
 
@@ -34,7 +43,7 @@ discoverable and rated — that is the reasonable exception to privacy-default.
 
 | Contract | Purpose | Exported Circuits |
 |----------|---------|-------------------|
-| `DIDzRegistry.compact` | **Machine (1)**: mints permanent, non-transferable DIDz identities for every entity type (human, agent, animal, organization, device, object) with privacy-first attestations. | `register_did`, `assert_i_control`, `prove_entity_type`, `rotate_owner_key`, `suspend_did`, `reactivate_did`, `set_terminal_status`, `attest_to_did`, `revoke_attestation`, `prove_attestation`, `claim_registry_admin`, `add/remove_status_authority`, `advance_epoch` |
+| `DIDzRegistry.compact` | **Machine (1)**: mints permanent, non-transferable DIDz identities for every entity type (human, agent, animal, organization, device, object) with privacy-first attestations. | `register_did`, `assert_i_control`, `prove_entity_type`, `rotate_owner_key`, `suspend_did`, `reactivate_did`, `set_terminal_status`, `attest_to_did`, `revoke_attestation`, `prove_attestation`, `derive_pairwise_did`, `prove_pairwise_binding`, `claim_registry_admin`, `add/remove_status_authority`, `advance_epoch` |
 | `TrustedIssuerRegistry.compact` | The on-chain registry of Trusted Issuers classified along three axes: **type** × **domain** × **assurance level**. Lets verifiers gate which attestations they trust. | `registerIssuer`, `approveIssuer`, `revokeIssuer`, `updateAssuranceLevel`, `isIssuerApprovedForDomain`, `getIssuerProfile`, `meetsMinimumAssurance` |
 
 Both contracts are **independent** — neither imports the other. Consumers wire them together off-chain via the shared TypeScript SDK. True on-chain cross-contract composition is a future phase once that pattern is proven against the current compiler.
@@ -146,6 +155,7 @@ Actual DID Document serialization and the `did:midnight` method spec publication
 3. **Credential schemas** — Machine-readable schemas for attestation types (e.g., "KYC_TIER_2 has these required fields") are not enforced on-chain. The off-chain SDK handles schema validation.
 4. **DIDComm / messaging** — The DIF encrypted messaging layer between DIDs is off-chain and not in scope here.
 5. **DAO governance for admin** — `adminKey` is a single wallet in MVP. DAO/multi-sig admin is Phase 2.
+6. **Anonymous pairwise control proof** — `prove_pairwise_binding` deliberately reveals the canonical (that IS the accountability reveal). A circuit proving "this pairwise DID belongs to SOME active DIDz" *without naming which* needs a Merkle accumulator over the registry (stdlib `MerkleTree` + private membership path). Planned; until then everyday pairwise use is off-chain signatures only.
 
 ---
 
