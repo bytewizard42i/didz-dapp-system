@@ -1,8 +1,13 @@
 # DIDz.io — On-Chain Contracts
 
-**Status**: MVP — compile-validated on compactc v0.30.0, ready for preprod deployment.
-**Compiler**: compactc v0.30.0 / compact toolchain v0.5.1 / language pragma `>= 0.16 && <= 0.21`
-**Validated**: Apr 17, 2026 via hosted Compact playground (`skipZk` mode)
+**Status**: MVP — compile-validated, ready for preprod deployment.
+**Compiler**: compactc v0.31.1 / compact toolchain v0.5.1
+**Validated**: Jul 5, 2026 via local `compact compile --skip-zk` (both contracts PASS unmodified)
+**New-scope alignment (Jul 2026 four-pillar audit)**: these two contracts ARE the
+DIDz root layer and fit the new architecture as-is. Known gaps tracked in
+`docs/DIDZ_AGENTICDID_IMPLEMENTATION_PLAN.md` Phase R1–R3: richer lifecycle
+statuses (deceased/dissolved/destroyed/…), POL integration
+(`midnight-modules/pol-credential`), and pairwise presentation DIDs.
 
 ---
 
