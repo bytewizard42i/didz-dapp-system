@@ -2,55 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIDz.io — Dashboard</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+    <title>DIDz.io — Self-Sovereign Identity Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{font-family:'Rajdhani',sans-serif;background:#0a0814;color:#c4b8e8;min-height:100vh}
-        body::before{content:'';position:fixed;inset:0;background:linear-gradient(rgba(124,58,237,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.02) 1px,transparent 1px);background-size:40px 40px;z-index:0}
-        .header{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;border-bottom:1px solid rgba(124,58,237,0.1);background:rgba(10,8,20,0.95);backdrop-filter:blur(12px)}
-        .header-left{display:flex;align-items:center;gap:12px}.header-icon{font-size:24px}.header-title{font-size:20px;font-weight:700;color:#fff;letter-spacing:1px}.header-title span{color:#a78bfa}
+        :root{--bg:#0a0814;--surface:rgba(15,12,30,0.6);--border:rgba(124,58,237,0.15);--accent:#a78bfa;--accent2:#22d3ee;--accent3:#f472b6;--text:#c4b8e8;--text-dim:rgba(196,184,232,0.4);--radius:16px;--blur:blur(16px)}
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:'Rajdhani',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+        body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 0%,rgba(124,58,237,0.08),transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(34,211,238,0.06),transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(244,114,182,0.04),transparent 60%);z-index:0;animation:aurora 20s ease-in-out infinite alternate}
+        body::after{content:'';position:fixed;inset:0;background:linear-gradient(rgba(124,58,237,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,237,0.02) 1px,transparent 1px);background-size:40px 40px;z-index:0}
+        @keyframes aurora{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-3%,2%) scale(1.05)}100%{transform:translate(2%,-1%) scale(0.98)}}
+        .header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--border);background:rgba(10,8,20,0.8);backdrop-filter:var(--blur)}
+        .header-left{display:flex;align-items:center;gap:12px}.header-icon{font-size:22px}.header-title{font-size:18px;font-weight:700;color:#fff;letter-spacing:1px}.header-title span{color:var(--accent)}
         .header-right{display:flex;align-items:center;gap:16px}.user-name{font-size:13px;color:rgba(255,255,255,0.7)}
-        .demo-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(255,191,0,0.15);color:#ffbf00;border:1px solid rgba(255,191,0,0.3);text-transform:uppercase;letter-spacing:1px}
-        .logout-btn{padding:6px 14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:12px;cursor:pointer;transition:all .2s}.logout-btn:hover{background:rgba(255,60,60,0.1);color:#ff6b6b}
-        .main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:32px}
-        .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
-        .stat-card{background:rgba(10,8,20,0.85);border:1px solid rgba(124,58,237,0.1);border-radius:14px;padding:20px}.stat-label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(196,184,232,0.4);margin-bottom:8px}.stat-value{font-size:32px;font-weight:700;color:#fff}.stat-sub{font-size:12px;color:rgba(167,139,250,0.7);margin-top:4px}
-        .section{margin-bottom:32px}.section-title{font-size:16px;font-weight:600;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px}.section-title .icon{font-size:20px}
-        .did-card{background:rgba(10,8,20,0.85);border:1px solid rgba(124,58,237,0.15);border-radius:14px;padding:24px;margin-bottom:20px}
+        .demo-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(255,191,0,0.12);color:#ffbf00;border:1px solid rgba(255,191,0,0.25);text-transform:uppercase;letter-spacing:1px}
+        .logout-btn{padding:6px 14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.6);font-family:inherit;font-size:12px;cursor:pointer;transition:all .2s}.logout-btn:hover{background:rgba(255,60,60,0.1);color:#ff6b6b;transform:scale(0.97)}
+        .main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:32px 20px}
+        [data-tip]{position:relative}
+        [data-tip]::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%) translateY(4px);background:rgba(15,12,30,0.95);color:var(--text);padding:8px 14px;border-radius:8px;font-size:12px;font-weight:400;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;border:1px solid var(--border);z-index:100;max-width:300px;white-space:normal;text-align:center;width:max-content}
+        [data-tip]:hover::after{opacity:1;transform:translateX(-50%) translateY(0)}
+        .glass{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:var(--blur);transition:transform .15s ease-out,box-shadow .2s;transform-style:preserve-3d;will-change:transform}
+        .glass:hover{box-shadow:0 8px 32px rgba(124,58,237,0.12)}
+        .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+        .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;backdrop-filter:var(--blur);transition:transform .15s ease-out,box-shadow .2s;transform-style:preserve-3d;will-change:transform}.stat-card:hover{box-shadow:0 8px 32px rgba(124,58,237,0.12)}
+        .stat-label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin-bottom:8px}.stat-value{font-size:32px;font-weight:700;color:#fff}.stat-sub{font-size:12px;color:rgba(167,139,250,0.7);margin-top:4px}
+        .section{margin-bottom:28px}.section-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px}.section-title .icon{font-size:18px}
+        .did-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:var(--blur);padding:24px;margin-bottom:20px;transition:transform .15s ease-out,box-shadow .2s;transform-style:preserve-3d;will-change:transform}.did-card:hover{box-shadow:0 8px 32px rgba(124,58,237,0.15)}
         .did-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(167,139,250,0.5);margin-bottom:8px}
-        .did-uri{font-family:'Space Mono',monospace;font-size:14px;color:#a78bfa;word-break:break-all;margin-bottom:12px}
+        .did-uri{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);word-break:break-all;margin-bottom:12px}
         .did-meta{display:flex;gap:16px;flex-wrap:wrap}
-        .did-meta-item{font-size:12px;color:rgba(196,184,232,0.5)}.did-meta-item span{color:rgba(255,255,255,0.7);font-weight:600}
+        .did-meta-item{font-size:12px;color:var(--text-dim)}.did-meta-item span{color:rgba(255,255,255,0.7);font-weight:600}
         .cred-list{display:flex;flex-direction:column;gap:10px}
-        .cred-item{display:flex;align-items:center;gap:16px;padding:16px 20px;background:rgba(10,8,20,0.85);border:1px solid rgba(124,58,237,0.08);border-radius:12px;transition:all .2s}.cred-item:hover{border-color:rgba(124,58,237,0.2)}
+        .cred-item{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;backdrop-filter:var(--blur);transition:border-color .2s,transform .1s}.cred-item:hover{border-color:rgba(124,58,237,0.25)}
         .ci-icon{width:40px;height:40px;border-radius:10px;background:rgba(124,58,237,0.12);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-        .ci-info{flex:1}.ci-name{font-size:14px;font-weight:600;color:rgba(255,255,255,0.85)}.ci-detail{font-size:12px;color:rgba(196,184,232,0.4);margin-top:2px}
+        .ci-info{flex:1}.ci-name{font-size:14px;font-weight:600;color:rgba(255,255,255,0.85)}.ci-detail{font-size:12px;color:var(--text-dim);margin-top:2px}
         .ci-status{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
         .ci-status.active{background:rgba(34,197,94,0.1);color:#22c55e;border:1px solid rgba(34,197,94,0.2)}
-        .ci-status.pending{background:rgba(167,139,250,0.1);color:#a78bfa;border:1px solid rgba(167,139,250,0.2)}
+        .ci-status.pending{background:rgba(167,139,250,0.1);color:var(--accent);border:1px solid rgba(167,139,250,0.2)}
         .ci-status.revoked{background:rgba(255,60,60,0.1);color:#ff6b6b;border:1px solid rgba(255,60,60,0.2)}
-        .ci-issuer{font-size:11px;color:rgba(196,184,232,0.3);font-family:'Space Mono',monospace;white-space:nowrap}
+        .ci-issuer{font-size:11px;color:rgba(196,184,232,0.3);font-family:'JetBrains Mono',monospace;white-space:nowrap}
         .features{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-        .feat-card{padding:16px;background:rgba(10,8,20,0.85);border:1px solid rgba(124,58,237,0.08);border-radius:12px}
-        .feat-title{font-size:14px;font-weight:600;color:rgba(255,255,255,0.8);margin-bottom:6px;display:flex;align-items:center;gap:8px}.feat-desc{font-size:12px;color:rgba(196,184,232,0.4);line-height:1.5}
-        .eco-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
-        .eco-card{background:rgba(10,8,20,0.85);border:1px solid rgba(124,58,237,0.08);border-radius:12px;padding:16px;text-align:center;transition:all .2s}.eco-card:hover{border-color:rgba(124,58,237,0.2)}
+        .feat-card{padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;backdrop-filter:var(--blur);transition:transform .15s ease-out;transform-style:preserve-3d;will-change:transform}
+        .feat-title{font-size:14px;font-weight:600;color:rgba(255,255,255,0.8);margin-bottom:6px;display:flex;align-items:center;gap:8px}.feat-desc{font-size:12px;color:var(--text-dim);line-height:1.5}
+        .eco-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+        .eco-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;backdrop-filter:var(--blur);transition:border-color .2s,transform .15s;transform-style:preserve-3d;will-change:transform}.eco-card:hover{border-color:rgba(124,58,237,0.25)}
         .eco-icon{font-size:28px;margin-bottom:8px}.eco-name{font-size:13px;font-weight:600;color:rgba(255,255,255,0.7)}.eco-status{font-size:10px;color:rgba(167,139,250,0.6);margin-top:4px}
-        .footer{text-align:center;padding:24px;font-size:10px;color:rgba(196,184,232,0.2);text-transform:uppercase;letter-spacing:1.5px;position:relative;z-index:1}
+        .footer{text-align:center;padding:24px;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1.5px;position:relative;z-index:1}
         @media(max-width:768px){.stats,.eco-grid{grid-template-columns:1fr 1fr}.features{grid-template-columns:1fr}.main{padding:16px}}
     </style>
 </head>
 <body>
-    <div class="header"><div class="header-left"><span class="header-icon">🆔</span><span class="header-title">DIDz<span>.io</span></span></div><div class="header-right"><span class="demo-badge">Demo Mode</span><span class="user-name" id="user-name"></span><button class="logout-btn" onclick="dioLogout()">Sign Out</button></div></div>
+    <div class="header"><div class="header-left"><span class="header-icon">🆔</span><span class="header-title">DIDz<span>.io</span></span></div><div class="header-right"><span class="demo-badge">🎭 Demo Mode</span><span class="user-name" id="user-name"></span><button class="logout-btn" onclick="dioLogout()" data-tip="Sign out of your demo session">Sign Out</button></div></div>
     <div class="main">
+        <div style="text-align:center;margin-bottom:28px">
+            <h1 style="font-size:26px;font-weight:700;color:#fff;margin-bottom:6px">Self-Sovereign Identity Dashboard</h1>
+            <p style="font-size:14px;color:var(--text-dim)">Privacy-first by default · Selective disclosure · Zero-knowledge on Midnight</p>
+        </div>
         <div class="stats">
-            <div class="stat-card"><div class="stat-label">Your DIDs</div><div class="stat-value">3</div><div class="stat-sub">Across 2 ecosystems</div></div>
-            <div class="stat-card"><div class="stat-label">Credentials</div><div class="stat-value">12</div><div class="stat-sub">8 active, 4 expired</div></div>
-            <div class="stat-card"><div class="stat-label">Verifications</div><div class="stat-value">247</div><div class="stat-sub">Zero PII revealed</div></div>
-            <div class="stat-card"><div class="stat-label">Trust Score</div><div class="stat-value">98</div><div class="stat-sub">Composite reputation</div></div>
+            <div class="stat-card" data-tip="Total DIDs you control across all ecosystems"><div class="stat-label">Your DIDs</div><div class="stat-value">3</div><div class="stat-sub">Across 2 ecosystems</div></div>
+            <div class="stat-card" data-tip="Verifiable credentials linked to your DIDs"><div class="stat-label">Credentials</div><div class="stat-value">12</div><div class="stat-sub">8 active, 4 expired</div></div>
+            <div class="stat-card" data-tip="ZK proof verifications performed — zero personal data revealed"><div class="stat-label">Verifications</div><div class="stat-value">247</div><div class="stat-sub">Zero PII revealed</div></div>
+            <div class="stat-card" data-tip="Composite reputation score from credential attestations"><div class="stat-label">Trust Score</div><div class="stat-value">98</div><div class="stat-sub">Composite reputation</div></div>
         </div>
 
-        <div class="did-card">
+        <div class="did-card" data-tip="Your root identity — non-transferable registry entry on Midnight">
             <div class="did-label">Primary DID</div>
             <div class="did-uri">did:prism:abc123def456ghi789jkl012mno345pqr678stu901vwx234yz</div>
             <div class="did-meta">
@@ -63,33 +78,43 @@
 
         <div class="section"><div class="section-title"><span class="icon">🔗</span> Ecosystem Connections</div>
             <div class="eco-grid">
-                <div class="eco-card"><div class="eco-icon">🌙</div><div class="eco-name">Midnight</div><div class="eco-status">Primary · Active</div></div>
-                <div class="eco-card"><div class="eco-icon">💙</div><div class="eco-name">Cardano</div><div class="eco-status">Linked · Identus</div></div>
-                <div class="eco-card"><div class="eco-icon">💎</div><div class="eco-name">Ethereum</div><div class="eco-status">ENS Mapped</div></div>
-                <div class="eco-card"><div class="eco-icon">🔐</div><div class="eco-name">Enterprise</div><div class="eco-status">Available</div></div>
+                <div class="eco-card" data-tip="Midnight is the primary chain for DIDz identity commitments and ZK proofs"><div class="eco-icon">🌙</div><div class="eco-name">Midnight</div><div class="eco-status">Primary · Active</div></div>
+                <div class="eco-card" data-tip="Cardano linked via Identus for cross-chain DID resolution"><div class="eco-icon">💙</div><div class="eco-name">Cardano</div><div class="eco-status">Linked · Identus</div></div>
+                <div class="eco-card" data-tip="Ethereum ENS name mapped to your DID for Web3 compatibility"><div class="eco-icon">💎</div><div class="eco-name">Ethereum</div><div class="eco-status">ENS Mapped</div></div>
+                <div class="eco-card" data-tip="Enterprise integration available for corporate identity systems"><div class="eco-icon">🔐</div><div class="eco-name">Enterprise</div><div class="eco-status">Available</div></div>
             </div>
         </div>
 
         <div class="section"><div class="section-title"><span class="icon">📜</span> Verifiable Credentials</div>
             <div class="cred-list">
-                <div class="cred-item"><div class="ci-icon">🎓</div><div class="ci-info"><div class="ci-name">University Degree — Computer Science</div><div class="ci-detail">Verifiable Credential · Issued by MIT · zk-proof enabled</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:mit...</span></div>
-                <div class="cred-item"><div class="ci-icon">🏛️</div><div class="ci-info"><div class="ci-name">KYC Level 3 — Identity Verified</div><div class="ci-detail">Government ID + Liveness check · KYCz issued</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:kycz...</span></div>
-                <div class="cred-item"><div class="ci-icon">💼</div><div class="ci-info"><div class="ci-name">Professional License — Software Engineer</div><div class="ci-detail">State Board credential · Annual renewal</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:state...</span></div>
-                <div class="cred-item"><div class="ci-icon">🏥</div><div class="ci-info"><div class="ci-name">Health Insurance — Active Coverage</div><div class="ci-detail">safeHealthData attestation · HIPAA compliant</div></div><span class="ci-status pending">Renewing</span><span class="ci-issuer">did:prism:shd...</span></div>
-                <div class="cred-item"><div class="ci-icon">🗳️</div><div class="ci-info"><div class="ci-name">Voter Registration — District 7B</div><div class="ci-detail">GeoZ location proof · Selective disclosure only</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:geoz...</span></div>
+                <div class="cred-item" data-tip="ZK-proof enabled: verifiers can confirm your degree without seeing your transcript"><div class="ci-icon">🎓</div><div class="ci-info"><div class="ci-name">University Degree — Computer Science</div><div class="ci-detail">Verifiable Credential · Issued by MIT · zk-proof enabled</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:mit...</span></div>
+                <div class="cred-item" data-tip="KYC Level 3: government ID + liveness check, verified via KYCz"><div class="ci-icon">🏛️</div><div class="ci-info"><div class="ci-name">KYC Level 3 — Identity Verified</div><div class="ci-detail">Government ID + Liveness check · KYCz issued</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:kycz...</span></div>
+                <div class="cred-item" data-tip="Professional license with annual renewal requirement"><div class="ci-icon">💼</div><div class="ci-info"><div class="ci-name">Professional License — Software Engineer</div><div class="ci-detail">State Board credential · Annual renewal</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:state...</span></div>
+                <div class="cred-item" data-tip="Health insurance attestation — HIPAA compliant, no medical data on-chain"><div class="ci-icon">🏥</div><div class="ci-info"><div class="ci-name">Health Insurance — Active Coverage</div><div class="ci-detail">safeHealthData attestation · HIPAA compliant</div></div><span class="ci-status pending">Renewing</span><span class="ci-issuer">did:prism:shd...</span></div>
+                <div class="cred-item" data-tip="Location proof via GeoZ — selective disclosure only, exact address never revealed"><div class="ci-icon">🗳️</div><div class="ci-info"><div class="ci-name">Voter Registration — District 7B</div><div class="ci-detail">GeoZ location proof · Selective disclosure only</div></div><span class="ci-status active">Active</span><span class="ci-issuer">did:prism:geoz...</span></div>
             </div>
         </div>
 
         <div class="section"><div class="section-title"><span class="icon">🛡️</span> Identity Features</div>
             <div class="features">
-                <div class="feat-card"><div class="feat-title">🆔 Self-Sovereign Identity</div><div class="feat-desc">You own your identity. No company, government, or platform can revoke your DID. Only you control it.</div></div>
-                <div class="feat-card"><div class="feat-title">🔐 Selective Disclosure</div><div class="feat-desc">Prove specific attributes without revealing everything. "I'm over 18" without showing your birthdate.</div></div>
-                <div class="feat-card"><div class="feat-title">⛓️ Cross-Chain Identity</div><div class="feat-desc">One identity across Midnight, Cardano, Ethereum, and enterprise systems. Portable and interoperable.</div></div>
-                <div class="feat-card"><div class="feat-title">🧮 zk-Proof Verification</div><div class="feat-desc">All credential checks use zero-knowledge proofs. Verifiers learn the answer, never the underlying data.</div></div>
+                <div class="feat-card" data-tip="You own your identity — no company, government, or platform can revoke it"><div class="feat-title">🆔 Self-Sovereign Identity</div><div class="feat-desc">You own your identity. No company, government, or platform can revoke your DID. Only you control it.</div></div>
+                <div class="feat-card" data-tip="Prove specific attributes without revealing everything — 'I'm over 18' without showing your birthdate"><div class="feat-title">🔐 Selective Disclosure</div><div class="feat-desc">Prove specific attributes without revealing everything. "I'm over 18" without showing your birthdate.</div></div>
+                <div class="feat-card" data-tip="One identity across Midnight, Cardano, Ethereum, and enterprise systems"><div class="feat-title">⛓️ Cross-Chain Identity</div><div class="feat-desc">One identity across Midnight, Cardano, Ethereum, and enterprise systems. Portable and interoperable.</div></div>
+                <div class="feat-card" data-tip="All credential checks use ZK proofs — verifiers learn the answer, never the underlying data"><div class="feat-title">🧮 zk-Proof Verification</div><div class="feat-desc">All credential checks use zero-knowledge proofs. Verifiers learn the answer, never the underlying data.</div></div>
             </div>
         </div>
     </div>
     <div class="footer">DIDz.io v0.1.0 · Midnight Blockchain · Self-Sovereign Identity · Verifiable Credentials · Zero-Knowledge Proofs</div>
-    <script src="auth.js"></script><script>const s=dioRequireAuth();if(s)document.getElementById('user-name').textContent=s.displayName;</script>
+    <script src="auth.js"></script>
+    <script>
+        const s=dioRequireAuth();if(s)document.getElementById('user-name').textContent=s.displayName;
+        function haptic(ms){navigator.vibrate&&navigator.vibrate(ms)}
+        document.querySelectorAll('.stat-card,.did-card,.eco-card,.feat-card,.cred-item').forEach(c=>{
+            c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-0.5;const y=(e.clientY-r.top)/r.height-0.5;c.style.transform='perspective(800px) rotateY('+x*4+'deg) rotateX('+(-y*4)+'deg)'});
+            c.addEventListener('mouseleave',()=>{c.style.transform=''})
+        });
+        document.querySelector('.logout-btn').addEventListener('mouseenter',()=>haptic(8));
+        document.querySelector('.logout-btn').addEventListener('click',()=>haptic(15));
+    </script>
 </body>
 </html>

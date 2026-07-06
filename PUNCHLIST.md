@@ -10,11 +10,11 @@
 - [ ] Privacy-first rework per principle 0: commitments + status bits only on-chain, raw facts off-chain
 
 ## Contracts
-- [ ] Verify all registries compile on `compactc 0.31.1` (prior pass confirmed, re-verify after changes)
+- [x] Verify all registries compile on `compactc 0.31.1` — DIDzRegistry (15 circuits) + TrustedIssuerRegistry (7 circuits) both clean
 - [ ] Write/verify contract tests
 
 ## Demo UI
-- [ ] Modernize demoLand UI to 2026 design (glassmorphism, 3D tilt, haptics, tooltips) — currently basic
+- [x] Modernize demoLand UI to 2026 design — glassmorphism, 3D tilt, haptics, tooltips, aurora, JetBrains Mono
 - [ ] demoLand runs on port 3013 (good, follows convention)
 
 ## Architecture
