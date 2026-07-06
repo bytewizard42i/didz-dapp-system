@@ -66,20 +66,21 @@ moves (RWAz settlement, escrow custody, abuse bonds).
 in imported historical documents and is left untouched as an archive
 artifact.
 
-### §4. Four-Pillar Model
+### §4. Three-Pillar Model
 
-The ecosystem is organized as four pillars:
+The ecosystem is organized as three foundational pillars, with consumer products built on top:
 
 | Pillar | Role | Repo |
 |--------|------|------|
 | **DIDz** | Universal root identity layer | `DIDz-io` |
 | **AgenticDID** | Agent identity + delegated authority branch | `AgenticDID` |
 | **RWAz** | Object / real-world-asset identity branch | `RWAz` |
-| **SelectConnect** | First paying consumer product (monetizes to finance the protocol) | `selectConnect` |
 
-The engine (`midnight-modules`) feeds all pillars and consumer products:
-EventRevolution, ProMingle, SouLink, SmartCart, realVote, DownMan, KYCz,
-onlyHumans, and others.
+Consumer products built on the engine include: SelectConnect (first paying
+product), PulseCheck, realVote, KYCz, EventRevolution, ProMingle, SouLink,
+SmartCart, onlyHumans, and others.
+
+The engine (`midnight-modules`) feeds all three pillars and consumer products.
 
 ---
 

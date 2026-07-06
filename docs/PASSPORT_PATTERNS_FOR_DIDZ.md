@@ -5,7 +5,7 @@
 experiments, machine-investigation reference docs)
 
 Passport is IOG ARC's account/identity layer research. It overlaps our
-four-pillar architecture heavily (they have a scoped-grant primitive, an
+three-pillar architecture heavily (they have a scoped-grant primitive, an
 attestation layer, recovery flows). Below: what they do that we don't,
 ranked by how much it benefits DIDz.
 
