@@ -82,6 +82,13 @@
   }
   footer { text-align: center; margin-top: 40px; font-size: 11px; color: var(--text-dim); }
   a { color: inherit; }
+  .status-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    margin-right: 6px; background: var(--text-dim); transition: background 0.3s;
+  }
+  .status-dot.live { background: var(--green); box-shadow: 0 0 6px rgba(34,197,94,0.5); }
+  .status-dot.dead { background: var(--red); }
+  .product .port { display: flex; align-items: center; }
 </style>
 </head>
 <body>
@@ -93,14 +100,14 @@
 
   <div class="section-title">🏛️ The Three Pillars</div>
   <div class="pillars">
-    <a class="pillar" href="http://localhost:3013" style="border-color: rgba(59,130,246,0.2)">
-      <h3 style="color: var(--blue)">DIDz Root</h3>
+    <a class="pillar" href="http://localhost:3013" style="border-color: rgba(59,130,246,0.2)" data-port="3013">
+      <h3 style="color: var(--blue)"><span class="status-dot" id="dot-3013"></span>DIDz Root</h3>
       <p>Universal identity layer. Permanent registry entries, lifecycle status, selective disclosure.</p>
       <span class="badge badge-blue">Pillar 1</span>
       <div class="port">→ localhost:3013</div>
     </a>
-    <a class="pillar" href="http://localhost:3014" style="border-color: rgba(168,85,247,0.2)">
-      <h3 style="color: var(--purple)">AgenticDID</h3>
+    <a class="pillar" href="http://localhost:3014" style="border-color: rgba(168,85,247,0.2)" data-port="3014">
+      <h3 style="color: var(--purple)"><span class="status-dot" id="dot-3014"></span>AgenticDID</h3>
       <p>Agent identity + delegated authority. Scoped grants, attenuation, ZK proof of authority.</p>
       <span class="badge badge-purple">Pillar 2</span>
       <div class="port">→ localhost:3014</div>
@@ -115,31 +122,73 @@
 
   <div class="section-title">📦 Consumer Products (built on the engine)</div>
   <div class="products">
-    <a class="product" href="http://localhost:3015">
+    <a class="product" href="http://localhost:3015" data-port="3015">
       <div class="info">
-        <h4>SelectConnect</h4>
+        <h4><span class="status-dot" id="dot-3015"></span>SelectConnect</h4>
         <p>Contact sharing, progressive reveal, abuse bonds. First paying product.</p>
       </div>
       <div class="port">:3015</div>
     </a>
-    <a class="product" href="http://localhost:3012">
+    <a class="product" href="http://localhost:3012" data-port="3012">
       <div class="info">
-        <h4>PulseCheck</h4>
+        <h4><span class="status-dot" id="dot-3012"></span>PulseCheck (DownMan)</h4>
         <p>Privacy-first dead-man's switch for crypto estate planning.</p>
       </div>
       <div class="port">:3012</div>
+    </a>
+    <a class="product" href="http://localhost:3005" data-port="3005">
+      <div class="info">
+        <h4><span class="status-dot" id="dot-3005"></span>KYCz</h4>
+        <p>Base issuer for ProofOfLife, Death, Citizenship credentials.</p>
+      </div>
+      <div class="port">:3005</div>
+    </a>
+    <a class="product" href="http://localhost:3006" data-port="3006">
+      <div class="info">
+        <h4><span class="status-dot" id="dot-3006"></span>EncryptVault</h4>
+        <p>Zero-knowledge encrypted document vault.</p>
+      </div>
+      <div class="port">:3006</div>
+    </a>
+    <a class="product" href="http://localhost:3007" data-port="3007">
+      <div class="info">
+        <h4><span class="status-dot" id="dot-3007"></span>GeoZ</h4>
+        <p>Geographic zero-knowledge location proofs.</p>
+      </div>
+      <div class="port">:3007</div>
+    </a>
+    <a class="product" href="http://localhost:3008" data-port="3008">
+      <div class="info">
+        <h4><span class="status-dot" id="dot-3008"></span>safeHealthData</h4>
+        <p>Privacy-first health data sharing.</p>
+      </div>
+      <div class="port">:3008</div>
+    </a>
+    <a class="product" href="http://localhost:3009" data-port="3009">
+      <div class="info">
+        <h4><span class="status-dot" id="dot-3009"></span>SouLink</h4>
+        <p>Soulbound credential links.</p>
+      </div>
+      <div class="port">:3009</div>
+    </a>
+    <a class="product" href="http://localhost:3010" data-port="3010">
+      <div class="info">
+        <h4><span class="status-dot" id="dot-3010"></span>PopCork</h4>
+        <p>Privacy-preserving event ticketing.</p>
+      </div>
+      <div class="port">:3010</div>
+    </a>
+    <a class="product" href="http://localhost:3011" data-port="3011">
+      <div class="info">
+        <h4><span class="status-dot" id="dot-3011"></span>HuddleBridge</h4>
+        <p>Privacy-first meeting and collaboration.</p>
+      </div>
+      <div class="port">:3011</div>
     </a>
     <a class="product" href="https://github.com/bytewizard42i/realVote">
       <div class="info">
         <h4>realVote</h4>
         <p>Proof-of-life-gated voting with per-election nullifiers.</p>
-      </div>
-      <div class="port">repo</div>
-    </a>
-    <a class="product" href="https://github.com/bytewizard42i/KYCz_us_app">
-      <div class="info">
-        <h4>KYCz</h4>
-        <p>Base issuer for ProofOfLife, Death, Citizenship credentials.</p>
       </div>
       <div class="port">repo</div>
     </a>
@@ -150,5 +199,21 @@
     <p style="margin-top: 4px;">EnterpriseZK Labs LLC · <a href="https://enterprisezk.com">enterprisezk.com</a></p>
   </footer>
 </div>
+<script>
+// Live health checks — pings /health on each demo server
+const PORTS = [3013, 3014, 3015, 3012, 3005, 3006, 3007, 3008, 3009, 3010, 3011];
+async function checkHealth(port) {
+  const dot = document.getElementById('dot-' + port);
+  if (!dot) return;
+  try {
+    const res = await fetch('http://localhost:' + port + '/health', { mode: 'cors', signal: AbortSignal.timeout(2000) });
+    if (res.ok) { dot.classList.add('live'); dot.classList.remove('dead'); }
+    else { dot.classList.add('dead'); }
+  } catch { dot.classList.add('dead'); }
+}
+PORTS.forEach(p => checkHealth(p));
+// Refresh every 30s
+setInterval(() => PORTS.forEach(p => checkHealth(p)), 30000);
+</script>
 </body>
 </html>
