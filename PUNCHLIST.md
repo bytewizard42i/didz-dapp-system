@@ -15,7 +15,7 @@
 
 ## Demo UI
 - [x] Modernize demoLand UI to 2026 design — glassmorphism, 3D tilt, haptics, tooltips, aurora, JetBrains Mono
-- [ ] demoLand runs on port 3013 (good, follows convention)
+- [x] demoLand runs on port 3013 (follows 30xx convention)
 
 ## Architecture
 - [x] Constitution drafted — DIDZ_CONSTITUTION.md (8 articles + AgenticDID appendix + RWAz appendix + 15 repo pointer docs)
