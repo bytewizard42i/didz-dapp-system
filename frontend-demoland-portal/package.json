@@ -1,0 +1,12 @@
+{
+  "name": "didz-demoland-portal",
+  "version": "1.0.0",
+  "description": "DIDz ecosystem DemoLand portal — links to all demo servers",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
