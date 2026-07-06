@@ -18,7 +18,7 @@
 - [ ] demoLand runs on port 3013 (good, follows convention)
 
 ## Architecture
-- [ ] Constitution still open — proposed: one DIDz root constitution + AgenticDID appendix
+- [x] Constitution drafted — DIDZ_CONSTITUTION.md (8 articles + AgenticDID appendix + RWAz appendix + 15 repo pointer docs)
 - [x] Cross-pollination docs — `docs/ENGINE_REFERENCE.md` created
 
 ## House convention docs
