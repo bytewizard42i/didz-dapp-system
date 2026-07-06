@@ -19,12 +19,12 @@
 
 ## Architecture
 - [ ] Constitution still open — proposed: one DIDz root constitution + AgenticDID appendix
-- [ ] Cross-pollination docs not written (pointer docs to engine modules, consumer repos)
+- [x] Cross-pollination docs — `docs/ENGINE_REFERENCE.md` created
 
-## House convention docs (missing)
-- [ ] `docs/DEMOLAND_VS_REALDEAL.md`
-- [ ] `docs/DIF_RELEVANCE.md`
+## House convention docs
+- [x] `docs/DEMOLAND_VS_REALDEAL.md` — created
+- [x] `docs/DIF_RELEVANCE.md` — already existed
 
 ## Cleanup
-- [ ] `didz-agenticdid-plain-english-overview.md:Zone.Identifier` — Windows metadata artifact, remove
-- [ ] `DIDz-Miro-PDF.pdf:Zone.Identifier` — Windows metadata artifact, remove
+- [x] `didz-agenticdid-plain-english-overview.md:Zone.Identifier` — removed
+- [x] `DIDz-Miro-PDF.pdf:Zone.Identifier` — removed
