@@ -41,17 +41,24 @@
 //        or meetsMinimumAssurance(issuerKey, domain, level)
 //     4. Only accept attestations from issuers who meet their bar
 //
-// ADMIN MODEL (MVP)
-//   A single `adminKey` (captured at deploy time) holds approval authority.
-//   Future versions will replace this with:
-//     - Multi-sig via multiple admin keys
+// ADMIN MODEL
+//   A multi-admin set (initialized with the deployer) holds approval authority.
+//   Admins can add/remove other admins (but never the last one). This replaces
+//   the original single-adminKey model. Future versions may add:
 //     - DAO-governed approval proposals
 //     - Delegated domain-specific admin keys (e.g., a Medical Council admin
 //       for the MEDICAL domain only)
 //
 // COMPILER
-//   - compactc v0.30.0 (validated via the hosted Compact playground)
-//   - Language pragma: >= 0.16 && <= 0.21
+//   - compactc v0.31.1 (validated locally + hosted Compact playground)
+//   - Language pragma: >= 0.16 && <= 0.23
+//
+// PRIVACY NOTE
+//   Unlike DIDzRegistry (which stores owner keys as commitments), this contract
+//   stores issuer ZswapCoinPublicKeys directly. This is intentional: the issuer's
+//   public key IS their public attestation identity — verifiers must know it to
+//   verify attestations. The privacy-first principle (§0) applies to subject
+//   data, not to the issuer's signing key, which is inherently public.
 // ============================================================================
 
 pragma language_version >= 0.16 && <= 0.23;
@@ -84,11 +91,14 @@ export enum AssuranceLevel {
                        //     identity-critical government agencies, etc.)
 }
 
-// Approval state machine. Pending → Approved → (optionally) Revoked.
+// Approval state machine.
+//   PENDING → APPROVED → (optionally) SUSPENDED ↔ APPROVED (repeatedly)
+//                      → REVOKED (terminal)
 export enum ApprovalStatus {
   PENDING,             // 0 — Registered but not yet approved by admin
   APPROVED,            // 1 — Admin has approved; consumers may trust
-  REVOKED              // 2 — Admin has revoked; consumers must not trust
+  REVOKED,             // 2 — Admin has revoked (terminal); consumers must not trust
+  SUSPENDED            // 3 — Temporarily suspended; consumers must not trust (reversible)
 }
 
 // ============================================================================
@@ -132,15 +142,16 @@ export ledger issuerProfiles: Map<Bytes<32>, IssuerProfile>;
 export ledger totalIssuersRegistered: Counter;
 export ledger totalIssuersApproved: Counter;
 
-// The admin who can approve/revoke issuers. Captured at deploy time.
-sealed ledger adminKey: ZswapCoinPublicKey;
+// Multi-admin set. The deployer is the first admin; others can be added later.
+// Stores hashed admin keys (hashIssuerKey) for privacy-consistent lookups.
+export ledger admins: Set<Bytes<32>>;
 
 // ============================================================================
-// CONSTRUCTOR
+// CONSTRUCTOR — captures the deployer as the first admin
 // ============================================================================
 
 constructor() {
-  adminKey = ownPublicKey();
+  admins.insert(disclose(hashIssuerKey(ownPublicKey())));
 }
 
 // ============================================================================
@@ -167,6 +178,37 @@ circuit computeIssuerSlotKey(
     issuerKeyHash: hashIssuerKey(issuerKey),
     primaryDomain: primaryDomain
   });
+}
+
+// ============================================================================
+// INTERNAL — admin check helper
+// ============================================================================
+
+circuit assertIsAdmin(): [] {
+  const callerHash = hashIssuerKey(ownPublicKey());
+  assert(admins.member(disclose(callerHash)), "Caller is not an admin");
+}
+
+// ============================================================================
+// CIRCUITS — ADMIN MANAGEMENT
+// ============================================================================
+
+// Add a new admin. Only existing admins can do this.
+export circuit addAdmin(newAdminKey: ZswapCoinPublicKey): [] {
+  assertIsAdmin();
+  const newAdminHash = hashIssuerKey(newAdminKey);
+  assert(!admins.member(disclose(newAdminHash)), "Already an admin");
+  admins.insert(disclose(newAdminHash));
+}
+
+// Remove an admin. Only existing admins can do this.
+// Cannot remove the last admin (must always have at least one).
+export circuit removeAdmin(adminKeyToRemove: ZswapCoinPublicKey): [] {
+  assertIsAdmin();
+  const removeHash = hashIssuerKey(adminKeyToRemove);
+  assert(admins.member(disclose(removeHash)), "Not an admin");
+  assert(disclose(admins.size()) > (1 as Uint<64>), "Cannot remove the last admin");
+  admins.remove(disclose(removeHash));
 }
 
 // ============================================================================
@@ -219,7 +261,7 @@ export circuit approveIssuer(
   primaryDomain: Bytes<32>,
   currentTime: Uint<64>
 ): [] {
-  assert(ownPublicKey() == adminKey, "Only admin can approve issuers");
+  assertIsAdmin();
 
   const slotKey = computeIssuerSlotKey(issuerKey, primaryDomain);
   assert(issuerProfiles.member(disclose(slotKey)), "Issuer profile not found");
@@ -251,7 +293,7 @@ export circuit revokeIssuer(
   issuerKey: ZswapCoinPublicKey,
   primaryDomain: Bytes<32>
 ): [] {
-  assert(ownPublicKey() == adminKey, "Only admin can revoke issuers");
+  assertIsAdmin();
 
   const slotKey = computeIssuerSlotKey(issuerKey, primaryDomain);
   assert(issuerProfiles.member(disclose(slotKey)), "Issuer profile not found");
@@ -274,6 +316,65 @@ export circuit revokeIssuer(
   issuerProfiles.insert(disclose(slotKey), disclose(updated));
 }
 
+// Admin-only suspension. Temporarily marks an APPROVED issuer as untrusted.
+// Unlike revocation, suspension is reversible via reactivateIssuer.
+// Cannot suspend from REVOKED (terminal) or PENDING (not yet approved).
+export circuit suspendIssuer(
+  issuerKey: ZswapCoinPublicKey,
+  primaryDomain: Bytes<32>
+): [] {
+  assertIsAdmin();
+
+  const slotKey = computeIssuerSlotKey(issuerKey, primaryDomain);
+  assert(issuerProfiles.member(disclose(slotKey)), "Issuer profile not found");
+
+  const profile = issuerProfiles.lookup(disclose(slotKey));
+  assert(disclose(profile.status) == (1 as Uint<8>),
+    "Only approved issuers can be suspended");
+
+  const updated = IssuerProfile {
+    issuerKey: profile.issuerKey,
+    issuerType: profile.issuerType,
+    primaryDomain: profile.primaryDomain,
+    assuranceLevel: profile.assuranceLevel,
+    profileCommit: profile.profileCommit,
+    registeredAt: profile.registeredAt,
+    approvedAt: profile.approvedAt,
+    status: 3  // SUSPENDED
+  };
+
+  issuerProfiles.insert(disclose(slotKey), disclose(updated));
+}
+
+// Admin-only reactivation. Restores a SUSPENDED issuer to APPROVED.
+// Cannot reactivate from REVOKED (terminal) or PENDING (use approveIssuer).
+export circuit reactivateIssuer(
+  issuerKey: ZswapCoinPublicKey,
+  primaryDomain: Bytes<32>
+): [] {
+  assertIsAdmin();
+
+  const slotKey = computeIssuerSlotKey(issuerKey, primaryDomain);
+  assert(issuerProfiles.member(disclose(slotKey)), "Issuer profile not found");
+
+  const profile = issuerProfiles.lookup(disclose(slotKey));
+  assert(disclose(profile.status) == (3 as Uint<8>),
+    "Only suspended issuers can be reactivated");
+
+  const updated = IssuerProfile {
+    issuerKey: profile.issuerKey,
+    issuerType: profile.issuerType,
+    primaryDomain: profile.primaryDomain,
+    assuranceLevel: profile.assuranceLevel,
+    profileCommit: profile.profileCommit,
+    registeredAt: profile.registeredAt,
+    approvedAt: profile.approvedAt,
+    status: 1  // APPROVED
+  };
+
+  issuerProfiles.insert(disclose(slotKey), disclose(updated));
+}
+
 // Admin-only. Upgrade or downgrade an issuer's assurance level in a
 // domain. Useful when an issuer transitions (e.g., a CORPORATION gets
 // regulated and moves from PEER_REVIEWED to REGULATED_ENTITY, or a
@@ -283,7 +384,7 @@ export circuit updateAssuranceLevel(
   primaryDomain: Bytes<32>,
   newAssuranceLevel: Uint<8>
 ): [] {
-  assert(ownPublicKey() == adminKey, "Only admin can change assurance level");
+  assertIsAdmin();
   assert(disclose(newAssuranceLevel) <= (3 as Uint<8>),
     "Assurance level must be 0-3");
 
