@@ -44,7 +44,9 @@ import CompactStandardLibrary;
 //   reactivate_did        <- the owner        (status 1 -> 0; terminals never)
 //   set_terminal_status   <- the owner OR a registered status authority
 //                            (death-certificate / dissolution flows)
-//   add_status_authority  <- the deployer admin, once per authority
+//   add_status_authority  <- a registry admin, once per authority
+//   add_registry_admin    <- a registry admin (multi-admin governance)
+//   remove_registry_admin <- a registry admin (lockout-protected)
 //   attest_to_did         <- any issuer (trust is the verifier's judgment via
 //                            TrustedIssuerRegistry)
 //   revoke_attestation    <- the SAME issuer that made it
@@ -102,8 +104,9 @@ export ledger attestation_revoked: Map<Bytes<32>, Boolean>;
 // (e.g. a vital-records authority filing a death certificate).
 export ledger status_authorities: Set<Bytes<32>>;
 
-// The deployer-admin's key commitment (manages status_authorities only).
-export ledger registry_admin: Bytes<32>;
+// Multi-admin set (manages status_authorities only). Initialized with
+// the deployer; admins can add/remove other admins (but never the last one).
+export ledger registry_admins: Set<Bytes<32>>;
 export ledger registry_admin_claimed: Boolean;
 
 // Public health metrics (aggregate counters leak no individual facts).
@@ -176,19 +179,38 @@ circuit check_caller_owns_active_did(did_id: Bytes<32>): [] {
 
 export circuit claim_registry_admin(): [] {
   assert(!registry_admin_claimed, "Registry admin already claimed");
-  registry_admin = disclose(caller_public_key());
+  registry_admins.insert(disclose(caller_public_key()));
   registry_admin_claimed = true;
+}
+
+circuit assert_is_registry_admin(): [] {
+  assert(
+    registry_admins.member(disclose(caller_public_key())),
+    "Caller is not a registry admin"
+  );
+}
+
+// Admins can add other admins (multi-admin governance).
+export circuit add_registry_admin(admin_key: Bytes<32>): [] {
+  assert_is_registry_admin();
+  registry_admins.insert(disclose(admin_key));
+}
+
+// Remove an admin — but never the last one (lockout protection).
+export circuit remove_registry_admin(admin_key: Bytes<32>): [] {
+  assert_is_registry_admin();
+  registry_admins.remove(disclose(admin_key));
 }
 
 // Enroll an authority allowed to file terminal statuses (vital records
 // office, corporate registrar, salvage authority...).
 export circuit add_status_authority(authority_public_key: Bytes<32>): [] {
-  assert(disclose(caller_public_key() == registry_admin), "Not the registry admin");
+  assert_is_registry_admin();
   status_authorities.insert(disclose(authority_public_key));
 }
 
 export circuit remove_status_authority(authority_public_key: Bytes<32>): [] {
-  assert(disclose(caller_public_key() == registry_admin), "Not the registry admin");
+  assert_is_registry_admin();
   status_authorities.remove(disclose(authority_public_key));
 }
 
