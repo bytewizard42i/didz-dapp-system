@@ -11,6 +11,10 @@
 
 ---
 
+![DIDz Ecosystem Map](DIDz-ecosystem-map.png)
+
+---
+
 ## The Problem
 
 Every day, billions of people are forced to hand over their most sensitive personal information just to prove simple facts about themselves.
