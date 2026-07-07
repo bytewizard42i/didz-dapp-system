@@ -1,8 +1,8 @@
-# DIDz.io × AgenticDID — Trusted Issuer → Agent → Credential Architecture
+# DIDz.io × AgenticDID, Trusted Issuer → Agent → Credential Architecture
 
 **Author**: Penny 🎀  
 **Date**: March 21, 2026  
-**Status**: Architecture — Cross-Pollination  
+**Status**: Architecture, Cross-Pollination  
 **Related**: [AgenticDID mirror doc](../../AgenticDID/agentic-did/docs/DIDZ_INTEGRATION_ARCHITECTURE.md)
 
 ---
@@ -35,7 +35,7 @@ Neither is complete without the other. A Trusted Issuer that can't create agents
 
 ---
 
-## The Trusted Issuer DApp — Central to Both Repos
+## The Trusted Issuer DApp, Central to Both Repos
 
 The **Trusted Issuer DApp** is the keystone that connects DIDz.io to AgenticDID. It is where:
 
@@ -255,21 +255,21 @@ This is the **single source of truth** for what credentials exist in the ecosyst
 
 ## What DIDz-io Gives to AgenticDID
 
-1. **Trust Triangle Framework** — The Holder→Issuer→Verifier model that AgenticDID's agents operate within
-2. **W3C DID Core Compliance** — `did:midnight` method spec that makes agent DIDs globally resolvable
-3. **KYCz Anchor Contract** — The proven ZK proof engine (7 circuits, compiles) that agents use for credential verification
-4. **Credential Schema Registry** — Machine-readable definitions of what credentials contain
-5. **Hierarchical Privacy Wallet** — The folderized wallet where users store credentials agents issue
-6. **Verifier Integration DApp** — The standard way external services query ZK proofs
+1. **Trust Triangle Framework**, The Holder→Issuer→Verifier model that AgenticDID's agents operate within
+2. **W3C DID Core Compliance**, `did:midnight` method spec that makes agent DIDs globally resolvable
+3. **KYCz Anchor Contract**, The proven ZK proof engine (7 circuits, compiles) that agents use for credential verification
+4. **Credential Schema Registry**, Machine-readable definitions of what credentials contain
+5. **Hierarchical Privacy Wallet**, The folderized wallet where users store credentials agents issue
+6. **Verifier Integration DApp**, The standard way external services query ZK proofs
 
 ## What AgenticDID Gives to DIDz-io
 
-1. **Agent Registry Contract** — The on-chain registry for agents created by Trusted Issuers
-2. **Delegation Chain Model** — How users authorize agents to act on their behalf with scoped, time-limited, revocable permissions
-3. **Three-Axis Issuer Model** — The composable `(type, domains, assurance)` classification that replaces category explosion
-4. **Spoof Transaction Privacy** — The novel timing-attack defense that should protect ALL DIDz verification queries
-5. **Mutual Authentication Flow** — The bidirectional trust establishment protocol (User↔Agent, Agent↔Agent)
-6. **TD Bank Philosophy** — "Build one perfect flow and replicate" — the canonical agent_0 pattern
+1. **Agent Registry Contract**, The on-chain registry for agents created by Trusted Issuers
+2. **Delegation Chain Model**, How users authorize agents to act on their behalf with scoped, time-limited, revocable permissions
+3. **Three-Axis Issuer Model**, The composable `(type, domains, assurance)` classification that replaces category explosion
+4. **Spoof Transaction Privacy**, The novel timing-attack defense that should protect ALL DIDz verification queries
+5. **Mutual Authentication Flow**, The bidirectional trust establishment protocol (User↔Agent, Agent↔Agent)
+6. **TD Bank Philosophy**, "Build one perfect flow and replicate", the canonical agent_0 pattern
 
 ---
 
@@ -302,7 +302,7 @@ export type { VerifiableCredential, VerifiablePresentation } from './w3c-types';
 | Priority | Item | Owner | Why |
 |----------|------|-------|-----|
 | **1** | Update AgenticDID contracts to Compact ≥0.25.0 syntax | AgenticDID | Nothing works without compilable contracts |
-| **2** | `TrustedIssuerRegistry.compact` contract | DIDz-io | The missing piece — on-chain issuer trust |
+| **2** | `TrustedIssuerRegistry.compact` contract | DIDz-io | The missing piece, on-chain issuer trust |
 | **3** | Wire AgenticDIDRegistry ↔ TrustedIssuerRegistry | Both | Agents can only be created by registered issuers |
 | **4** | `@didz/core` shared TypeScript SDK | Both | One package, all products import |
 | **5** | Trusted Issuer DApp frontend (demoLand) | DIDz-io | The UI where issuers register, create agents, issue creds |

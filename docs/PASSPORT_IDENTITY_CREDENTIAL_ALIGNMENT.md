@@ -53,12 +53,12 @@ and DIDz.io's credential/selective-disclosure work should align to the Passport 
    contract (C1) with wrapped local storage (C16).
 4. **Make DIDz identities recoverable** via the m-of-n soulbound recovery path (never
    locked out).
-5. **Serve all four personas** (individual, managed, enterprise, agent) — enterprise via
+5. **Serve all four personas** (individual, managed, enterprise, agent), enterprise via
    DIDz org identities, agent via AgenticDID.
 
 ## Contacts
 
-- Karmel ("Carmel") — Passport **product lead**, GitHub `Karmoola`.
-- Hector Bulgarini — technical demo, GitHub `hbulgarini`, X `@hectorest06`.
+- Karmel ("Carmel"), Passport **product lead**, GitHub `Karmoola`.
+- Hector Bulgarini, technical demo, GitHub `hbulgarini`, X `@hectorest06`.
 
 _Last updated: 2026-07-04._

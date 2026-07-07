@@ -1,4 +1,4 @@
-# 🔗 KYCz Binding Stack — Proving KYC Ownership Without DID
+# 🔗 KYCz Binding Stack, Proving KYC Ownership Without DID
 
 **How do we prove that KYC data in Midnight's private state belongs to the person claiming it?**
 
@@ -62,21 +62,21 @@ The DIDz ecosystem's **Trust Triangle** and **KYC Oracles** depend on this bindi
 
 ## Binding Options (3 Tiers)
 
-### 🏆 Tier 1 — Strongest, Minimal Barriers
+### 🏆 Tier 1, Strongest, Minimal Barriers
 | Option | Method | Trusted Issuer |
 |--------|--------|----------------|
 | **A: DL Barcode + Face Match** ⭐ | PDF417 scan + face-api.js comparison | DMV (via physical document) |
 | **B: Passport NFC Chip** | Cryptographically signed data from chip | Issuing government (ICAO PKD) |
 | **C: Bank Account (Plaid)** | Micro-deposit verification + name match | Bank (existing KYC) |
 
-### 🥈 Tier 2 — Good, Some Friction
+### 🥈 Tier 2, Good, Some Friction
 | Option | Method | Trusted Issuer |
 |--------|--------|----------------|
 | **D: Phone Carrier** | SIM verification APIs | Telecom carrier |
 | **E: Credit Bureau KBA** | Challenge questions | Experian/Equifax/TransUnion |
 | **F: IRS Transcript** | Income verification API | IRS (government) |
 
-### 🥉 Tier 3 — Creative, Niche
+### 🥉 Tier 3, Creative, Niche
 | Option | Method | Trusted Issuer |
 |--------|--------|----------------|
 | **G: Notary Hash** | In-person notarized attestation | Notary public |

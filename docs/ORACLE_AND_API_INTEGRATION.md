@@ -1,4 +1,4 @@
-# Oracle Pattern & API Integration Guide — DIDz.io
+# Oracle Pattern & API Integration Guide, DIDz.io
 
 > How external data gets into Midnight smart contracts, and which free APIs are relevant to DIDz.io (the root identity platform for the DIDz ecosystem).
 
@@ -21,7 +21,7 @@ Midnight smart contracts (Compact) run inside **zero-knowledge proof circuits**.
 | Layer | Can call APIs? |
 |-------|---------------|
 | **Frontend / Express server** | ✅ Yes |
-| **Midnight contract (Compact)** | ❌ No — oracle pattern required |
+| **Midnight contract (Compact)** | ❌ No, oracle pattern required |
 
 ---
 
@@ -44,7 +44,7 @@ Midnight smart contracts (Compact) run inside **zero-knowledge proof circuits**.
 
 | API | Description | Auth | URL |
 |-----|-------------|------|-----|
-| **Etherscan** | Ethereum explorer — ENS resolution, wallet data | apiKey | https://etherscan.io/apis |
+| **Etherscan** | Ethereum explorer, ENS resolution, wallet data | apiKey | https://etherscan.io/apis |
 | **Covalent** | Multi-chain data aggregator | apiKey | https://www.covalenthq.com |
 | **The Graph** | Blockchain indexing via GraphQL | apiKey | https://thegraph.com |
 | **Chainlink** | Hybrid smart contract infrastructure | None | https://chain.link/developer-resources |

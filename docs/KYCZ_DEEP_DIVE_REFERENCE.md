@@ -1,4 +1,4 @@
-# 🧠 KYCz Deep Dive Reference — Dual Binding Model & Assertion Schema
+# 🧠 KYCz Deep Dive Reference, Dual Binding Model & Assertion Schema
 
 **Date**: February 20, 2026  
 **Contributors**: Alice 🌟 (The Architect) + Penny 🎀 + John  
@@ -8,7 +8,7 @@
 
 ## What's New
 
-Alice contributed a major architecture upgrade to KYCz — the **dual binding model** that combines biometric AND cryptographic binding.
+Alice contributed a major architecture upgrade to KYCz, the **dual binding model** that combines biometric AND cryptographic binding.
 
 ### The Two Bindings
 
@@ -24,17 +24,17 @@ Alice contributed a major architecture upgrade to KYCz — the **dual binding mo
 KYCz creates a **Private Identity Anchor** in Midnight private state:
 - KYC attributes + biometric commitment + device key commitment
 - Issuer attestation + assurance level + revocation handle
-- Never leaves private state — only ZK assertions emerge
+- Never leaves private state, only ZK assertions emerge
 
 ### 3-Step Protocol
-1. **Enrollment** — Scan doc + liveness + face match + generate device key → create anchor
-2. **Issuance** — Private-state claims, no public VCs that can be correlated
-3. **Presentation** — Verifier nonce + ZK proof of attribute + ZK proof of binding
+1. **Enrollment**, Scan doc + liveness + face match + generate device key → create anchor
+2. **Issuance**, Private-state claims, no public VCs that can be correlated
+3. **Presentation**, Verifier nonce + ZK proof of attribute + ZK proof of binding
 
 ### Presentation Binding Options
-- **Key-based** — Fast, scalable. Sign nonce with device key.
-- **Biometric live** — Highest assurance. On-demand liveness check.
-- **Dual** ⭐ — Both. Crushes stolen phone + key resale.
+- **Key-based**, Fast, scalable. Sign nonce with device key.
+- **Biometric live**, Highest assurance. On-demand liveness check.
+- **Dual** ⭐, Both. Crushes stolen phone + key resale.
 
 ### Anti-Correlation
 - Pairwise keys: `pk_v = HKDF(master_key, verifier_domain)`
@@ -59,9 +59,9 @@ The DIDz Trust Triangle depends on verified identity. KYCz provides:
 ---
 
 ### Full Architecture Docs
-- [🧠 Binding Model Deep Dive](https://github.com/bytewizard42i/KYCz_us_app/blob/main/docs/KYCZ_BINDING_MODEL_DEEP_DIVE.md) — Threat model, flow diagrams, revocation
-- [📋 Assertion Schema](https://github.com/bytewizard42i/KYCz_us_app/blob/main/docs/KYCZ_ASSERTION_SCHEMA.md) — Predicate catalog, verifier integration
-- [🔗 Binding Stack](https://github.com/bytewizard42i/KYCz_us_app/blob/main/docs/KYCZ_BINDING_STACK.md) — 6-layer overview
-- [🫀 Biometric Verification](https://github.com/bytewizard42i/KYCz_us_app/blob/main/docs/KYCZ_BIOMETRIC_VERIFICATION.md) — 8-factor liveness
+- [🧠 Binding Model Deep Dive](https://github.com/bytewizard42i/KYCz_us_app/blob/main/docs/KYCZ_BINDING_MODEL_DEEP_DIVE.md), Threat model, flow diagrams, revocation
+- [📋 Assertion Schema](https://github.com/bytewizard42i/KYCz_us_app/blob/main/docs/KYCZ_ASSERTION_SCHEMA.md), Predicate catalog, verifier integration
+- [🔗 Binding Stack](https://github.com/bytewizard42i/KYCz_us_app/blob/main/docs/KYCZ_BINDING_STACK.md), 6-layer overview
+- [🫀 Biometric Verification](https://github.com/bytewizard42i/KYCz_us_app/blob/main/docs/KYCZ_BIOMETRIC_VERIFICATION.md), 8-factor liveness
 
 *Alice 🌟 + Penny 🎀 + John (bytewizard42i)*

@@ -1,4 +1,4 @@
-# DIDz.io — Miro Board Architecture (Captured)
+# DIDz.io, Miro Board Architecture (Captured)
 
 **Source**: Miro board exported as `DIDz-Miro-PDF.pdf`
 **Captured by**: Penny 🎀
@@ -33,7 +33,7 @@
 | Color | Meaning |
 |-------|---------|
 | **Red** | Stored, private information which cannot be readily accessed nor shared |
-| **Yellow** | A "ZKQuery" or "Proof Challenge" — a ZKProof-invoking question which returns a binary (yes/no) |
+| **Yellow** | A "ZKQuery" or "Proof Challenge", a ZKProof-invoking question which returns a binary (yes/no) |
 | **Green** | Verification result / data flow |
 | **Dark Blue** | Core DApp components (Integration DApps, Proof Server) |
 | **Gray dashed** | Expandable / placeholder (future trusted issuers, etc.) |
@@ -42,15 +42,15 @@
 
 ## Three Roles
 
-1. **Holder** — The user (e.g., "Alice") who owns their private data and controls their DIDz
-2. **Trusted Issuer** — An authoritative entity that verifies and attests to claims (e.g., DMV, bank, hospital)
-3. **Verifier** — An entity that needs to check a claim about the Holder without seeing their private data
+1. **Holder**, The user (e.g., "Alice") who owns their private data and controls their DIDz
+2. **Trusted Issuer**, An authoritative entity that verifies and attests to claims (e.g., DMV, bank, hospital)
+3. **Verifier**, An entity that needs to check a claim about the Holder without seeing their private data
 
 ---
 
 ## The Flow (Step by Step)
 
-### Step 1: DIDz Setup — "Start Here" (Holder)
+### Step 1: DIDz Setup, "Start Here" (Holder)
 
 **Alice's story** (from her speech bubble):
 
@@ -67,7 +67,7 @@
 - Mother: Ada Lovelace
 - Father: Charles Lovelace Sr.
 
-**Result**: Alice becomes a **"Holder"** — she owns and controls her DIDz.
+**Result**: Alice becomes a **"Holder"**, she owns and controls her DIDz.
 
 ### Steps 2 & 3: Biometric Binding + QR Code Exchange
 
@@ -76,7 +76,7 @@
 > "Digital fingerprint, face scan, bio pulse/ox attached to the DIDz. Each DIDz can have only one of each finger. This verifies that the person is associated with that DIDz without revealing who they are. If the person changes their fingerprint, they must use face or pulse/ox for a period of time to prevent spoofing (using someone else's fingerprint to verify their DIDz.)"
 
 **Key design decisions**:
-- **One fingerprint per DIDz** — prevents Sybil attacks (can't register same finger to multiple DIDz)
+- **One fingerprint per DIDz**, prevents Sybil attacks (can't register same finger to multiple DIDz)
 - **Fallback chain**: If fingerprint changes → must use face or pulse/ox temporarily
 - **Anti-spoofing**: Time-gated fallback prevents someone stealing a fingerprint to hijack a DIDz
 
@@ -92,7 +92,7 @@
 
 > "My local DMV has just instituted a fancy new program or 'DApp' (created by EnterpriseZK), which allows me to prove distinct credentials which are verified and stored on the DMV's data servers. These 'proofs' are returned as binary booleans or 'yes or no' answers, therefore they reveal no other information other than confirmation or denial of the ZKQuery posed, e.g., 'Am I over 21?', or 'Am I a legal US citizen?', or 'Am I a Felon?'. The way this works is that based on my DID, I printed a QR code. I went to the DMV, they scanned my QR code, and they gave me a QR code which I loaded to my DID in my DID DApp."
 
-**Trusted Issuer**: DMV — Department of Motor Vehicles Data Server (red pentagon icon)
+**Trusted Issuer**: DMV, Department of Motor Vehicles Data Server (red pentagon icon)
 
 **Expandable**: The architecture supports multiple Trusted Issuers. DMV is the example; others could include banks, hospitals, government agencies, employers, etc.
 
@@ -167,15 +167,15 @@ The verification loop:
 ## Key Architectural Decisions
 
 1. **Hyperledger Identus** for DID infrastructure (Out of Band invitation protocol)
-2. **QR code exchange** between Holder and Trusted Issuer — physical or digital
+2. **QR code exchange** between Holder and Trusted Issuer, physical or digital
 3. **Biometric binding**: fingerprint + face scan + bio pulse/ox (one finger per DIDz)
-4. **Binary-only responses**: All proof queries return yes/no — never raw data
+4. **Binary-only responses**: All proof queries return yes/no, never raw data
 5. **Two integration DApps**:
    - **Credential-Issuer Integration DApp** (between Trusted Issuers and Midnight)
    - **Verifier-Issuer Integration DApp** (between Verifiers and Midnight)
 6. **Midnight Network Proof Server** handles all ZK proof generation and verification
 7. **Public Ledger** records proof validity without any PII
-8. **Expandable Trusted Issuers** — architecture supports unlimited issuers
+8. **Expandable Trusted Issuers**, architecture supports unlimited issuers
 
 ---
 

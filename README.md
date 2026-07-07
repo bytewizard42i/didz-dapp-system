@@ -1,11 +1,11 @@
-# DIDz.io — Anonymous Digital Identity on Midnight
+# DIDz.io, Anonymous Digital Identity on Midnight
 
 **"Revolutionizing Identity Verification with Accuracy, Security, and Privacy"**
 
-> Your DIDz gives you full control and privacy for your personal information and data, while allowing you to prove your credentials and other attributes to anyone you wish — and only with your permission.
+> Your DIDz gives you full control and privacy for your personal information and data, while allowing you to prove your credentials and other attributes to anyone you wish, and only with your permission.
 
 **Website**: [didz.io](https://didz.io)  
-**Company**: [EnterpriseZK Labs LLC](https://enterprisezk.com) — Pennsylvania, USA  
+**Company**: [EnterpriseZK Labs LLC](https://enterprisezk.com), Pennsylvania, USA  
 **Blockchain**: [Midnight Network](https://midnight.network) (Cardano ecosystem)  
 **Status**: Architecture + Prototyping
 
@@ -19,7 +19,7 @@
 
 Every day, billions of people are forced to hand over their most sensitive personal information just to prove simple facts about themselves.
 
-- A 22-year-old shows her full driver's license — name, address, date of birth, license number — just to buy a bottle of wine.
+- A 22-year-old shows her full driver's license, name, address, date of birth, license number, just to buy a bottle of wine.
 - A voter reveals their entire identity to prove they're a citizen over 18.
 - A hospital asks for a patient's full background just to check a single compliance question.
 - A bank photocopies your passport and stores it in a database that will eventually be breached.
@@ -38,13 +38,13 @@ The **DIDz DApp System** is a privacy-preserving digital identity platform where
 - An election poll asks: *"Is this person a legal citizen, over 18, and not a felon?"* → **Yes.** Three facts confirmed. Zero data exposed.
 - A hospital asks: *"Has this person passed a background check?"* → **Yes.** No records, no paperwork, no liability.
 
-The answer is **mathematically guaranteed to be correct** — not "probably correct," not "we checked a database." Cryptographically, provably, irrevocably correct via zero-knowledge proofs.
+The answer is **mathematically guaranteed to be correct**, not "probably correct," not "we checked a database." Cryptographically, provably, irrevocably correct via zero-knowledge proofs.
 
 > That "is this person old enough?" example is the **canonical bartender scenario** John introduced at the inaugural Midnight hackathon to explain privacy preserving digital identity. For the story behind it (and the founder's full origin story in his own words), see [`docs/FOUNDER_STORY.md`](docs/FOUNDER_STORY.md).
 
 ---
 
-## Subjects of DIDz — Who (or What) Can Have an Identity
+## Subjects of DIDz, Who (or What) Can Have an Identity
 
 DIDz is a **polymorphic identity substrate**. The same core registry and trusted-issuer machinery serves any entity that needs verifiable, privacy-preserving identity. Each subject type is a tier built on the same foundation, not a separate system.
 
@@ -56,20 +56,20 @@ DIDz is a **polymorphic identity substrate**. The same core registry and trusted
 | **Animal** | Living non-human subjects | Companion animals, equine athletes, livestock, exotics | [PetProData](https://github.com/bytewizard42i/petProData), [EquinePro](https://github.com/bytewizard42i/equineProData) |
 | **Object / RWA** | Real-world assets and instruments | Artworks, deeds, vehicles, equipment, supply-chain SKUs, scientific instruments | (cross-cutting; see [Edda Labs RWA Patterns](docs/EDDALABS_RWA_PATTERNS_FOR_DIDZ.md)) |
 
-For non-human subjects (animals, objects, RWAs), the **Holder role is fulfilled by a custodian or owner** — a human or organization that controls the subject's DIDz wallet on its behalf. The Trust Triangle below applies identically; only the binding mechanism differs (microchip, RFID, serial number, geolocation, or biometric for the custodian).
+For non-human subjects (animals, objects, RWAs), the **Holder role is fulfilled by a custodian or owner**, a human or organization that controls the subject's DIDz wallet on its behalf. The Trust Triangle below applies identically; only the binding mechanism differs (microchip, RFID, serial number, geolocation, or biometric for the custodian).
 
 ---
 
-## How It Works — The Trust Triangle
+## How It Works, The Trust Triangle
 
 ### 1. The Holder (You, or a Subject You Custody)
-You create a pseudonymous digital identity — a **DIDz** — bound to a subject through an appropriate primitive: biometrics (fingerprint, face scan, pulse/ox) for humans, microchip or RFID for animals, serial number or cryptographic anchor for objects and RWAs. Private data is stored in **encrypted private state** on the Midnight blockchain. No one can see it. Not even us. For non-human subjects, a custodian (human or organization) holds the wallet on the subject's behalf.
+You create a pseudonymous digital identity, a **DIDz**, bound to a subject through an appropriate primitive: biometrics (fingerprint, face scan, pulse/ox) for humans, microchip or RFID for animals, serial number or cryptographic anchor for objects and RWAs. Private data is stored in **encrypted private state** on the Midnight blockchain. No one can see it. Not even us. For non-human subjects, a custodian (human or organization) holds the wallet on the subject's behalf.
 
 ### 2. The Trusted Issuer (DMV, Bank, Hospital, Government...)
-Trusted institutions verify your identity traditionally — scan your license, check your passport — and then **attest** to those facts on-chain. They don't store your data. They cryptographically sign that they verified it, and that signature lives in your private state.
+Trusted institutions verify your identity traditionally, scan your license, check your passport, and then **attest** to those facts on-chain. They don't store your data. They cryptographically sign that they verified it, and that signature lives in your private state.
 
 ### 3. The Verifier (Liquor Store, Employer, Voting Booth, Exchange...)
-Verifiers ask **ZKQueries** — zero-knowledge questions that return only yes or no. They never see the underlying data. They get a mathematically certain answer in seconds.
+Verifiers ask **ZKQueries**, zero-knowledge questions that return only yes or no. They never see the underlying data. They get a mathematically certain answer in seconds.
 
 ---
 
@@ -125,12 +125,12 @@ DIDz organizes credentials in a folderized smart contract structure:
 
 ### For Businesses
 - **Instant verification.** No manual ID checks, no background check delays.
-- **Zero liability.** You never touch, store, or process personal data — so you can't leak it.
+- **Zero liability.** You never touch, store, or process personal data, so you can't leak it.
 - **Revenue generation.** Trusted Issuers and Verifiers earn revenue per verification call.
 
 ### For Governments
 - **Eliminate fraud.** Biometric binding makes Sybil attacks mathematically impossible.
-- **Modernize services.** Voting, benefits, licensing — all verifiable in seconds.
+- **Modernize services.** Voting, benefits, licensing, all verifiable in seconds.
 - **Protect citizens.** No more centralized databases that become targets.
 
 ---
@@ -145,11 +145,11 @@ DeFi · Government · Education · Enterprise · Commerce · Supply Chain · Med
 
 ## The DIDz Ecosystem
 
-DIDz.io is the **foundation layer** — everything else builds on top:
+DIDz.io is the **foundation layer**, everything else builds on top:
 
 | Product | Purpose | How It Uses DIDz |
 |---------|---------|-----------------|
-| **[KYCz](https://github.com/bytewizard42i/KYCz_us_app)** | Identityless KYC verification | The no-frills base layer — proves KYC compliance without revealing identity |
+| **[KYCz](https://github.com/bytewizard42i/KYCz_us_app)** | Identityless KYC verification | The no-frills base layer, proves KYC compliance without revealing identity |
 | **[AgenticDID.io](https://github.com/bytewizard42i/AgenticDID_io_me)** | AI Agent identities | Extends DIDz for autonomous AI agents with delegation and trust chains |
 | **[HuddleBridge](https://github.com/bytewizard42i/huddlebridge_app_me_us)** | Semi-decentralized video spaces | DIDz-powered proof of authority, soulbound participation, portable reputation |
 | **[ProMingle.net](https://github.com/bytewizard42i/ProMingle_net)** | Decentralized professional networking | DIDz-verified professional credentials |
@@ -157,8 +157,8 @@ DIDz.io is the **foundation layer** — everything else builds on top:
 | **[PopCork](https://github.com/bytewizard42i/PopCork)** | Social media platform | DIDz-verified speakers and participants |
 | **[DownMan](https://github.com/bytewizard42i/DownMan)** | Crypto estate planning | DIDz-authenticated Shamir secret sharing |
 | **[safeHealthData.me](https://github.com/bytewizard42i/safeHealthData_me)** | Private health records | DIDz-protected medical data with selective disclosure |
-| **[PetProData](https://github.com/bytewizard42i/petProData)** | Companion animal records & identity | DIDz Animal-tier subject — persistent identity across ownership transfers |
-| **[EquinePro](https://github.com/bytewizard42i/equineProData)** | Equine identity, provenance, RWA | DIDz Animal-tier + RWA — lineage, breeding rights, tokenized economic interests |
+| **[PetProData](https://github.com/bytewizard42i/petProData)** | Companion animal records & identity | DIDz Animal-tier subject, persistent identity across ownership transfers |
+| **[EquinePro](https://github.com/bytewizard42i/equineProData)** | Equine identity, provenance, RWA | DIDz Animal-tier + RWA, lineage, breeding rights, tokenized economic interests |
 | **[GeoZ](https://github.com/bytewizard42i/GeoZ_us_app_Midnight-Oracle)** | Geolocation oracle | Privacy-preserving location proofs for DIDz (jurisdiction, residency) |
 | **[MidnightVitals](https://github.com/bytewizard42i/MidnightVitals)** | Real-time diagnostics | Cross-cutting debugging/monitoring for all DIDz-powered apps |
 
@@ -198,7 +198,7 @@ Ideation → Architecture → DemoLand → Backend Skeleton → RealDeal
             WE ARE HERE
 ```
 
-**Current Phase**: Architecture — Binding model, assertion schema, biometric approach, and ZK circuits defined. KYCz anchor contract compiles. DemoLand prototyping next.
+**Current Phase**: Architecture, Binding model, assertion schema, biometric approach, and ZK circuits defined. KYCz anchor contract compiles. DemoLand prototyping next.
 
 ---
 
@@ -212,6 +212,6 @@ DIDz doesn't fix the old model. **It replaces it.** With zero-knowledge proofs, 
 
 ---
 
-*EnterpriseZK Labs LLC — [didz.io](https://didz.io) — [enterprisezk.com](https://enterprisezk.com)*  
+*EnterpriseZK Labs LLC, [didz.io](https://didz.io), [enterprisezk.com](https://enterprisezk.com)*  
 *Built on Midnight. Powered by Cardano. Protected by zero-knowledge cryptography.*  
 *4x Midnight Hackathon Winner*

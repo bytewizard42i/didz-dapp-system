@@ -1,16 +1,16 @@
-# Edda Labs / Brick Towers RWA Patterns — Implications for DIDz.io
+# Edda Labs / Brick Towers RWA Patterns, Implications for DIDz.io
 
 **Source**: Edda Labs deep dive video by Erick (Part 2: ZK Identity for RWA)
 **Video**: https://www.youtube.com/watch?v=l6hMb942sOA
 **Repo analyzed**: https://github.com/BrickTowers/midnight-rwa
 **Date**: April 11, 2026
-**Relevance**: DIDz.io is our foundational identity/DID system — Brick Towers built a complete ZK identity verification system on Midnight that validates many of our architectural choices AND introduces patterns we should adopt.
+**Relevance**: DIDz.io is our foundational identity/DID system, Brick Towers built a complete ZK identity verification system on Midnight that validates many of our architectural choices AND introduces patterns we should adopt.
 
 ---
 
 ## Executive Summary
 
-Brick Towers' `midnight-rwa` is the first production-grade third-party implementation of ZK identity verification on Midnight that we've dissected line-by-line. Their architecture — a Trusted Identity Provider that bridges government credentials into JubJub ZK proofs — is essentially **our Trusted Issuer architecture in concrete code**. This document maps their implementation to DIDz.io's Trust Triangle and identifies what we should adopt, what we got right, and what we need to update.
+Brick Towers' `midnight-rwa` is the first production-grade third-party implementation of ZK identity verification on Midnight that we've dissected line-by-line. Their architecture, a Trusted Identity Provider that bridges government credentials into JubJub ZK proofs, is essentially **our Trusted Issuer architecture in concrete code**. This document maps their implementation to DIDz.io's Trust Triangle and identifies what we should adopt, what we got right, and what we need to update.
 
 ---
 
@@ -52,14 +52,14 @@ Government (root trust)       ←→   Root of Trust
 
 ### What They Did That We Haven't (Yet)
 
-1. **Sealed IDP key** — Their `identityProviderPublicKey` is `sealed ledger`, immutable and invisible after deployment. Our Trusted Issuer Registry uses mutable ledger state.
-2. **Concrete signature bridge** — They have working code for P-256 → JubJub. We've designed the concept but haven't implemented the bridge.
-3. **Generic crypto module** — Their `crypto.compact` is fully generic over `T`. Our credential signing is conceptual.
-4. **Compound onboard circuit** — Their `onboard()` bundles quiz + identity + wealth in one ZK proof. Our flows are still separate circuits.
+1. **Sealed IDP key**, Their `identityProviderPublicKey` is `sealed ledger`, immutable and invisible after deployment. Our Trusted Issuer Registry uses mutable ledger state.
+2. **Concrete signature bridge**, They have working code for P-256 → JubJub. We've designed the concept but haven't implemented the bridge.
+3. **Generic crypto module**, Their `crypto.compact` is fully generic over `T`. Our credential signing is conceptual.
+4. **Compound onboard circuit**, Their `onboard()` bundles quiz + identity + wealth in one ZK proof. Our flows are still separate circuits.
 
 ---
 
-## 2. The Signature Bridge — Critical for DIDz.io
+## 2. The Signature Bridge, Critical for DIDz.io
 
 ### The Problem We Both Face
 
@@ -97,21 +97,21 @@ export pure circuit verify<T>(credential: SignedCredential<T>, challenge: Field)
 
 ### What DIDz.io Needs to Build
 
-**Priority: HIGH** — This is the bridge between the real world and our ZK credential system.
+**Priority: HIGH**, This is the bridge between the real world and our ZK credential system.
 
-1. **`DIDzSignatureBridge` service** — analogous to Brick Towers' `identity-api`:
+1. **`DIDzSignatureBridge` service**, analogous to Brick Towers' `identity-api`:
    - Accepts credentials signed with standard crypto (P-256, RSA, Ed25519)
    - Verifies the original signature off-chain
    - Re-signs the credential data using Schnorr on JubJub
    - Returns a `SignedCredential<T>` compatible with our Compact contracts
 
-2. **Multi-scheme support** — Brick Towers only handles P-256. DIDz.io needs:
+2. **Multi-scheme support**, Brick Towers only handles P-256. DIDz.io needs:
    - P-256 (government passports, FIDO2/WebAuthn)
    - RSA (legacy corporate certificates, X.509)
    - Ed25519 (modern identity systems, Cardano native)
    - Each scheme has its own off-chain verifier, but all output the same JubJub `SignedCredential<T>`
 
-3. **Port `crypto.compact`** — Their generic crypto module is directly reusable:
+3. **Port `crypto.compact`**, Their generic crypto module is directly reusable:
    ```compact
    module Crypto {
      export struct Signature { r: CurvePoint; s: Field; }
@@ -123,7 +123,7 @@ export pure circuit verify<T>(credential: SignedCredential<T>, challenge: Field)
 
 ---
 
-## 3. Credential Struct Design — ICAO 9303 as Template
+## 3. Credential Struct Design, ICAO 9303 as Template
 
 ### What Brick Towers Did
 
@@ -131,14 +131,14 @@ Every ICAO 9303 MRZ field becomes a `Field` in a Compact struct:
 
 ```compact
 export struct PassportData {
-  documentCode: Field;           // "P<" — 2 bytes
-  issuingOrganization: Field;    // ICAO state code — 3 bytes
-  holderName: Field;             // surname<<given — 39 bytes
-  documentNumber: Field;         // alphanumeric — 9 bytes
-  nationality: Field;            // ICAO code — 3 bytes
-  dateOfBirth: Field;            // YYMMDD — 6 bytes
-  sex: Field;                    // M/F/< — 1 byte
-  expiryDate: Field;             // YYMMDD — 6 bytes
+  documentCode: Field;           // "P<", 2 bytes
+  issuingOrganization: Field;    // ICAO state code, 3 bytes
+  holderName: Field;             // surname<<given, 39 bytes
+  documentNumber: Field;         // alphanumeric, 9 bytes
+  nationality: Field;            // ICAO code, 3 bytes
+  dateOfBirth: Field;            // YYMMDD, 6 bytes
+  sex: Field;                    // M/F/<, 1 byte
+  expiryDate: Field;             // YYMMDD, 6 bytes
   // ... check digits and optional data
 }
 ```
@@ -171,7 +171,7 @@ export struct PassportCredential {
   expiryDate: Field;
   compositeCheckDigit: Field;
   // holderName and documentNumber EXCLUDED from on-chain struct
-  // for maximum privacy — only the minimum needed for verification
+  // for maximum privacy, only the minimum needed for verification
 }
 
 // Professional license credential
@@ -188,7 +188,7 @@ export struct ProfessionalCredential {
 export struct AgeCredential {
   dateOfBirth: Field;
   nationality: Field;
-  // Nothing else — minimum disclosure for age-gating
+  // Nothing else, minimum disclosure for age-gating
 }
 
 // Business entity credential
@@ -205,7 +205,7 @@ export struct BusinessCredential {
 
 ---
 
-## 4. Sealed Ledger — Immutable Trust Configuration
+## 4. Sealed Ledger, Immutable Trust Configuration
 
 ### Brick Towers' Sealed Fields
 
@@ -224,7 +224,7 @@ export sealed ledger tbtcCoinColor: Bytes<32>;               // token identity
 Our Trusted Issuer Registry should use sealed fields for deployment-time trust anchors:
 
 ```compact
-// DIDz Trust Registry — sealed configuration
+// DIDz Trust Registry, sealed configuration
 export sealed ledger networkId: Bytes<32>;                // which DIDz network
 export sealed ledger rootIssuerPublicKey: CurvePoint;     // root trust anchor
 export sealed ledger minimumAssuranceLevel: Uint<32>;     // min credential level
@@ -236,10 +236,10 @@ export sealed ledger credentialTTL: Uint<64>;             // max credential life
 
 | Parameter | Sealed? | Rationale |
 |-----------|---------|-----------|
-| Root trust anchor key | ✅ Sealed | Core trust assumption — changing it changes everything |
+| Root trust anchor key | ✅ Sealed | Core trust assumption, changing it changes everything |
 | Network identity | ✅ Sealed | A contract belongs to one network forever |
 | Schema version | ✅ Sealed | Prevents schema confusion post-deployment |
-| Individual issuer keys | ❌ Mutable | Issuers come and go — use HistoricMerkleTree |
+| Individual issuer keys | ❌ Mutable | Issuers come and go, use HistoricMerkleTree |
 | Credential revocation list | ❌ Mutable | Must be updatable |
 | Jurisdiction allowlist | ⚠️ Design choice | Sealed = simpler, Mutable = more flexible |
 
@@ -248,10 +248,10 @@ export sealed ledger credentialTTL: Uint<64>;             // max credential life
 Our `TRUSTED_ISSUER_AGENT_ARCHITECTURE.md` describes issuer registration as a mutable ledger operation. The sealed pattern suggests a **hybrid approach**:
 
 1. **Sealed**: Root trust anchor, network ID, schema version, minimum assurance level
-2. **Mutable (HistoricMerkleTree)**: Individual Trusted Issuer public keys — added via admin circuits
+2. **Mutable (HistoricMerkleTree)**: Individual Trusted Issuer public keys, added via admin circuits
 3. **Mutable (Map)**: Credential revocation status
 
-This matches Brick Towers' pattern exactly — they seal the IDP key but use HistoricMerkleTree for investor authorizations.
+This matches Brick Towers' pattern exactly, they seal the IDP key but use HistoricMerkleTree for investor authorizations.
 
 ---
 
@@ -307,8 +307,8 @@ export ledger verifiedHolders: HistoricMerkleTree<32, Bytes<32>>;
 
 **Trade-offs**:
 - ✅ Race condition proof, privacy, scale
-- ❌ No `lookup()` — you can only prove membership, not retrieve data
-- ❌ `findPathForLeaf()` is O(n) in TypeScript — expensive for very large trees
+- ❌ No `lookup()`, you can only prove membership, not retrieve data
+- ❌ `findPathForLeaf()` is O(n) in TypeScript, expensive for very large trees
 - 💡 **Hybrid**: Use HistoricMerkleTree for membership proofs + Map for data retrieval
 
 ### Recommended Hybrid for DIDz Trust Registry
@@ -338,7 +338,7 @@ circuit isIssuerTrusted(issuerPk: Bytes<32>): [] {
 
 ---
 
-## 6. The Compound Onboard Circuit — Design Pattern
+## 6. The Compound Onboard Circuit, Design Pattern
 
 ### Brick Towers' `onboard()` in One Atomic Proof
 
@@ -358,7 +358,7 @@ Three independent assertions verified in one transaction, one ZK proof, one gas 
 Following this pattern, DIDz.io credential verification should bundle related checks:
 
 ```compact
-// DIDz compound onboard — all checks in one proof
+// DIDz compound onboard, all checks in one proof
 export circuit verifyAndRegisterHolder(
   identityCred: SignedCredential<PassportCredential>,
   professionalCred: SignedCredential<ProfessionalCredential>,
@@ -387,20 +387,20 @@ export circuit verifyAndRegisterHolder(
   // 5. Wealth threshold (temporary deposit pattern)
   assertMinimumWealth(wealthCoin);
 
-  // 6. All passed — register holder in tree
+  // 6. All passed, register holder in tree
   verifiedHolders.insert(ownPublicKey());
 }
 ```
 
 **Benefits**:
-- **Atomic** — all-or-nothing, no partial onboarding
-- **Single proof** — one ZK proof covers all assertions
-- **Privacy** — only `nationality` and `status` are disclosed; everything else stays in the circuit
-- **Efficiency** — one transaction instead of three
+- **Atomic**, all-or-nothing, no partial onboarding
+- **Single proof**, one ZK proof covers all assertions
+- **Privacy**, only `nationality` and `status` are disclosed; everything else stays in the circuit
+- **Efficiency**, one transaction instead of three
 
 ---
 
-## 7. Explicit Disclosure Analysis — The Privacy Boundary
+## 7. Explicit Disclosure Analysis, The Privacy Boundary
 
 ### What Brick Towers Discloses (and Why)
 
@@ -412,8 +412,8 @@ export circuit verifyAndRegisterHolder(
 | `recipient.is_left` | ✅ | Branching on public/contract recipient |
 | Name, DOB, doc number, sex | ❌ | Never needed for verification logic |
 | Quiz answers | ❌ | Only commitment compared |
-| IDP public key | ❌ | Sealed — compared inside circuit |
-| Secret key | ❌ | Witness — never leaves user's machine |
+| IDP public key | ❌ | Sealed, compared inside circuit |
+| Secret key | ❌ | Witness, never leaves user's machine |
 
 ### The Pattern
 
@@ -436,13 +436,13 @@ Based on this analysis, DIDz.io should establish a formal disclosure policy:
 - Secret keys, nonces, blinding factors
 
 **Selectively disclose** (per-use-case):
-- Nationality — only when jurisdiction matters
-- Professional license type — only when role-gating
-- Entity type — only when business classification matters
+- Nationality, only when jurisdiction matters
+- Professional license type, only when role-gating
+- Entity type, only when business classification matters
 
 ---
 
-## 8. The `ecMulGenerator` Workaround — Important Bug Context
+## 8. The `ecMulGenerator` Workaround, Important Bug Context
 
 ### The Problem
 
@@ -457,13 +457,13 @@ export { generateDeterministicK };
 
 The `sign` circuit works in Compact but fails in the CompactRuntime (TypeScript). This means:
 - **Signing happens in TypeScript**, using the exported pure circuits as helpers
-- **Verification works fine in-circuit** — `ecMulGenerator` works in the ZK prover
+- **Verification works fine in-circuit**, `ecMulGenerator` works in the ZK prover
 - The bug is specifically in the JavaScript runtime's `ecMulGenerator` implementation
 
 ### DIDz.io Impact
 
-1. **Design around the bug** — credential signing should be TypeScript-side (like Brick Towers)
-2. **Monitor the fix** — when CompactRuntime `ecMulGenerator` is fixed, signing can move fully on-chain
+1. **Design around the bug**, credential signing should be TypeScript-side (like Brick Towers)
+2. **Monitor the fix**, when CompactRuntime `ecMulGenerator` is fixed, signing can move fully on-chain
 3. **Our credential service** should follow the same pattern: export `computeChallenge` and `generateDeterministicK` as pure circuits, call them from TypeScript
 
 ---
@@ -474,7 +474,7 @@ The `sign` circuit works in Compact but fails in the CompactRuntime (TypeScript)
 
 ```typescript
 export type RwaPrivateState = {
-  readonly secretKey: Uint8Array;  // ONLY the secret key — nothing else
+  readonly secretKey: Uint8Array;  // ONLY the secret key, nothing else
 };
 
 export const witnesses = {
@@ -497,10 +497,10 @@ export const witnesses = {
 
 ### Key Design Decisions
 
-1. **Minimal private state** — only the user's secret key. Everything else is derived or passed as parameters.
-2. **Ledger queries in witnesses** — `context.ledger` provides read access to the on-chain state for Merkle path lookups.
-3. **Workaround witnesses** — `reduceChallenge` does modular reduction that the circuit can't do natively. This is a pragmatic pattern for working around ZK circuit limitations.
-4. **Every witness returns `[updatedState, value]`** — the private state is threaded through even if unchanged.
+1. **Minimal private state**, only the user's secret key. Everything else is derived or passed as parameters.
+2. **Ledger queries in witnesses**, `context.ledger` provides read access to the on-chain state for Merkle path lookups.
+3. **Workaround witnesses**, `reduceChallenge` does modular reduction that the circuit can't do natively. This is a pragmatic pattern for working around ZK circuit limitations.
+4. **Every witness returns `[updatedState, value]`**, the private state is threaded through even if unchanged.
 
 ### DIDz.io Witness Architecture
 
@@ -509,8 +509,8 @@ Following this pattern:
 ```typescript
 export type DIDzPrivateState = {
   readonly secretKey: Uint8Array;
-  // NO credentials stored here — passed as circuit params
-  // NO cached data — queried fresh from ledger
+  // NO credentials stored here, passed as circuit params
+  // NO cached data, queried fresh from ledger
 };
 
 export const witnesses = {
@@ -539,7 +539,7 @@ export const witnesses = {
 
 ---
 
-## 10. Token Color Pattern — Cross-Contract Token Identity
+## 10. Token Color Pattern, Cross-Contract Token Identity
 
 ### How Brick Towers Identifies Tokens
 
@@ -559,10 +559,10 @@ circuit thfCoinColor(): Bytes<32> {
 
 If DIDz.io ever issues credential tokens or staking tokens:
 ```compact
-// DIDz credential token — tied to this contract
+// DIDz credential token, tied to this contract
 const didzCredTokenColor = tokenType(pad(32, "didz:credential:token"), kernel.self());
 
-// DIDz staking token — tied to a separate staking contract
+// DIDz staking token, tied to a separate staking contract
 export sealed ledger stakingTokenColor: Bytes<32>;
 // Set in constructor: tokenType(pad(32, "didz:staking:token"), stakingContractAddress)
 ```
@@ -604,13 +604,13 @@ class MidnightRwaSimulator {
 ### DIDz.io Should Build
 
 A `DIDzTrustRegistrySimulator`:
-- `as(userState)` — switch between issuer, holder, verifier, admin
-- `registerIssuer(pk, metadata)` — test issuer onboarding
-- `verifyHolder(credentials)` — test compound verification
-- `revokeCredential(id)` — test revocation
-- `checkIssuerTrust(pk)` — test Merkle proof verification
+- `as(userState)`, switch between issuer, holder, verifier, admin
+- `registerIssuer(pk, metadata)`, test issuer onboarding
+- `verifyHolder(credentials)`, test compound verification
+- `revokeCredential(id)`, test revocation
+- `checkIssuerTrust(pk)`, test Merkle proof verification
 
-Use `setNetworkId(NetworkId.Undeployed)` for purely local simulation — no testnet needed.
+Use `setNetworkId(NetworkId.Undeployed)` for purely local simulation, no testnet needed.
 
 ---
 
@@ -627,8 +627,8 @@ Use `setNetworkId(NetworkId.Undeployed)` for purely local simulation — no test
 
 ### Implementation Tasks
 
-- [ ] **Build `DIDzSignatureBridge` service** — P-256/RSA/Ed25519 → JubJub
-- [ ] **Create `DIDzCredentialService`** — sign credentials using exported pure circuits
+- [ ] **Build `DIDzSignatureBridge` service**, P-256/RSA/Ed25519 → JubJub
+- [ ] **Create `DIDzCredentialService`**, sign credentials using exported pure circuits
 - [ ] **Build `DIDzTrustRegistrySimulator`** for local testing
 - [ ] **Update `TRUSTED_ISSUER_AGENT_ARCHITECTURE.md`** with sealed ledger patterns
 - [ ] **Add witness architecture** matching the minimal private state pattern
@@ -669,4 +669,4 @@ For compatibility, Brick Towers targets the same Testnet_02 SDK versions we shou
 ---
 
 *Analysis by Cassie for the DIDz.io team, April 11, 2026*
-*Source: Edda Labs video series by Erick — https://eddalabs.io*
+*Source: Edda Labs video series by Erick, https://eddalabs.io*

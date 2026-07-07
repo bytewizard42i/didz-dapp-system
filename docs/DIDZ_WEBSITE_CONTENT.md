@@ -1,11 +1,11 @@
-# DIDz.io — Website Content (Captured March 2, 2026)
+# DIDz.io, Website Content (Captured March 2, 2026)
 
 **Source**: https://didz.io + https://enterprisezk.com
 **Captured by**: Penny 🎀
 
 ---
 
-## didz.io — Landing Page
+## didz.io, Landing Page
 
 **Headline**: "Revolutionizing Identity Verification with Accuracy, Security, and Privacy"
 
@@ -17,7 +17,7 @@
 
 ---
 
-## enterprisezk.com — Main Site
+## enterprisezk.com, Main Site
 
 **Headline**: "Making the Foundation For Reimagining the World's Digital Systems"
 

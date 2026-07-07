@@ -1,4 +1,4 @@
-# DIDz-io — Engine Reference
+# DIDz-io, Engine Reference
 
 > Pointer to the shared Compact modules that DIDz-io imports (or will import).
 
@@ -13,7 +13,7 @@
 |--------|--------|---------------------|
 | `scoped-grant` | v2, compiled 0.31.1 | Identity authority grants (who may update a registry entry) |
 | `pol-credential` | compiled 0.31.1 | Proof-of-Life credentials for human identities (renewable) |
-| `commitment` | available | Identity commitments — raw facts stay off-chain (principle 0) |
+| `commitment` | available | Identity commitments, raw facts stay off-chain (principle 0) |
 | `nullifier` | available | Presentation nullifiers for anti-collusion |
 | `merkle-membership` | available | Recovery m-of-n proof |
 

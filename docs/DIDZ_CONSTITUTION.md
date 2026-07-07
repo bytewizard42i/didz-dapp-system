@@ -1,6 +1,6 @@
 # DIDz Constitution
 
-> **Status**: Draft v0.1 — July 5, 2026
+> **Status**: Draft v0.1, July 5, 2026
 > **Author**: John M.P. Santi (EnterpriseZK Labs LLC)
 > **Drafted by**: Penny 🎀
 > **Canonical location**: `DIDz-io/docs/DIDZ_CONSTITUTION.md`
@@ -12,7 +12,7 @@
 
 ## Preamble
 
-This constitution governs the DIDz protocol ecosystem — a privacy-first
+This constitution governs the DIDz protocol ecosystem, a privacy-first
 identity, credential, and authority layer built on Midnight's selective-
 privacy blockchain. It establishes the invariants that every DIDz-conforming
 contract, service, and consumer product must uphold.
@@ -41,14 +41,14 @@ The one rule from which everything else follows:
 
 ---
 
-## Article I — Foundational Principles
+## Article I, Foundational Principles
 
 ### §1. Privacy by Default
 
 Everything is private by default, with the ability to prove and share
 selectively if the holder wishes. On-chain state consists of commitments
-and status bits only. Raw facts — entity types, owner keys, timestamps,
-attestation contents — stay off-chain or committed and are revealed one bit
+and status bits only. Raw facts, entity types, owner keys, timestamps,
+attestation contents, stay off-chain or committed and are revealed one bit
 at a time via zero-knowledge circuits.
 
 This applies to every contract in the ecosystem without exception.
@@ -56,7 +56,7 @@ This applies to every contract in the ecosystem without exception.
 ### §2. Identities Are Not Tokens
 
 DIDz identities are registry entries, not NFTs. They are non-transferable
-by construction — no transfer circuit exists. Keys may rotate and recover;
+by construction, no transfer circuit exists. Keys may rotate and recover;
 the identity itself never moves. Tokens are used only where value actually
 moves (RWAz settlement, escrow custody, abuse bonds).
 
@@ -84,7 +84,7 @@ The engine (`midnight-modules`) feeds all three pillars and consumer products.
 
 ---
 
-## Article II — Identity Rights
+## Article II, Identity Rights
 
 ### §5. Permanence of Identity
 
@@ -110,11 +110,11 @@ credential, not a property of the identity itself.
   old, and claims past approximately 120 are red-flag enhanced review
   (in-person or multi-issuer biometric).
 - **`mark_deceased` is irreversible** on-chain. Dead people cannot vote,
-  sign, or authorize — ever.
+  sign, or authorize, ever.
 
 ### §7. Canonical and Pairwise DIDs
 
-Every entity has exactly **one canonical DIDz** — the accountability anchor.
+Every entity has exactly **one canonical DIDz**, the accountability anchor.
 It is permanent, unique, and never appears on the wire.
 
 For every counterparty relationship, the entity derives a **pairwise
@@ -132,21 +132,21 @@ does not move.
 
 ---
 
-## Article III — Entity Types and Lifecycle
+## Article III, Entity Types and Lifecycle
 
 ### §9. Entity Types
 
 The DIDz root registry recognizes the following entity types:
 
 ```text
-HumanDIDz          — a living or deceased person
-OrganizationDIDz   — a company, institution, or collective
-GovernmentDIDz     — a sovereign state or government body
-GovernmentAgencyDIDz — a department or agency of a government
-ObjectDIDz         — a physical object (vehicle, device, animal)
-RWADIDz            — a real-world asset (real estate, commodity)
-TrustedIssuerDIDz  — an entity authorized to issue credentials
-AgentDIDz          — an autonomous software agent (AgenticDID branch)
+HumanDIDz         , a living or deceased person
+OrganizationDIDz  , a company, institution, or collective
+GovernmentDIDz    , a sovereign state or government body
+GovernmentAgencyDIDz, a department or agency of a government
+ObjectDIDz        , a physical object (vehicle, device, animal)
+RWADIDz           , a real-world asset (real estate, commodity)
+TrustedIssuerDIDz , an entity authorized to issue credentials
+AgentDIDz         , an autonomous software agent (AgenticDID branch)
 ```
 
 ### §10. Lifecycle Statuses
@@ -161,7 +161,7 @@ Every DIDz carries a lifecycle status:
 | 3 | Dissolved | No (terminal) |
 | 4 | Destroyed | No (terminal) |
 
-Terminal states are irreversible. Identity is never deleted — it enters a
+Terminal states are irreversible. Identity is never deleted, it enters a
 terminal state and remains auditable.
 
 ### §11. Status Transitions
@@ -181,13 +181,13 @@ backbone of the protocol. Only authorized parties may trigger transitions:
 
 ---
 
-## Article IV — Credentials
+## Article IV, Credentials
 
 ### §12. Credentials Prove Claims
 
 A credential is a claim about a DIDz, issued by a Trusted Issuer, held by
 the DIDz owner, and verifiable by any third party. Credentials prove
-*claims* — they do not confer authority (that is the role of grants,
+*claims*, they do not confer authority (that is the role of grants,
 Article V).
 
 ### §13. Credential Lifecycle
@@ -207,18 +207,18 @@ revealing the underlying attribute ("my birthdate is 1990-03-15").
 Trusted issuers are entities with scoped issuer credentials. An issuer
 credential specifies:
 
-- `allowed_credential_types` — what claims this issuer may attest
-- `allowed_entity_types` — what entity types it may issue for
-- `jurisdiction` — legal jurisdiction (if applicable)
-- `expiry` — credential validity window
-- `revocation_status` — live or revoked
+- `allowed_credential_types`, what claims this issuer may attest
+- `allowed_entity_types`, what entity types it may issue for
+- `jurisdiction`, legal jurisdiction (if applicable)
+- `expiry`, credential validity window
+- `revocation_status`, live or revoked
 
 Issuer credentials may be revoked by governance or by the issuer's own
 issuer (recursive trust).
 
 ---
 
-## Article V — Authority and Grants
+## Article V, Authority and Grants
 
 ### §16. Grants Give Bounded Authority
 
@@ -230,8 +230,8 @@ delegated authority in the ecosystem.
 
 Every grant may carry two independent spend-limit properties:
 
-- **`per_action_cap`** — maximum value per single authorization
-- **`cumulative_cap`** — maximum total value across all authorizations
+- **`per_action_cap`**, maximum value per single authorization
+- **`cumulative_cap`**, maximum total value across all authorizations
 
 Both are optional. Both are enforced when set. The sentinel value
 `max_Uint64` means unlimited; `0` means no-spend (valid). Delegation
@@ -285,11 +285,11 @@ proof that:
 4. The amount is within the grant's caps.
 5. The current epoch is before the grant's expiry.
 
-The verifier learns only the boolean outcome — nothing else.
+The verifier learns only the boolean outcome, nothing else.
 
 ---
 
-## Article VI — Privacy and Zero-Knowledge
+## Article VI, Privacy and Zero-Knowledge
 
 ### §23. Privacy-First Invariant
 
@@ -311,11 +311,11 @@ replayed across contexts. Nullifiers are round-scoped and one-time-use.
 
 Holder and issuer keys should be recoverable via m-of-n social recovery
 (`recovery-core`). Compromised agents are contained by cascade revocation.
-Key recovery does not transfer authority — only keys.
+Key recovery does not transfer authority, only keys.
 
 ---
 
-## Article VII — Constitutional Violations and Enforcement
+## Article VII, Constitutional Violations and Enforcement
 
 ### §27. Violations
 
@@ -368,7 +368,7 @@ automatically transfer.
 
 ---
 
-## Article VIII — Governance
+## Article VIII, Governance
 
 ### §30. Constitution Amendment
 
@@ -394,7 +394,7 @@ conformance additionally requires the relevant appendix.
 
 ---
 
-## Appendix A — AgenticDID Rules
+## Appendix A, AgenticDID Rules
 
 These rules apply in addition to the root articles for the AgenticDID
 branch (agent identity, delegated authority, autonomous agents).
@@ -449,7 +449,7 @@ place to remove authority without erasing identity.
 
 ---
 
-## Appendix B — RWAz Rules
+## Appendix B, RWAz Rules
 
 These rules apply in addition to the root articles for the RWAz branch
 (object and real-world-asset identity).
@@ -458,7 +458,7 @@ These rules apply in addition to the root articles for the RWAz branch
 
 An ObjectDIDz or RWADIDz is permanent. The physical object (e.g., a
 vehicle) keeps the same identity throughout its lifetime. Ownership is a
-transferable credential — the title changes hands; the VIN stays.
+transferable credential, the title changes hands; the VIN stays.
 
 ### B2. Encumbrances
 
@@ -469,7 +469,7 @@ transferred before ownership can change.
 ### B3. Provenance
 
 Every ownership transfer appends to a provenance hash chain. The chain is
-auditable but does not reveal owner identities — only commitments and
+auditable but does not reveal owner identities, only commitments and
 transfer timestamps.
 
 ### B4. Fractionalization
@@ -479,32 +479,32 @@ a token. The underlying asset identity remains singular.
 
 ---
 
-## Appendix C — Affected Repos
+## Appendix C, Affected Repos
 
 The following repos are bound by this constitution:
 
 **Core pillars (full copy):**
-- `DIDz-io` — root identity layer (canonical location)
-- `AgenticDID` — agent branch
-- `RWAz` — object/RWA branch
-- `selectConnect` — first consumer product
+- `DIDz-io`, root identity layer (canonical location)
+- `AgenticDID`, agent branch
+- `RWAz`, object/RWA branch
+- `selectConnect`, first consumer product
 
 **Engine:**
-- `midnight-modules` — shared Compact modules (scoped-grant, pol-credential,
+- `midnight-modules`, shared Compact modules (scoped-grant, pol-credential,
   access-control, commitment-nullifier, merkle-membership, recovery-core)
 
 **Consumer products (pointer doc):**
-- `KYCz` — trusted-issuer credentials
-- `realVote` — proof-of-life-gated voting
-- `SentinelDID` / `SentinelAI` — agent identity + authorization
-- `SCIFz` — nullifier + Merkle-membership + revocation
-- `DownMan` (PulseCheck) — estate planning, death status, asset migration
-- `SilentLedger` — RWA/object consumer
-- `equineProData` / `petProData` — animal identity (ObjectDIDz)
-- `safeHealthData` — health credentials
-- `ProMingle` / `SouLink` / `PopCork` / `HuddleBridge` — DIDz consumer credentials
-- `EventRevolution` / `SmartCart` — scoped-grant consumers
-- `onlyHumans` — proof-of-personhood via ZK
+- `KYCz`, trusted-issuer credentials
+- `realVote`, proof-of-life-gated voting
+- `SentinelDID` / `SentinelAI`, agent identity + authorization
+- `SCIFz`, nullifier + Merkle-membership + revocation
+- `DownMan` (PulseCheck), estate planning, death status, asset migration
+- `SilentLedger`, RWA/object consumer
+- `equineProData` / `petProData`, animal identity (ObjectDIDz)
+- `safeHealthData`, health credentials
+- `ProMingle` / `SouLink` / `PopCork` / `HuddleBridge`, DIDz consumer credentials
+- `EventRevolution` / `SmartCart`, scoped-grant consumers
+- `onlyHumans`, proof-of-personhood via ZK
 
 ---
 

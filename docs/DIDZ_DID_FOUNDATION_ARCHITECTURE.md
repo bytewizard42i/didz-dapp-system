@@ -1,4 +1,4 @@
-# DIDz.io — Architecture Aligned with W3C DID Core & DIF Standards
+# DIDz.io, Architecture Aligned with W3C DID Core & DIF Standards
 
 **Author**: Penny 🎀
 **Date**: March 3, 2026
@@ -10,7 +10,7 @@
 
 ---
 
-## 1. The DID Foundation — What It Is
+## 1. The DID Foundation, What It Is
 
 There are **two** key organizations John should know about:
 
@@ -18,22 +18,22 @@ There are **two** key organizations John should know about:
 - **URL**: https://identity.foundation/
 - **What**: An engineering-focused organization with 500+ member companies building interoperable decentralized identity systems
 - **Notable members**: IOHK (Cardano/Midnight parent company), Microsoft, IBM, Mastercard, BlockchainCommons, Hyperledger ecosystem members
-- **Key fact**: IOHK is a DIF member — this means DIDz.io's architecture direction is already aligned with the industry body that Midnight's parent company participates in
+- **Key fact**: IOHK is a DIF member, this means DIDz.io's architecture direction is already aligned with the industry body that Midnight's parent company participates in
 
 ### 1.2 W3C DID Working Group
 - **URL**: https://www.w3.org/TR/did-core/
 - **What**: The W3C standard that defines the DID syntax, data model, and resolution process
-- **Status**: W3C Recommendation (final standard) — this is the gold standard for DID implementations
+- **Status**: W3C Recommendation (final standard), this is the gold standard for DID implementations
 
 ### 1.3 W3C Verifiable Credentials (VC) Working Group
 - **URL**: https://www.w3.org/TR/vc-data-model-2.0/
 - **What**: The standard for how credentials (driver's license, degree, KYC attestation) are structured, issued, and verified
-- **Status**: W3C Recommendation — the companion spec to DID Core
-- **Three roles**: Issuer, Holder, Verifier — **exactly matching** John's Miro board architecture
+- **Status**: W3C Recommendation, the companion spec to DID Core
+- **Three roles**: Issuer, Holder, Verifier, **exactly matching** John's Miro board architecture
 
 ---
 
-## 2. W3C DID Core — Key Concepts for DIDz
+## 2. W3C DID Core, Key Concepts for DIDz
 
 ### 2.1 DID Syntax
 A DID is a simple URI with three parts:
@@ -49,10 +49,10 @@ did:midnight:abc123def456...
 **Proposal**: DIDz should define a `did:midnight` DID method. This makes DIDz identities globally resolvable and interoperable with any W3C DID-compatible system worldwide.
 
 ### 2.2 DID Document
-Every DID resolves to a **DID Document** — a JSON-LD structure containing:
-- **Verification Methods** — cryptographic public keys for authentication
-- **Services** — endpoints where you can interact with the DID subject
-- **Verification Relationships** — what each key is authorized to do
+Every DID resolves to a **DID Document**, a JSON-LD structure containing:
+- **Verification Methods**, cryptographic public keys for authentication
+- **Services**, endpoints where you can interact with the DID subject
+- **Verification Relationships**, what each key is authorized to do
 
 Example DID Document for a DIDz identity:
 ```json
@@ -78,11 +78,11 @@ Example DID Document for a DIDz identity:
 
 ### 2.3 DID Subject Categories (from W3C spec)
 The W3C spec explicitly states that **anything** can be a DID subject:
-- **Persons** — humans (DIDz core use case)
-- **Organizations** — companies, governments, institutions
-- **Things** — IoT devices, physical objects, supply chain items
-- **Abstract entities** — data models, concepts
-- **Autonomous software** — AI agents (AgenticDID use case!)
+- **Persons**, humans (DIDz core use case)
+- **Organizations**, companies, governments, institutions
+- **Things**, IoT devices, physical objects, supply chain items
+- **Abstract entities**, data models, concepts
+- **Autonomous software**, AI agents (AgenticDID use case!)
 
 **This validates John's full ecosystem design**:
 - DIDz.io → persons, organizations, objects
@@ -101,15 +101,15 @@ The W3C spec defines 5 verification relationships. Each DIDz should support:
 | **Capability Delegation** | Delegate authority to others | AgenticDID delegation chains |
 
 ### 2.5 Multiple Controllers
-W3C spec supports **multiple DID controllers** — meaning a single DID can be controlled by more than one entity. This enables:
+W3C spec supports **multiple DID controllers**, meaning a single DID can be controlled by more than one entity. This enables:
 - **Recovery**: A DIDz can have a backup controller (a trusted family member, a lawyer, etc.)
-- **DownMan integration**: Estate planning — add a dead-man's switch controller via Shamir shares
+- **DownMan integration**: Estate planning, add a dead-man's switch controller via Shamir shares
 - **Organizational DIDs**: Multiple admins control one organization DID
 - **Group control**: Require M-of-N signatures for critical DID operations (multi-sig)
 
 ---
 
-## 3. W3C Verifiable Credentials — Key Concepts for DIDz
+## 3. W3C Verifiable Credentials, Key Concepts for DIDz
 
 ### 3.1 The Three-Party Model
 The VC spec defines the exact same three roles as John's Miro board:
@@ -117,7 +117,7 @@ The VC spec defines the exact same three roles as John's Miro board:
 - **Holder** → User (Alice)
 - **Verifier** → Entity checking a claim (liquor store, election poll agent)
 
-This is NOT a coincidence — John independently arrived at the same architecture the W3C standardized. **DIDz is already architecturally aligned.**
+This is NOT a coincidence, John independently arrived at the same architecture the W3C standardized. **DIDz is already architecturally aligned.**
 
 ### 3.2 Zero-Knowledge Proofs in the VC Spec
 Section 5.7 of the VC 2.0 spec explicitly discusses ZKPs:
@@ -126,11 +126,11 @@ Section 5.7 of the VC 2.0 spec explicitly discusses ZKPs:
 - This is EXACTLY what KYCz does with `proveAgeAtLeast`, `proveResidency`, etc.
 
 ### 3.3 Credential Schemas
-The VC spec supports **data schemas** — machine-readable descriptions of what claims a credential contains. DIDz should define schemas for:
-- `KYCzCredential` — age, residency, sanctions status, assurance level
-- `AgenticDIDCredential` — agent role, scopes, delegation chain
-- `ProMingleCredential` — professional certifications, employment history
-- `HealthCredential` — medical records, vaccination status (safeHealthData)
+The VC spec supports **data schemas**, machine-readable descriptions of what claims a credential contains. DIDz should define schemas for:
+- `KYCzCredential`, age, residency, sanctions status, assurance level
+- `AgenticDIDCredential`, agent role, scopes, delegation chain
+- `ProMingleCredential`, professional certifications, employment history
+- `HealthCredential`, medical records, vaccination status (safeHealthData)
 
 ### 3.4 Credential Status
 The VC spec defines a `credentialStatus` property for checking revocation. This maps directly to:
@@ -140,12 +140,12 @@ The VC spec defines a `credentialStatus` property for checking revocation. This 
 
 ---
 
-## 4. DID Method: `did:midnight` — What We Should Build
+## 4. DID Method: `did:midnight`, What We Should Build
 
 ### 4.1 The DID Method Specification
-Every DID ecosystem needs a **DID Method specification** — a document that defines how DIDs are created, resolved, updated, and deactivated on a specific ledger. DIDz should author:
+Every DID ecosystem needs a **DID Method specification**, a document that defines how DIDs are created, resolved, updated, and deactivated on a specific ledger. DIDz should author:
 
-**`did:midnight` Method Specification** — published at `https://didz.io/did-method/`
+**`did:midnight` Method Specification**, published at `https://didz.io/did-method/`
 
 This spec would define:
 - **Create**: Deploy a DIDz smart contract that stores the DID Document in Midnight private state
@@ -193,10 +193,10 @@ KYCzAnchor.compact (current)       DIDzIdentity.compact (proposed)
 │                                   ├── serviceEndpoints: Map<Bytes<32>, Service>
 ├── prove* circuits (5)             ├── prove* circuits (inherited)
 │                                   ├── issueCredential (new)
-│                                   ├── presentCredential (new — selective disclosure)
-│                                   ├── delegateCapability (new — for AgenticDID)
-│                                   ├── rotateKey (new — key rotation)
-│                                   ├── addRecoveryController (new — DownMan)
+│                                   ├── presentCredential (new, selective disclosure)
+│                                   ├── delegateCapability (new, for AgenticDID)
+│                                   ├── rotateKey (new, key rotation)
+│                                   ├── addRecoveryController (new, DownMan)
 ├── revokeAnchor                    ├── revokeAnchor (inherited)
 │                                   ├── revokeCredential (new)
 │                                   ├── deactivateDID (new)
@@ -220,7 +220,7 @@ Define a catalog of credential types that ALL ecosystem products share:
 Build a shared TypeScript package that ALL ecosystem products import:
 
 ```typescript
-// @didz/core — shared DIDz SDK
+// @didz/core, shared DIDz SDK
 export interface DIDzIdentity {
   did: string;                          // did:midnight:abc123...
   document: DIDDocument;                // W3C DID Document
@@ -248,11 +248,11 @@ export function presentCredential(credential: VerifiableCredential, disclosures:
 
 ### 5.4 Interoperability Bridge
 Because DIDz follows W3C standards, it can interoperate with:
-- **Hyperledger Identus** (already in John's architecture) — for DID creation and credential exchange
-- **did:web** — any website with a DID Document at `/.well-known/did.json`
-- **did:key** — ephemeral DIDs for one-time interactions
-- **OpenID Connect for Verifiable Credentials (OID4VC)** — browser-based credential exchange
-- **DIDComm** — DIF's protocol for encrypted DID-to-DID messaging
+- **Hyperledger Identus** (already in John's architecture), for DID creation and credential exchange
+- **did:web**, any website with a DID Document at `/.well-known/did.json`
+- **did:key**, ephemeral DIDs for one-time interactions
+- **OpenID Connect for Verifiable Credentials (OID4VC)**, browser-based credential exchange
+- **DIDComm**, DIF's protocol for encrypted DID-to-DID messaging
 
 ### 5.5 Registering `did:midnight` with W3C
 The W3C maintains a registry of DID methods: https://www.w3.org/TR/did-extensions-methods/

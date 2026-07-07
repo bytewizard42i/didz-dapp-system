@@ -1,6 +1,6 @@
-# ZK TimesZ — Deep Dive Ideation Document
+# ZK TimesZ, Deep Dive Ideation Document
 
-> A Midnight-powered decentralized newspaper protocol where articles are backed by truthfulness bonds, challengeable for bounties, and curated by reputation — not algorithms.
+> A Midnight-powered decentralized newspaper protocol where articles are backed by truthfulness bonds, challengeable for bounties, and curated by reputation, not algorithms.
 
 **Authors:** NiGHT-C, johnny5i, and collaborators  
 **Date:** March 30, 2026  
@@ -39,33 +39,33 @@
 
 Modern digital media is broken. The advertising-revenue model incentivizes engagement over accuracy, outrage over nuance, and clickbait over depth. Social media algorithms are optimized to:
 
-- **Maximize time-on-platform** — not truth
-- **Maximize ad impressions** — not reader benefit
-- **Maximize contagion** (virality) — not quality
-- **Micro-target users** — making them the product, not the customer
+- **Maximize time-on-platform**, not truth
+- **Maximize ad impressions**, not reader benefit
+- **Maximize contagion** (virality), not quality
+- **Micro-target users**, making them the product, not the customer
 
 The result: declining trust in journalism, rampant misinformation, polarization, and a race to the bottom on content quality. Fact-checking is centralized, opaque, and politically contested. Writers are underpaid. Readers are overwhelmed. Advertisers fund the chaos.
 
 ### The Vision
 
-**ZK TimesZ** is a decentralized information marketplace — a newspaper protocol where:
+**ZK TimesZ** is a decentralized information marketplace, a newspaper protocol where:
 
 - **Writers earn money** for publishing articles backed by truthfulness stakes
 - **Readers earn money** for valuable curation, fact-checking, and engagement
 - **Fact checkers earn bounties** for successfully challenging false claims
-- **Advertisers reach real, verified people** — not bots
-- **Truth has a score** — backed by money, not opinion
-- **Reputation is on-chain** — immutable, auditable, portable
-- **Bots are controlled** — through proof-of-human and ZK identity
-- **No central company or country controls it** — governance is decentralized
+- **Advertisers reach real, verified people**, not bots
+- **Truth has a score**, backed by money, not opinion
+- **Reputation is on-chain**, immutable, auditable, portable
+- **Bots are controlled**, through proof-of-human and ZK identity
+- **No central company or country controls it**, governance is decentralized
 
-This is not just a newspaper. It's a **protocol for staked truth** that can power any publication, any journalist, any citizen reporter — anywhere in the world.
+This is not just a newspaper. It's a **protocol for staked truth** that can power any publication, any journalist, any citizen reporter, anywhere in the world.
 
 ---
 
 ## 2. Core Concept: Staked Truth Protocol
 
-The central innovation is the **Veracity Bond** — an economic mechanism where publishers stake cryptocurrency on the truthfulness of their articles. Anyone can challenge an article's claims for a bounty. The protocol resolves disputes through a combination of:
+The central innovation is the **Veracity Bond**, an economic mechanism where publishers stake cryptocurrency on the truthfulness of their articles. Anyone can challenge an article's claims for a bounty. The protocol resolves disputes through a combination of:
 
 1. **Economic incentives** (skin in the game)
 2. **Decentralized adjudication** (jury pools, prediction markets)
@@ -159,15 +159,15 @@ Resolution
 
 Midnight is uniquely suited for ZK TimesZ because it provides:
 
-1. **Private + Public State in One Contract** — Writers can have private identity details (real name, credentials) while their reputation score is public. Jury votes are private during deliberation, public after resolution.
+1. **Private + Public State in One Contract**, Writers can have private identity details (real name, credentials) while their reputation score is public. Jury votes are private during deliberation, public after resolution.
 
-2. **Zero-Knowledge Proofs (ZKPs)** — A writer can prove "I am a credentialed journalist" without revealing which outlet they work for. A reader can prove "I am over 18" or "I am a US resident" without revealing personal details. Jurors can prove "I have no conflict of interest" without revealing their identity.
+2. **Zero-Knowledge Proofs (ZKPs)**, A writer can prove "I am a credentialed journalist" without revealing which outlet they work for. A reader can prove "I am over 18" or "I am a US resident" without revealing personal details. Jurors can prove "I have no conflict of interest" without revealing their identity.
 
-3. **Shielded + Unshielded Tokens** — Bond stakes can be shielded (private amounts) or unshielded (public amounts) depending on the article tier. Tips and micropayments can be private.
+3. **Shielded + Unshielded Tokens**, Bond stakes can be shielded (private amounts) or unshielded (public amounts) depending on the article tier. Tips and micropayments can be private.
 
-4. **Compact Smart Contracts** — Purpose-built language for ZK circuits. Every article registration, bond stake, challenge, and resolution is a provable on-chain transaction.
+4. **Compact Smart Contracts**, Purpose-built language for ZK circuits. Every article registration, bond stake, challenge, and resolution is a provable on-chain transaction.
 
-5. **UTXO Model** — Natural privacy isolation. Each bond is an independent UTXO that can be shielded or revealed as needed.
+5. **UTXO Model**, Natural privacy isolation. Each bond is an independent UTXO that can be shielded or revealed as needed.
 
 ---
 
@@ -178,9 +178,9 @@ Midnight is uniquely suited for ZK TimesZ because it provides:
 **Purpose:** Register articles on-chain with content hashes, metadata, and author identity.
 
 **Public State:**
-- `articles: Map<Bytes<32>, Article>` — article_id → article metadata
-- `article_count: Counter` — total articles published
-- `category_index: Map<Bytes<32>, Vector<N, Bytes<32>>>` — category → article IDs
+- `articles: Map<Bytes<32>, Article>`, article_id → article metadata
+- `article_count: Counter`, total articles published
+- `category_index: Map<Bytes<32>, Vector<N, Bytes<32>>>`, category → article IDs
 
 **Private State (per user):**
 - Writer's real identity (DID document details)
@@ -204,18 +204,18 @@ struct Article {
 ```
 
 **Key Circuits:**
-- `publish_article(content_hash, category, claim_count, bond_amount)` — registers article, locks bond
-- `retract_article(article_id, author_proof)` — author voluntarily retracts, partial bond penalty
-- `update_truth_score(article_id, new_score)` — called by resolution contract after challenge
+- `publish_article(content_hash, category, claim_count, bond_amount)`, registers article, locks bond
+- `retract_article(article_id, author_proof)`, author voluntarily retracts, partial bond penalty
+- `update_truth_score(article_id, new_score)`, called by resolution contract after challenge
 
 ### Contract 2: Veracity Bond
 
 **Purpose:** Manage the economic stakes behind articles.
 
 **Public State:**
-- `bonds: Map<Bytes<32>, Bond>` — article_id → bond details
-- `total_bonded: Uint<64>` — total value locked in bonds
-- `protocol_treasury: Uint<64>` — accumulated protocol fees
+- `bonds: Map<Bytes<32>, Bond>`, article_id → bond details
+- `total_bonded: Uint<64>`, total value locked in bonds
+- `protocol_treasury: Uint<64>`, accumulated protocol fees
 
 **Bond Struct:**
 ```
@@ -231,18 +231,18 @@ struct Bond {
 ```
 
 **Key Circuits:**
-- `stake_bond(article_id, amount)` — lock funds as veracity bond
-- `release_bond(article_id)` — release after lock period if unchallenged
-- `slash_bond(article_id, slash_amount, challenger_id)` — called by resolution contract
-- `partial_release(article_id, correction_proof)` — reduced penalty for fast correction
+- `stake_bond(article_id, amount)`, lock funds as veracity bond
+- `release_bond(article_id)`, release after lock period if unchallenged
+- `slash_bond(article_id, slash_amount, challenger_id)`, called by resolution contract
+- `partial_release(article_id, correction_proof)`, reduced penalty for fast correction
 
 ### Contract 3: Challenge & Bounty
 
 **Purpose:** Allow anyone to challenge article claims and earn bounties for proving falsehoods.
 
 **Public State:**
-- `challenges: Map<Bytes<32>, Challenge>` — challenge_id → challenge details
-- `active_challenges: Uint<32>` — count of open challenges
+- `challenges: Map<Bytes<32>, Challenge>`, challenge_id → challenge details
+- `active_challenges: Uint<32>`, count of open challenges
 
 **Challenge Struct:**
 ```
@@ -260,10 +260,10 @@ struct Challenge {
 ```
 
 **Key Circuits:**
-- `submit_challenge(article_id, claim_index, evidence_hash, bond_amount)` — file a challenge
-- `respond_to_challenge(challenge_id, response_hash)` — writer responds with counter-evidence
-- `settle_challenge(challenge_id)` — writer concedes, fast correction path
-- `escalate_to_jury(challenge_id)` — neither party concedes, goes to jury
+- `submit_challenge(article_id, claim_index, evidence_hash, bond_amount)`, file a challenge
+- `respond_to_challenge(challenge_id, response_hash)`, writer responds with counter-evidence
+- `settle_challenge(challenge_id)`, writer concedes, fast correction path
+- `escalate_to_jury(challenge_id)`, neither party concedes, goes to jury
 
 **Bounty Payouts:**
 - If challenge upheld: challenger receives their bond back + portion of writer's veracity bond
@@ -275,8 +275,8 @@ struct Challenge {
 **Purpose:** Track on-chain reputation for all participants.
 
 **Public State:**
-- `reputations: Map<Bytes<32>, ReputationScore>` — user_id → reputation
-- `reputation_history: Map<Bytes<32>, Vector<N, ReputationEvent>>` — user_id → history
+- `reputations: Map<Bytes<32>, ReputationScore>`, user_id → reputation
+- `reputation_history: Map<Bytes<32>, Vector<N, ReputationEvent>>`, user_id → history
 
 **ReputationScore Struct:**
 ```
@@ -297,9 +297,9 @@ struct ReputationScore {
 ```
 
 **Key Circuits:**
-- `update_reputation(user_id, event_type, delta)` — called by other contracts after events
-- `get_reputation(user_id)` — read current reputation (public)
-- `prove_reputation_threshold(user_id, min_score)` — ZK proof that rep is above threshold without revealing exact score
+- `update_reputation(user_id, event_type, delta)`, called by other contracts after events
+- `get_reputation(user_id)`, read current reputation (public)
+- `prove_reputation_threshold(user_id, min_score)`, ZK proof that rep is above threshold without revealing exact score
 
 ### Contract 5: Governance / Jury
 
@@ -313,21 +313,21 @@ struct ReputationScore {
 - Incentives: jurors who vote with the majority earn fees; minority voters lose a small stake
 
 **Key Circuits:**
-- `opt_into_jury_pool(user_id, stake)` — join the pool with a stake
-- `select_jury(challenge_id)` — randomly select jurors (uses on-chain randomness)
-- `cast_vote(challenge_id, vote, justification_hash)` — private vote
-- `reveal_votes(challenge_id)` — tally and reveal after deadline
-- `distribute_jury_rewards(challenge_id)` — pay majority jurors, slash minority
+- `opt_into_jury_pool(user_id, stake)`, join the pool with a stake
+- `select_jury(challenge_id)`, randomly select jurors (uses on-chain randomness)
+- `cast_vote(challenge_id, vote, justification_hash)`, private vote
+- `reveal_votes(challenge_id)`, tally and reveal after deadline
+- `distribute_jury_rewards(challenge_id)`, pay majority jurors, slash minority
 
 ### Contract 6: Subscription & Payments
 
 **Purpose:** Handle reader subscriptions, tips, micropayments, and ad payments.
 
 **Key Circuits:**
-- `subscribe(reader_id, tier, duration)` — lock payment for subscription
-- `tip_writer(reader_id, writer_id, amount)` — direct tip (can be shielded)
-- `micropayment(reader_id, article_id, amount)` — pay-per-article
-- `ad_payment(advertiser_id, placement_id, amount)` — advertiser pays for placement
+- `subscribe(reader_id, tier, duration)`, lock payment for subscription
+- `tip_writer(reader_id, writer_id, amount)`, direct tip (can be shielded)
+- `micropayment(reader_id, article_id, amount)`, pay-per-article
+- `ad_payment(advertiser_id, placement_id, amount)`, advertiser pays for placement
 
 ---
 
@@ -336,60 +336,60 @@ struct ReputationScore {
 ### Writers
 
 **How they earn:**
-- **Reader subscriptions** — share of subscription pool proportional to readership
-- **Tips** — direct tips from readers who value their work
-- **Pay-per-article** — micropayments from non-subscribers
-- **Veracity bond returns** — get their bond back (+ small bonus from protocol) if article goes unchallenged
-- **Reputation growth** — higher reputation = higher visibility, more readers, more earnings
-- **NFT article sales** — articles can be minted as NFTs with embedded IP rights
+- **Reader subscriptions**, share of subscription pool proportional to readership
+- **Tips**, direct tips from readers who value their work
+- **Pay-per-article**, micropayments from non-subscribers
+- **Veracity bond returns**, get their bond back (+ small bonus from protocol) if article goes unchallenged
+- **Reputation growth**, higher reputation = higher visibility, more readers, more earnings
+- **NFT article sales**, articles can be minted as NFTs with embedded IP rights
 
 **What they risk:**
-- **Veracity bond** — lose some or all if challenged successfully
-- **Reputation** — drops with each lost challenge
-- **Visibility** — low-reputation writers appear lower in curation feeds
+- **Veracity bond**, lose some or all if challenged successfully
+- **Reputation**, drops with each lost challenge
+- **Visibility**, low-reputation writers appear lower in curation feeds
 
 **Where the money comes from:** Reader payments (subscriptions, tips, micropayments), protocol treasury (funded by challenge fees), advertiser payments (if writer opts into ad-supported distribution).
 
 ### Readers
 
 **How they earn:**
-- **Curation rewards** — earn tokens for flagging content, rating articles, providing feedback
-- **Challenge bounties** — earn by successfully challenging false claims
-- **Prediction market gains** — profit from correct predictions on article veracity
-- **Referral bonuses** — earn when referred readers subscribe
-- **Data ownership** — opt into sharing anonymized preference data for ad targeting (like BAT model)
+- **Curation rewards**, earn tokens for flagging content, rating articles, providing feedback
+- **Challenge bounties**, earn by successfully challenging false claims
+- **Prediction market gains**, profit from correct predictions on article veracity
+- **Referral bonuses**, earn when referred readers subscribe
+- **Data ownership**, opt into sharing anonymized preference data for ad targeting (like BAT model)
 
 **What they risk:**
-- **Challenge bonds** — lose stake if their challenge is rejected
-- **Prediction market losses** — lose if they bet wrong on veracity
+- **Challenge bonds**, lose stake if their challenge is rejected
+- **Prediction market losses**, lose if they bet wrong on veracity
 
 **Where the money comes from:** Protocol treasury (funded by fees), writer veracity bonds (when challenges succeed), advertiser payments (for data sharing), prediction market counterparties.
 
 ### Fact Checkers
 
 **How they earn:**
-- **Challenge bounties** — primary income: successfully prove claims false, earn from writer's slashed bond
-- **Reputation staking** — high-reputation fact-checkers can earn passive income from jury pools
-- **Institutional contracts** — news organizations can hire fact-checkers through the protocol
-- **Verification marketplace** — offer fact-checking as a service, set own rates
+- **Challenge bounties**, primary income: successfully prove claims false, earn from writer's slashed bond
+- **Reputation staking**, high-reputation fact-checkers can earn passive income from jury pools
+- **Institutional contracts**, news organizations can hire fact-checkers through the protocol
+- **Verification marketplace**, offer fact-checking as a service, set own rates
 
 **Subtle nuance corrections:**
 - If a claim is partially incorrect (nuance, not outright falsehood):
   - **Grace period correction**: Writer has 48-72 hours to issue a correction after challenge
   - **Partial correction**: If writer corrects quickly, they lose only 10-25% of bond (not 100%)
   - **Graduated penalties**: Minor factual errors (dates, names, statistics) have lower penalties than fabricated claims or major falsehoods
-  - **Nuance flag**: Challenger can file a "nuance challenge" vs. "falsehood challenge" — different penalty structures
-  - **Split resolution**: Jury can rule "partially upheld" — bond split proportionally
+  - **Nuance flag**: Challenger can file a "nuance challenge" vs. "falsehood challenge", different penalty structures
+  - **Split resolution**: Jury can rule "partially upheld", bond split proportionally
 
 **Where the money comes from:** Writer veracity bonds (slashed portions), protocol challenge fees, institutional contracts.
 
 ### Advertisers
 
 **How they earn (value proposition):**
-- **Reach real, verified humans** — not bots, not fake accounts
-- **Contextual targeting** — place ads in specific curation domains aligned with brand values
-- **Privacy-preserving targeting** — use ZK proofs to target demographics without seeing personal data
-- **Reputation-gated placements** — only appear alongside high-reputation content
+- **Reach real, verified humans**, not bots, not fake accounts
+- **Contextual targeting**, place ads in specific curation domains aligned with brand values
+- **Privacy-preserving targeting**, use ZK proofs to target demographics without seeing personal data
+- **Reputation-gated placements**, only appear alongside high-reputation content
 
 **How they pay:**
 - Per-impression or per-click, paid in protocol token or stablecoins
@@ -473,10 +473,10 @@ Bond requirements can adjust dynamically based on:
 2. **Provide evidence**: Upload counter-evidence to IPFS/Arweave, submit hash on-chain
 3. **Stake a challenge bond**: Must be ≥ 25% of the writer's veracity bond for that claim
 4. **Classify the challenge type**:
-   - **Factual Error** — a specific fact is wrong (date, name, statistic, quote)
-   - **Fabrication** — the claim is entirely made up
-   - **Misleading Context** — facts are technically correct but presented in misleading way
-   - **Nuance Deficiency** — important qualifiers or context are omitted
+   - **Factual Error**, a specific fact is wrong (date, name, statistic, quote)
+   - **Fabrication**, the claim is entirely made up
+   - **Misleading Context**, facts are technically correct but presented in misleading way
+   - **Nuance Deficiency**, important qualifiers or context are omitted
 
 ### Resolution Paths
 
@@ -496,7 +496,7 @@ Bond requirements can adjust dynamically based on:
 - Supermajority (5/7) required to uphold challenge
 - **If upheld**: Challenger gets bond back + up to 75% of writer's slashed bond
 - **If rejected**: Writer gets bond back + challenger's bond (minus fees)
-- **Split decision**: If 4/7, partial resolution — bonds split proportionally
+- **Split decision**: If 4/7, partial resolution, bonds split proportionally
 
 #### Path C: Prediction Market Resolution
 - For high-stakes or contentious claims
@@ -604,13 +604,13 @@ Using Midnight's ZK capabilities, users can prove:
 
 ### ZK Circuits Needed
 
-1. **Proof of Authorship** — prove you wrote an article without revealing your identity
-2. **Proof of Reputation** — prove your rep exceeds a threshold without revealing exact score
-3. **Proof of Humanity** — prove you are human without revealing personal information
-4. **Proof of Credential** — prove you hold a journalism credential without revealing which one
-5. **Proof of No Conflict** — prove you have no relationship to an article's subject (for jurors)
-6. **Proof of Correction** — prove an article was corrected at a specific time
-7. **Private Vote** — cast a jury vote that is committed but not revealed until tally
+1. **Proof of Authorship**, prove you wrote an article without revealing your identity
+2. **Proof of Reputation**, prove your rep exceeds a threshold without revealing exact score
+3. **Proof of Humanity**, prove you are human without revealing personal information
+4. **Proof of Credential**, prove you hold a journalism credential without revealing which one
+5. **Proof of No Conflict**, prove you have no relationship to an article's subject (for jurors)
+6. **Proof of Correction**, prove an article was corrected at a specific time
+7. **Private Vote**, cast a jury vote that is committed but not revealed until tally
 
 ---
 
@@ -626,7 +626,7 @@ Rather than banning AI entirely (unenforceable), the protocol requires **disclos
 
 1. **AI Disclosure Tag**: Articles must declare their AI involvement level:
    - **Human-Written**: No AI assistance beyond spell-check
-   - **AI-Assisted**: AI used for research, outlining, editing — human wrote the prose
+   - **AI-Assisted**: AI used for research, outlining, editing, human wrote the prose
    - **AI-Generated**: Primarily AI-written, human-edited
    - **AI-Only**: Fully AI-generated (lowest bond tier, lowest reputation impact)
 
@@ -642,11 +642,11 @@ Rather than banning AI entirely (unenforceable), the protocol requires **disclos
 
 ### Bot Controls
 
-1. **Proof of Human at Registration** — required for all accounts (CAPTCHA + DID verification)
-2. **Staking Requirements** — bots can't easily scale because each account needs staked tokens
-3. **Rate Limiting** — publishing rate limits based on reputation tier
-4. **Behavioral Analysis** — on-chain patterns flagged by community (challenge mechanism)
-5. **Sybil Resistance** — DID uniqueness checks, social graph analysis
+1. **Proof of Human at Registration**, required for all accounts (CAPTCHA + DID verification)
+2. **Staking Requirements**, bots can't easily scale because each account needs staked tokens
+3. **Rate Limiting**, publishing rate limits based on reputation tier
+4. **Behavioral Analysis**, on-chain patterns flagged by community (challenge mechanism)
+5. **Sybil Resistance**, DID uniqueness checks, social graph analysis
 
 ---
 
@@ -656,10 +656,10 @@ Rather than banning AI entirely (unenforceable), the protocol requires **disclos
 
 A governance token (could be the same as the utility token, or separate) enables:
 
-- **Proposal submission** — anyone with minimum stake can propose protocol changes
-- **Voting** — token-weighted voting on proposals (with quadratic voting option)
-- **Treasury allocation** — decide how protocol fees are spent
-- **Parameter adjustment** — bond amounts, fee percentages, jury sizes, etc.
+- **Proposal submission**, anyone with minimum stake can propose protocol changes
+- **Voting**, token-weighted voting on proposals (with quadratic voting option)
+- **Treasury allocation**, decide how protocol fees are spent
+- **Parameter adjustment**, bond amounts, fee percentages, jury sizes, etc.
 
 ### Appeal Process
 
@@ -667,10 +667,10 @@ When a party disagrees with a jury ruling:
 
 1. **File appeal** within 7 days of ruling
 2. **Stake appeal bond** (2x the original challenge bond)
-3. **Expanded jury** — 15 jurors instead of 7
+3. **Expanded jury**, 15 jurors instead of 7
 4. **New evidence** can be submitted
-5. **Supermajority required** — 10/15 to overturn original ruling
-6. **Final and binding** — no further appeals
+5. **Supermajority required**, 10/15 to overturn original ruling
+6. **Final and binding**, no further appeals
 7. **If appeal fails**: appellant loses appeal bond
 8. **If appeal succeeds**: original ruling overturned, new distribution
 
@@ -725,8 +725,8 @@ When a party disagrees with a jury ruling:
 - **Print circulation + advertising < 50%** of total revenue for first time ever
 - **"Other" revenue streams** (events, e-commerce, data) growing to ~22% of total revenue
 - **AI disruption** is simultaneously threatening (content generation) and enabling (personalization, summarization)
-- **Trust premium** — publications with high trust scores command higher subscription prices
-- Only **17% of people globally** pay for online news — massive untapped market
+- **Trust premium**, publications with high trust scores command higher subscription prices
+- Only **17% of people globally** pay for online news, massive untapped market
 
 ---
 
@@ -792,7 +792,7 @@ TOKEN STAKING MODEL
 ├── Stake 5000 tokens → Premium access + governance
 ├── Unstake anytime (with 7-day cooldown)
 ├── Staked tokens earn yield from protocol fees
-└── No recurring payment — capital-efficient for long-term readers
+└── No recurring payment, capital-efficient for long-term readers
 ```
 
 ### Structure 4: Pay-Per-Article (Micropayments)
@@ -801,7 +801,7 @@ TOKEN STAKING MODEL
 MICROPAYMENT MODEL
 ├── Each article has a price set by the writer (e.g., $0.10 - $5.00)
 ├── Readers pay only for what they read
-├── "Open a tab" model — small payments accumulate, settle weekly
+├── "Open a tab" model, small payments accumulate, settle weekly
 ├── Lightning-fast via Midnight's shielded token transfers
 └── Writers keep 85-90%, protocol takes 10-15%
 ```
@@ -988,12 +988,12 @@ DEFLATIONARY MECHANICS:
 
 ### ZK TimesZ Unique Value Propositions
 
-1. **Veracity bonds** — no one else has economic skin-in-the-game for truth
-2. **ZK privacy on Midnight** — writer protection + reader privacy + transparent accountability
-3. **Challenge bounty system** — financial incentive to improve information quality
-4. **On-chain reputation** — portable, immutable, auditable track records
-5. **Programmable curation** — users control their own information diet
-6. **Sponsored content accountability** — even ads have truth bonds
+1. **Veracity bonds**, no one else has economic skin-in-the-game for truth
+2. **ZK privacy on Midnight**, writer protection + reader privacy + transparent accountability
+3. **Challenge bounty system**, financial incentive to improve information quality
+4. **On-chain reputation**, portable, immutable, auditable track records
+5. **Programmable curation**, users control their own information diet
+6. **Sponsored content accountability**, even ads have truth bonds
 
 ---
 
@@ -1056,7 +1056,7 @@ These are unresolved design questions that need further discussion:
 
 5. **Jury collusion**: How to prevent jurors from coordinating? (Mitigation: random selection, private voting, reputation stakes)
 
-6. **Content permanence**: If an article is proven false, should it be removed or just tagged? (Recommendation: never remove, always tag — censorship resistance)
+6. **Content permanence**: If an article is proven false, should it be removed or just tagged? (Recommendation: never remove, always tag, censorship resistance)
 
 7. **AI fact-checking**: Should AI be used as a first-pass fact-checker before human challenge? If so, how to prevent AI bias from creeping in?
 
@@ -1081,61 +1081,61 @@ These are unresolved design questions that need further discussion:
 
 ### Academic & Protocol References
 
-- **Charles Hoskinson's Decentralized Twitter Whiteboard** (Nov 2022) — foundational thinking on veracity bonds, prediction markets for truth, DIDs, pub/sub protocols, programmable curation, and advertising tokens. Direct inspiration for ZK TimesZ architecture.
-- **Poltercast** (2011) — Decentralized pub/sub protocol, explored during Cardano's incentivized testnet. Basis for subscription/follow mechanics.
-- **Robin Hanson** — Prediction markets pioneer. Concept of "futarchy" (governance by prediction markets) informs the truth-market mechanics.
-- **Falcon (NIST Post-Quantum Signature)** — Algorand's work on post-quantum signatures. Relevant for long-term article integrity.
-- **Kachina** — Private smart contracts framework (IOG/Cardano). Inspiration for privacy-preserving ad targeting.
-- **Mithril** — Stake-based threshold multi-signatures (Cardano). Client-side verification of on-chain state without full node.
-- **Basic Attention Token (BAT)** — Brave browser's advertising token model. Direct inspiration for privacy-preserving ad marketplace.
-- **Santa Clara Principles** — Content moderation transparency standards. Could form basis for default curation rules.
-- **Narwhal and Tusk** — BFT DAG-based mempool consensus protocol (George Genesis, UCL). High-throughput consensus for side-chain architecture.
-- **Augur (REP)** — Decentralized prediction markets with staked outcome reporting. Inspiration for truth markets.
-- **UMA Optimistic Oracle** — "Assumed true unless disputed" model. Direct parallel to veracity bond challenge mechanism.
+- **Charles Hoskinson's Decentralized Twitter Whiteboard** (Nov 2022), foundational thinking on veracity bonds, prediction markets for truth, DIDs, pub/sub protocols, programmable curation, and advertising tokens. Direct inspiration for ZK TimesZ architecture.
+- **Poltercast** (2011), Decentralized pub/sub protocol, explored during Cardano's incentivized testnet. Basis for subscription/follow mechanics.
+- **Robin Hanson**, Prediction markets pioneer. Concept of "futarchy" (governance by prediction markets) informs the truth-market mechanics.
+- **Falcon (NIST Post-Quantum Signature)**, Algorand's work on post-quantum signatures. Relevant for long-term article integrity.
+- **Kachina**, Private smart contracts framework (IOG/Cardano). Inspiration for privacy-preserving ad targeting.
+- **Mithril**, Stake-based threshold multi-signatures (Cardano). Client-side verification of on-chain state without full node.
+- **Basic Attention Token (BAT)**, Brave browser's advertising token model. Direct inspiration for privacy-preserving ad marketplace.
+- **Santa Clara Principles**, Content moderation transparency standards. Could form basis for default curation rules.
+- **Narwhal and Tusk**, BFT DAG-based mempool consensus protocol (George Genesis, UCL). High-throughput consensus for side-chain architecture.
+- **Augur (REP)**, Decentralized prediction markets with staked outcome reporting. Inspiration for truth markets.
+- **UMA Optimistic Oracle**, "Assumed true unless disputed" model. Direct parallel to veracity bond challenge mechanism.
 
 ### Industry References
 
-- **Shoshana Zuboff, "The Age of Surveillance Capitalism"** — Deep analysis of how engagement algorithms monetize human behavior
-- **WAN-IFRA World Press Trends Outlook 2024-2025** — Revenue trends showing digital subscriptions overtaking ads
-- **Reuters Institute Digital News Report 2024** — Only 17% of people globally pay for online news
-- **Midnight Network Documentation** — Private + public state, ZK proofs, Compact language, shielded tokens
+- **Shoshana Zuboff, "The Age of Surveillance Capitalism"**, Deep analysis of how engagement algorithms monetize human behavior
+- **WAN-IFRA World Press Trends Outlook 2024-2025**, Revenue trends showing digital subscriptions overtaking ads
+- **Reuters Institute Digital News Report 2024**, Only 17% of people globally pay for online news
+- **Midnight Network Documentation**, Private + public state, ZK proofs, Compact language, shielded tokens
 
 ### Existing Decentralized Media Projects (Lessons Learned)
 
 - **Civil (failed)**: Too complex for users, token mechanics confusing, insufficient adoption incentives
-- **Steemit/Hive**: Gameable reputation, whale dominance, quality issues — need better mechanism design
+- **Steemit/Hive**: Gameable reputation, whale dominance, quality issues, need better mechanism design
 - **Mirror.xyz**: Good NFT integration, but no truth accountability layer
 - **Nostr**: Good decentralization, but no economic accountability for content quality
 
 ---
 
-## Appendix A: Medium — What Works and What Doesn't
+## Appendix A: Medium, What Works and What Doesn't
 
 Since the team has discussed Medium as a reference point:
 
 ### What Works on Medium
-- **Clean reading experience** — focused, distraction-free design
-- **Partner Program** — writers earn based on member reading time
-- **Discoverability** — algorithmic curation helps surface good content
-- **Low friction** — easy to start writing immediately
-- **Publications** — curated collections within the platform
+- **Clean reading experience**, focused, distraction-free design
+- **Partner Program**, writers earn based on member reading time
+- **Discoverability**, algorithmic curation helps surface good content
+- **Low friction**, easy to start writing immediately
+- **Publications**, curated collections within the platform
 
 ### What Doesn't Work on Medium
-- **Paywall fatigue** — readers hit paywalls constantly, creates friction
-- **Algorithm opacity** — no transparency in how articles are surfaced
-- **Race to clickbait** — earning by reading time incentivizes sensationalism
-- **No truth accountability** — no consequence for publishing false information
-- **Centralized control** — Medium Inc. can change rules, demonetize, ban at will
-- **No data ownership** — readers' data belongs to Medium
-- **Writer lock-in** — content and audience tied to the platform
+- **Paywall fatigue**, readers hit paywalls constantly, creates friction
+- **Algorithm opacity**, no transparency in how articles are surfaced
+- **Race to clickbait**, earning by reading time incentivizes sensationalism
+- **No truth accountability**, no consequence for publishing false information
+- **Centralized control**, Medium Inc. can change rules, demonetize, ban at will
+- **No data ownership**, readers' data belongs to Medium
+- **Writer lock-in**, content and audience tied to the platform
 
 ### How ZK TimesZ Improves on Medium
 - **Truth bonds** replace algorithmic trust signals
 - **Open protocol** means no platform lock-in
-- **Reputation is portable** — follows you to any protocol-compatible publication
-- **Reader data stays private** — owned by the reader, not the platform
-- **Multiple revenue streams** — not just reading-time ad revenue
-- **Community governance** — rules set by participants, not a corporation
+- **Reputation is portable**, follows you to any protocol-compatible publication
+- **Reader data stays private**, owned by the reader, not the platform
+- **Multiple revenue streams**, not just reading-time ad revenue
+- **Community governance**, rules set by participants, not a corporation
 
 ---
 
@@ -1145,7 +1145,7 @@ For anyone new to this concept, here's the simplest way to think about ZK TimesZ
 
 > **Imagine if every news article came with a money-back guarantee for truth.**
 >
-> Writers put money on the table when they publish. If they're wrong, they lose it. If they're right, they get it back with interest. Anyone can challenge a claim and earn a bounty for catching errors. Over time, the most accurate writers build the strongest reputations — and earn the most money.
+> Writers put money on the table when they publish. If they're wrong, they lose it. If they're right, they get it back with interest. Anyone can challenge a claim and earn a bounty for catching errors. Over time, the most accurate writers build the strongest reputations, and earn the most money.
 >
 > Now imagine all of this happens with cryptographic privacy. Writers can be pseudonymous but still accountable. Readers can verify without surveillance. And no single company controls the rules.
 >
@@ -1155,199 +1155,199 @@ For anyone new to this concept, here's the simplest way to think about ZK TimesZ
 
 ---
 
-## Appendix C: Reference Links — The Rabbit Hole
+## Appendix C: Reference Links, The Rabbit Hole
 
-**Chris, Sawyer — this one's for you two.** Go deep. Every link below is something John, Penny, or the research turned up that's directly relevant to what you're building. Organized by topic so you can pick your lane and dive. Some of this is heavy academic stuff, some is practical tooling, some is pure inspiration. Enjoy the ride, brothers.
+**Chris, Sawyer, this one's for you two.** Go deep. Every link below is something John, Penny, or the research turned up that's directly relevant to what you're building. Organized by topic so you can pick your lane and dive. Some of this is heavy academic stuff, some is practical tooling, some is pure inspiration. Enjoy the ride, brothers.
 
 ---
 
-### Midnight Network (Your Blockchain — Learn It Cold)
+### Midnight Network (Your Blockchain, Learn It Cold)
 
-- **Midnight Official Site** — https://midnight.network/
-- **Midnight Documentation (latest)** — https://docs.midnight.network/
-- **Midnight GitHub (examples, Compact compiler)** — https://github.com/midnightntwrk
-- **Compact Language Releases** — https://github.com/midnightntwrk/compact
-- **Compact Source & Bug Reports (Minokawa)** — https://github.com/LFDT-Minokawa/compact
-- **Bulletin Board Example DApp (closest to what you're building)** — https://github.com/midnightntwrk/example-bboard
-- **Midnight Counter Example (start here if new to Compact)** — https://github.com/midnightntwrk/example-counter
-- **Midnight DEX Example (advanced token mechanics)** — https://github.com/midnightntwrk/example-dex
-- **Midnight Bank (private balances, encrypted sharing)** — https://github.com/nel349/midnight-bank
-- **Create Midnight App CLI** — `npx @aspect-sh/pnpm dlx @midnight-ntwrk/create-midnight-app@compact-v0.5.1`
-- **Midnight Lace Wallet** — https://midnight.network/tools — you'll need this for testing
-- **Midnight Discord** — join for dev support: https://discord.gg/midnight-network
-- **Midnight Over Coffee (community calls)** — https://x.com/CardanoOvrCoffe
+- **Midnight Official Site**, https://midnight.network/
+- **Midnight Documentation (latest)**, https://docs.midnight.network/
+- **Midnight GitHub (examples, Compact compiler)**, https://github.com/midnightntwrk
+- **Compact Language Releases**, https://github.com/midnightntwrk/compact
+- **Compact Source & Bug Reports (Minokawa)**, https://github.com/LFDT-Minokawa/compact
+- **Bulletin Board Example DApp (closest to what you're building)**, https://github.com/midnightntwrk/example-bboard
+- **Midnight Counter Example (start here if new to Compact)**, https://github.com/midnightntwrk/example-counter
+- **Midnight DEX Example (advanced token mechanics)**, https://github.com/midnightntwrk/example-dex
+- **Midnight Bank (private balances, encrypted sharing)**, https://github.com/nel349/midnight-bank
+- **Create Midnight App CLI**, `npx @aspect-sh/pnpm dlx @midnight-ntwrk/create-midnight-app@compact-v0.5.1`
+- **Midnight Lace Wallet**, https://midnight.network/tools, you'll need this for testing
+- **Midnight Discord**, join for dev support: https://discord.gg/midnight-network
+- **Midnight Over Coffee (community calls)**, https://x.com/CardanoOvrCoffe
 
 ### Zero-Knowledge Proofs (The Magic Under the Hood)
 
-- **ZK Proofs Explained (Midnight docs)** — https://docs.midnight.network/learn/understanding-midnights-technology/zero-knowledge-proofs
-- **ZKP MOOC (Berkeley, free lectures)** — https://zk-learning.org/
-- **Zero Knowledge Podcast** — https://zeroknowledge.fm/
-- **ZK Whiteboard Sessions (a]0 Research)** — https://www.youtube.com/playlist?list=PLj80z0cJm8QErn3akRcqvxUsyXWC81OGq
-- **Circom + snarkjs (ZK circuit tooling)** — https://docs.circom.io/
-- **zkSNARKs vs zkSTARKs Explained** — https://consensys.io/blog/zero-knowledge-proofs-starks-vs-snarks
-- **Zcash: How ZK Works in Practice** — https://z.cash/learn/what-are-zk-snarks/
-- **Vitalik's ZK-SNARK Intro** — https://vitalik.eth.limo/general/2021/01/26/snarks.html
-- **PLONK Paper (the proof system Midnight uses under the hood)** — https://eprint.iacr.org/2019/953
-- **Halo2 (recursive proofs, no trusted setup)** — https://zcash.github.io/halo2/
+- **ZK Proofs Explained (Midnight docs)**, https://docs.midnight.network/learn/understanding-midnights-technology/zero-knowledge-proofs
+- **ZKP MOOC (Berkeley, free lectures)**, https://zk-learning.org/
+- **Zero Knowledge Podcast**, https://zeroknowledge.fm/
+- **ZK Whiteboard Sessions (a]0 Research)**, https://www.youtube.com/playlist?list=PLj80z0cJm8QErn3akRcqvxUsyXWC81OGq
+- **Circom + snarkjs (ZK circuit tooling)**, https://docs.circom.io/
+- **zkSNARKs vs zkSTARKs Explained**, https://consensys.io/blog/zero-knowledge-proofs-starks-vs-snarks
+- **Zcash: How ZK Works in Practice**, https://z.cash/learn/what-are-zk-snarks/
+- **Vitalik's ZK-SNARK Intro**, https://vitalik.eth.limo/general/2021/01/26/snarks.html
+- **PLONK Paper (the proof system Midnight uses under the hood)**, https://eprint.iacr.org/2019/953
+- **Halo2 (recursive proofs, no trusted setup)**, https://zcash.github.io/halo2/
 
 ### Decentralized Identity (DIDs, Verifiable Credentials)
 
-- **W3C DID Specification** — https://www.w3.org/TR/did-core/
-- **W3C Verifiable Credentials** — https://www.w3.org/TR/vc-data-model-2.0/
-- **Atala PRISM (Cardano DID framework, now open)** — https://atalaprism.io/
-- **IOG PRISM GitHub** — https://github.com/input-output-hk/atala-prism
-- **DIF (Decentralized Identity Foundation)** — https://identity.foundation/
-- **Spruce ID (DID tooling)** — https://spruceid.com/
-- **Microsoft ION (DID on Bitcoin)** — https://identity.foundation/ion/
-- **Ceramic Network (decentralized data for DIDs)** — https://ceramic.network/
-- **ENS (Ethereum Name Service — identity primitive)** — https://ens.domains/
-- **Proof of Humanity (sybil resistance)** — https://proofofhumanity.id/
-- **Worldcoin (iris-based proof of human)** — https://worldcoin.org/ — controversial but worth understanding
-- **Gitcoin Passport (sybil resistance scoring)** — https://passport.gitcoin.co/
+- **W3C DID Specification**, https://www.w3.org/TR/did-core/
+- **W3C Verifiable Credentials**, https://www.w3.org/TR/vc-data-model-2.0/
+- **Atala PRISM (Cardano DID framework, now open)**, https://atalaprism.io/
+- **IOG PRISM GitHub**, https://github.com/input-output-hk/atala-prism
+- **DIF (Decentralized Identity Foundation)**, https://identity.foundation/
+- **Spruce ID (DID tooling)**, https://spruceid.com/
+- **Microsoft ION (DID on Bitcoin)**, https://identity.foundation/ion/
+- **Ceramic Network (decentralized data for DIDs)**, https://ceramic.network/
+- **ENS (Ethereum Name Service, identity primitive)**, https://ens.domains/
+- **Proof of Humanity (sybil resistance)**, https://proofofhumanity.id/
+- **Worldcoin (iris-based proof of human)**, https://worldcoin.org/, controversial but worth understanding
+- **Gitcoin Passport (sybil resistance scoring)**, https://passport.gitcoin.co/
 
 ### Prediction Markets & Truth Markets
 
-- **Robin Hanson's Prediction Markets Page (the OG)** — https://mason.gmu.edu/~rhanson/ideafutures.html
-- **Robin Hanson: "Shall We Vote on Values, But Bet on Beliefs?"** — https://mason.gmu.edu/~rhanson/futarchy.html
-- **Polymarket (largest crypto prediction market)** — https://polymarket.com/
-- **Augur (decentralized prediction market protocol)** — https://augur.net/
-- **Augur Whitepaper** — https://augur.net/whitepaper.pdf
-- **UMA Optimistic Oracle ("true unless disputed" — closest to your challenge model)** — https://uma.xyz/
-- **UMA Docs on Optimistic Oracle** — https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work
-- **Gnosis (prediction market infra, now Gnosis Chain)** — https://www.gnosis.io/
-- **Metaculus (calibrated forecasting community)** — https://www.metaculus.com/
-- **Manifold Markets (play-money prediction markets)** — https://manifold.markets/
-- **a16z: Prediction Markets — Everything You Need to Know** — https://a16zcrypto.com/posts/podcast/prediction-markets-explained/
-- **Firinne Capital: Prediction Markets and Disinformation** — https://www.firinnecapital.com/blog/prediction-markets-and-the-age-of-disinformation
-- **Vitalik on Futarchy** — https://vitalik.eth.limo/general/2021/08/16/voting3.html
+- **Robin Hanson's Prediction Markets Page (the OG)**, https://mason.gmu.edu/~rhanson/ideafutures.html
+- **Robin Hanson: "Shall We Vote on Values, But Bet on Beliefs?"**, https://mason.gmu.edu/~rhanson/futarchy.html
+- **Polymarket (largest crypto prediction market)**, https://polymarket.com/
+- **Augur (decentralized prediction market protocol)**, https://augur.net/
+- **Augur Whitepaper**, https://augur.net/whitepaper.pdf
+- **UMA Optimistic Oracle ("true unless disputed", closest to your challenge model)**, https://uma.xyz/
+- **UMA Docs on Optimistic Oracle**, https://docs.uma.xyz/protocol-overview/how-does-umas-oracle-work
+- **Gnosis (prediction market infra, now Gnosis Chain)**, https://www.gnosis.io/
+- **Metaculus (calibrated forecasting community)**, https://www.metaculus.com/
+- **Manifold Markets (play-money prediction markets)**, https://manifold.markets/
+- **a16z: Prediction Markets, Everything You Need to Know**, https://a16zcrypto.com/posts/podcast/prediction-markets-explained/
+- **Firinne Capital: Prediction Markets and Disinformation**, https://www.firinnecapital.com/blog/prediction-markets-and-the-age-of-disinformation
+- **Vitalik on Futarchy**, https://vitalik.eth.limo/general/2021/08/16/voting3.html
 
 ### Reputation Systems & Mechanism Design
 
-- **Eigentrust (decentralized reputation algorithm)** — https://nlp.stanford.edu/pubs/kamvar03eigentrust.pdf
-- **Karma3Labs (on-chain reputation, EigenTrust-based)** — https://karma3labs.com/
-- **Lens Protocol (social graph + reputation)** — https://www.lens.xyz/
-- **Farcaster (decentralized social, reputation via engagement)** — https://www.farcaster.xyz/
-- **Coordinape (peer-based reputation + rewards)** — https://coordinape.com/
-- **SourceCred (contribution tracking + reputation)** — https://sourcecred.io/
-- **Token Engineering Academy (mechanism design courses)** — https://tokenengineering.net/
-- **Vitalik: Credible Neutrality** — https://nakamoto.com/credible-neutrality/
-- **Quadratic Voting Explained** — https://www.radicalxchange.org/concepts/plural-voting/
-- **Conviction Voting (time-weighted governance)** — https://medium.com/giveth/conviction-voting-a-novel-continuous-decision-making-alternative-to-governance-aa746cfb9475
+- **Eigentrust (decentralized reputation algorithm)**, https://nlp.stanford.edu/pubs/kamvar03eigentrust.pdf
+- **Karma3Labs (on-chain reputation, EigenTrust-based)**, https://karma3labs.com/
+- **Lens Protocol (social graph + reputation)**, https://www.lens.xyz/
+- **Farcaster (decentralized social, reputation via engagement)**, https://www.farcaster.xyz/
+- **Coordinape (peer-based reputation + rewards)**, https://coordinape.com/
+- **SourceCred (contribution tracking + reputation)**, https://sourcecred.io/
+- **Token Engineering Academy (mechanism design courses)**, https://tokenengineering.net/
+- **Vitalik: Credible Neutrality**, https://nakamoto.com/credible-neutrality/
+- **Quadratic Voting Explained**, https://www.radicalxchange.org/concepts/plural-voting/
+- **Conviction Voting (time-weighted governance)**, https://medium.com/giveth/conviction-voting-a-novel-continuous-decision-making-alternative-to-governance-aa746cfb9475
 
 ### Decentralized Storage (Where Articles Actually Live)
 
-- **IPFS (InterPlanetary File System)** — https://ipfs.tech/
-- **IPFS Documentation** — https://docs.ipfs.tech/
-- **Arweave (permanent storage, pay once)** — https://www.arweave.org/
-- **Arweave Docs** — https://docs.arweave.org/
-- **Filecoin (incentivized storage network)** — https://filecoin.io/
-- **Pinata (IPFS pinning service, easy API)** — https://www.pinata.cloud/
-- **Web3.Storage (free IPFS + Filecoin pinning)** — https://web3.storage/
-- **Ceramic Network (mutable data streams on IPFS)** — https://ceramic.network/
-- **Bundlr/Irys (Arweave upload tooling)** — https://irys.xyz/
+- **IPFS (InterPlanetary File System)**, https://ipfs.tech/
+- **IPFS Documentation**, https://docs.ipfs.tech/
+- **Arweave (permanent storage, pay once)**, https://www.arweave.org/
+- **Arweave Docs**, https://docs.arweave.org/
+- **Filecoin (incentivized storage network)**, https://filecoin.io/
+- **Pinata (IPFS pinning service, easy API)**, https://www.pinata.cloud/
+- **Web3.Storage (free IPFS + Filecoin pinning)**, https://web3.storage/
+- **Ceramic Network (mutable data streams on IPFS)**, https://ceramic.network/
+- **Bundlr/Irys (Arweave upload tooling)**, https://irys.xyz/
 
 ### Advertising & Attention Economics
 
-- **Basic Attention Token (BAT) Whitepaper** — https://basicattentiontoken.org/static-assets/documents/BasicAttentionTokenWhitePaper-4.pdf
-- **BAT / Brave Docs** — https://brave.com/brave-ads/
-- **Brave Browser** — https://brave.com/ — Chris, Sawyer, use this if you don't already
-- **Kachina: Private Smart Contracts (IOG paper)** — https://eprint.iacr.org/2020/543
-- **AdEx Network (decentralized ad exchange)** — https://www.adex.network/
-- **Permission.io (permissioned data sharing for ads)** — https://permission.io/
-- **Shoshana Zuboff: Surveillance Capitalism** — https://www.hachettebookgroup.com/titles/shoshana-zuboff/the-age-of-surveillance-capitalism/9781610395694/
-- **The Social Dilemma (Netflix doc)** — https://www.thesocialdilemma.com/
-- **Tim Wu: The Attention Merchants** — https://www.penguinrandomhouse.com/books/234876/the-attention-merchants-by-tim-wu/
+- **Basic Attention Token (BAT) Whitepaper**, https://basicattentiontoken.org/static-assets/documents/BasicAttentionTokenWhitePaper-4.pdf
+- **BAT / Brave Docs**, https://brave.com/brave-ads/
+- **Brave Browser**, https://brave.com/, Chris, Sawyer, use this if you don't already
+- **Kachina: Private Smart Contracts (IOG paper)**, https://eprint.iacr.org/2020/543
+- **AdEx Network (decentralized ad exchange)**, https://www.adex.network/
+- **Permission.io (permissioned data sharing for ads)**, https://permission.io/
+- **Shoshana Zuboff: Surveillance Capitalism**, https://www.hachettebookgroup.com/titles/shoshana-zuboff/the-age-of-surveillance-capitalism/9781610395694/
+- **The Social Dilemma (Netflix doc)**, https://www.thesocialdilemma.com/
+- **Tim Wu: The Attention Merchants**, https://www.penguinrandomhouse.com/books/234876/the-attention-merchants-by-tim-wu/
 
 ### Content Moderation & Curation Principles
 
-- **Santa Clara Principles (content moderation transparency)** — https://santaclaraprinciples.org/
-- **EFF: Content Moderation** — https://www.eff.org/issues/content-moderation
-- **Stanford Internet Observatory** — https://cyber.fsi.stanford.edu/io
-- **Techdirt: Content Moderation is Impossible** — https://www.techdirt.com/2019/11/20/masnicks-impossibility-theorem-content-moderation-scale-is-impossible-to-do-well/
-- **Mike Masnick: Protocols, Not Platforms** — https://knightcolumbia.org/content/protocols-not-platforms-a-technological-approach-to-free-speech — **read this one, it's foundational to what you're building**
-- **Bluesky AT Protocol (decentralized social, modular moderation)** — https://atproto.com/
-- **Nostr Protocol (censorship-resistant social)** — https://nostr.com/
-- **Mastodon / ActivityPub (federated social)** — https://joinmastodon.org/
+- **Santa Clara Principles (content moderation transparency)**, https://santaclaraprinciples.org/
+- **EFF: Content Moderation**, https://www.eff.org/issues/content-moderation
+- **Stanford Internet Observatory**, https://cyber.fsi.stanford.edu/io
+- **Techdirt: Content Moderation is Impossible**, https://www.techdirt.com/2019/11/20/masnicks-impossibility-theorem-content-moderation-scale-is-impossible-to-do-well/
+- **Mike Masnick: Protocols, Not Platforms**, https://knightcolumbia.org/content/protocols-not-platforms-a-technological-approach-to-free-speech, **read this one, it's foundational to what you're building**
+- **Bluesky AT Protocol (decentralized social, modular moderation)**, https://atproto.com/
+- **Nostr Protocol (censorship-resistant social)**, https://nostr.com/
+- **Mastodon / ActivityPub (federated social)**, https://joinmastodon.org/
 
 ### Journalism & Media Business Models
 
-- **WAN-IFRA World Press Trends 2024-2025** — https://wan-ifra.org/2025/01/world-press-trends-outlook-digital-growth-and-other-revenue-streams-steady-the-ship-for-publishers/
-- **Reuters Institute Digital News Report 2024** — https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2024
-- **Nieman Lab (future of journalism)** — https://www.niemanlab.org/
-- **Columbia Journalism Review** — https://www.cjr.org/
-- **Lenfest Institute (local news sustainability)** — https://www.lenfestinstitute.org/
-- **News Revenue Hub** — https://fundjournalism.org/
-- **Substack (newsletter economy case study)** — https://substack.com/
-- **Ghost (open-source publishing + memberships)** — https://ghost.org/ — good model to study
-- **Mirror.xyz (web3 publishing)** — https://mirror.xyz/
-- **Paragraph (web3 newsletters)** — https://paragraph.xyz/
-- **Civil (failed decentralized journalism — study why)** — https://joincivil.com/ (archived)
-- **Steemit / Hive (crypto social — study the problems)** — https://hive.io/
+- **WAN-IFRA World Press Trends 2024-2025**, https://wan-ifra.org/2025/01/world-press-trends-outlook-digital-growth-and-other-revenue-streams-steady-the-ship-for-publishers/
+- **Reuters Institute Digital News Report 2024**, https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2024
+- **Nieman Lab (future of journalism)**, https://www.niemanlab.org/
+- **Columbia Journalism Review**, https://www.cjr.org/
+- **Lenfest Institute (local news sustainability)**, https://www.lenfestinstitute.org/
+- **News Revenue Hub**, https://fundjournalism.org/
+- **Substack (newsletter economy case study)**, https://substack.com/
+- **Ghost (open-source publishing + memberships)**, https://ghost.org/, good model to study
+- **Mirror.xyz (web3 publishing)**, https://mirror.xyz/
+- **Paragraph (web3 newsletters)**, https://paragraph.xyz/
+- **Civil (failed decentralized journalism, study why)**, https://joincivil.com/ (archived)
+- **Steemit / Hive (crypto social, study the problems)**, https://hive.io/
 
 ### Consensus, Sidechains & Scalability
 
-- **Narwhal and Tusk Paper (high-throughput BFT)** — https://arxiv.org/abs/2105.11827
-- **Bullshark (improved DAG-based consensus)** — https://arxiv.org/abs/2201.05677
-- **Mithril (Cardano stake-based threshold sigs)** — https://mithril.network/
-- **Mithril Paper** — https://iohk.io/en/research/library/papers/mithril-stake-based-threshold-multisignatures/
-- **Hydra (Cardano L2, isomorphic state channels)** — https://hydra.family/
-- **Poltercast Paper (decentralized pub/sub)** — https://hal.science/hal-01555561/document
-- **Ouroboros (Cardano PoS consensus family)** — https://cardano.org/ouroboros/
-- **Logspace Mining / Non-Interactive Proofs of Work** — https://eprint.iacr.org/2021/623
+- **Narwhal and Tusk Paper (high-throughput BFT)**, https://arxiv.org/abs/2105.11827
+- **Bullshark (improved DAG-based consensus)**, https://arxiv.org/abs/2201.05677
+- **Mithril (Cardano stake-based threshold sigs)**, https://mithril.network/
+- **Mithril Paper**, https://iohk.io/en/research/library/papers/mithril-stake-based-threshold-multisignatures/
+- **Hydra (Cardano L2, isomorphic state channels)**, https://hydra.family/
+- **Poltercast Paper (decentralized pub/sub)**, https://hal.science/hal-01555561/document
+- **Ouroboros (Cardano PoS consensus family)**, https://cardano.org/ouroboros/
+- **Logspace Mining / Non-Interactive Proofs of Work**, https://eprint.iacr.org/2021/623
 
 ### Post-Quantum Cryptography (Future-Proofing)
 
-- **NIST Post-Quantum Standards (finalized 2024)** — https://www.nist.gov/pqcrypto
-- **FALCON (fast lattice-based signatures — Algorand's work)** — https://falcon-sign.info/
-- **CRYSTALS-Dilithium (NIST selected signature scheme)** — https://pq-crystals.org/dilithium/
-- **CRYSTALS-Kyber (NIST selected key encapsulation)** — https://pq-crystals.org/kyber/
-- **Signal Post-Quantum Protocol (PQXDH)** — https://signal.org/docs/specifications/pqxdh/
+- **NIST Post-Quantum Standards (finalized 2024)**, https://www.nist.gov/pqcrypto
+- **FALCON (fast lattice-based signatures, Algorand's work)**, https://falcon-sign.info/
+- **CRYSTALS-Dilithium (NIST selected signature scheme)**, https://pq-crystals.org/dilithium/
+- **CRYSTALS-Kyber (NIST selected key encapsulation)**, https://pq-crystals.org/kyber/
+- **Signal Post-Quantum Protocol (PQXDH)**, https://signal.org/docs/specifications/pqxdh/
 
 ### Encrypted Messaging (DM Layer)
 
-- **Signal Protocol Specification** — https://signal.org/docs/
-- **Signal Double Ratchet Algorithm** — https://signal.org/docs/specifications/doubleratchet/
-- **Matrix Protocol (decentralized encrypted messaging)** — https://matrix.org/
-- **XMTP (web3 messaging protocol)** — https://xmtp.org/
-- **Waku (decentralized messaging for web3, Status)** — https://waku.org/
+- **Signal Protocol Specification**, https://signal.org/docs/
+- **Signal Double Ratchet Algorithm**, https://signal.org/docs/specifications/doubleratchet/
+- **Matrix Protocol (decentralized encrypted messaging)**, https://matrix.org/
+- **XMTP (web3 messaging protocol)**, https://xmtp.org/
+- **Waku (decentralized messaging for web3, Status)**, https://waku.org/
 
 ### NFTs, Digital IP & Content Ownership
 
-- **ERC-721 Standard (NFT spec)** — https://eips.ethereum.org/EIPS/eip-721
-- **ERC-1155 (multi-token standard)** — https://eips.ethereum.org/EIPS/eip-1155
-- **ERC-6551 (token-bound accounts — NFTs that own things)** — https://eips.ethereum.org/EIPS/eip-6551
-- **Zora (NFT marketplace + minting protocol)** — https://zora.co/
-- **Creative Commons Licenses** — https://creativecommons.org/licenses/ — important for article licensing models
-- **Lit Protocol (decentralized access control + encryption)** — https://litprotocol.com/
-- **Story Protocol (programmable IP on-chain)** — https://www.storyprotocol.xyz/
+- **ERC-721 Standard (NFT spec)**, https://eips.ethereum.org/EIPS/eip-721
+- **ERC-1155 (multi-token standard)**, https://eips.ethereum.org/EIPS/eip-1155
+- **ERC-6551 (token-bound accounts, NFTs that own things)**, https://eips.ethereum.org/EIPS/eip-6551
+- **Zora (NFT marketplace + minting protocol)**, https://zora.co/
+- **Creative Commons Licenses**, https://creativecommons.org/licenses/, important for article licensing models
+- **Lit Protocol (decentralized access control + encryption)**, https://litprotocol.com/
+- **Story Protocol (programmable IP on-chain)**, https://www.storyprotocol.xyz/
 
 ### DAO Governance & Organizational Design
 
-- **Aragon (DAO framework)** — https://aragon.org/
-- **Snapshot (off-chain governance voting)** — https://snapshot.org/
-- **Tally (on-chain governance dashboard)** — https://www.tally.xyz/
-- **Compound Governor (governance smart contract standard)** — https://docs.compound.finance/v2/governance/
-- **Optimism Collective (bicameral governance model)** — https://community.optimism.io/docs/governance/
-- **Gitcoin (quadratic funding for public goods)** — https://www.gitcoin.co/
-- **MolochDAO (grant-giving DAO, simple design)** — https://molochdao.com/
+- **Aragon (DAO framework)**, https://aragon.org/
+- **Snapshot (off-chain governance voting)**, https://snapshot.org/
+- **Tally (on-chain governance dashboard)**, https://www.tally.xyz/
+- **Compound Governor (governance smart contract standard)**, https://docs.compound.finance/v2/governance/
+- **Optimism Collective (bicameral governance model)**, https://community.optimism.io/docs/governance/
+- **Gitcoin (quadratic funding for public goods)**, https://www.gitcoin.co/
+- **MolochDAO (grant-giving DAO, simple design)**, https://molochdao.com/
 
 ### Charles Hoskinson's Whiteboard Video (The Direct Inspiration)
 
-- **"How to Build a Decentralized Twitter" — Charles Hoskinson (Nov 2022)** — https://www.youtube.com/watch?v=rqxGMJSJYT0 — **Watch this first if you haven't. The entire veracity bond / prediction market / DID / pub-sub / programmable curation / BAT-style advertising token model in this doc traces back to this whiteboard session.**
+- **"How to Build a Decentralized Twitter", Charles Hoskinson (Nov 2022)**, https://www.youtube.com/watch?v=rqxGMJSJYT0, **Watch this first if you haven't. The entire veracity bond / prediction market / DID / pub-sub / programmable curation / BAT-style advertising token model in this doc traces back to this whiteboard session.**
 
 ### Books Worth Reading
 
-- **"The Age of Surveillance Capitalism" — Shoshana Zuboff** — How engagement algorithms weaponize human behavior
-- **"The Attention Merchants" — Tim Wu** — History of the attention economy
-- **"Radical Markets" — Glen Weyl & Eric Posner** — Quadratic voting, mechanism design for public goods
-- **"Cryptoeconomics" — Eric Voskuil** — Deep dive on crypto incentive structures
-- **"The Sovereign Individual" — Davidson & Rees-Mogg** — Macro vision of decentralized futures
-- **"Governing the Commons" — Elinor Ostrom** — Nobel-winning work on how communities manage shared resources without central authority — directly relevant to governance design
-- **"Skin in the Game" — Nassim Nicholas Taleb** — The philosophical backbone of veracity bonds: people should have consequences for their claims
+- **"The Age of Surveillance Capitalism", Shoshana Zuboff**, How engagement algorithms weaponize human behavior
+- **"The Attention Merchants", Tim Wu**, History of the attention economy
+- **"Radical Markets", Glen Weyl & Eric Posner**, Quadratic voting, mechanism design for public goods
+- **"Cryptoeconomics", Eric Voskuil**, Deep dive on crypto incentive structures
+- **"The Sovereign Individual", Davidson & Rees-Mogg**, Macro vision of decentralized futures
+- **"Governing the Commons", Elinor Ostrom**, Nobel-winning work on how communities manage shared resources without central authority, directly relevant to governance design
+- **"Skin in the Game", Nassim Nicholas Taleb**, The philosophical backbone of veracity bonds: people should have consequences for their claims
 
 ---
 
-> **Chris & Sawyer** — this is a LOT of material. Don't try to eat the elephant whole. John's recommendation: start with the Hoskinson whiteboard video, the Midnight docs + bulletin board example, the UMA Optimistic Oracle docs, and "Protocols Not Platforms" by Mike Masnick. Those four things will give you the conceptual + technical foundation to start building. Everything else is for when you go deeper into a specific subsystem. We're here if you need us. Let's build something that matters. — John & Penny
+> **Chris & Sawyer**, this is a LOT of material. Don't try to eat the elephant whole. John's recommendation: start with the Hoskinson whiteboard video, the Midnight docs + bulletin board example, the UMA Optimistic Oracle docs, and "Protocols Not Platforms" by Mike Masnick. Those four things will give you the conceptual + technical foundation to start building. Everything else is for when you go deeper into a specific subsystem. We're here if you need us. Let's build something that matters., John & Penny
 
 ---
 

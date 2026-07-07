@@ -1,4 +1,4 @@
-# DIDz.io × SelectConnect — Identity-Powered Contact Sharing
+# DIDz.io × SelectConnect, Identity-Powered Contact Sharing
 
 *How DIDz.io's decentralized identity foundation transforms SelectConnect from a standalone contact sharing protocol into a universal privacy-preserving connection layer for the entire ecosystem.*
 
@@ -8,9 +8,9 @@
 
 ## Why DIDz + SelectConnect Is a Force Multiplier
 
-**DIDz.io** provides the *identity layer* — who you are, what you can prove about yourself, and who verified you.
+**DIDz.io** provides the *identity layer*, who you are, what you can prove about yourself, and who verified you.
 
-**SelectConnect** provides the *connection layer* — how you share that identity with others, under what conditions, with what protections.
+**SelectConnect** provides the *connection layer*, how you share that identity with others, under what conditions, with what protections.
 
 Separately, each is useful. Together, they create something neither can do alone: **privacy-preserving, economically-accountable, credential-verified contact sharing.**
 
@@ -36,7 +36,7 @@ Recipient → Posts bond → Progressive reveal includes ZK-VERIFIED credentials
                                           DIDz.io proves this is real
 ```
 
-**Now the recipient knows**: The person they're connecting with has cryptographically verified credentials — not just a claim, but a ZK proof.
+**Now the recipient knows**: The person they're connecting with has cryptographically verified credentials, not just a claim, but a ZK proof.
 
 ---
 
@@ -67,7 +67,7 @@ DIDz Wallet                          SelectConnect Card
 └────────────────────┘               └─────────────────────────────┘
 ```
 
-**The recipient sees verified badges at each level** — not just raw text, but ZK-proven assertions from the DIDz Trust Triangle (Holder → Trusted Issuer → Verifier).
+**The recipient sees verified badges at each level**, not just raw text, but ZK-proven assertions from the DIDz Trust Triangle (Holder → Trusted Issuer → Verifier).
 
 ### Contract-Level Integration
 
@@ -105,7 +105,7 @@ export circuit accessVerifiedLevel(
 
 | DIDz Feature | SelectConnect Enhancement |
 |-------------|--------------------------|
-| **ZKQueries** (age, KYC, residency) | Verified badges on card — "Over 21 ✓", "KYC Passed ✓" |
+| **ZKQueries** (age, KYC, residency) | Verified badges on card, "Over 21 ✓", "KYC Passed ✓" |
 | **Rescindable credentials** | If a credential is revoked, the card level auto-invalidates |
 | **Trusted Issuer attestations** | Recipients know credentials were verified by real institutions |
 | **Hierarchical wallet** | Card creator picks which folders/credentials to project into each level |
@@ -117,7 +117,7 @@ export circuit accessVerifiedLevel(
 | SelectConnect Feature | DIDz Enhancement |
 |----------------------|-----------------|
 | **Progressive reveal** | DIDz credentials shared incrementally, not all-or-nothing |
-| **Abuse bonds** | Economic cost to request someone's credentials — prevents mass harvesting |
+| **Abuse bonds** | Economic cost to request someone's credentials, prevents mass harvesting |
 | **Revocable access links** | Card creator can cut off a verifier's access to their DIDz credentials |
 | **Pseudonymous tracking** | Track repeat credential requesters without revealing their identity |
 | **Time-limited access** | Credentials shared for a conference expire when the event ends |
@@ -137,7 +137,7 @@ A professional at a tech conference creates a DIDz-powered SelectConnect card:
 - **Level 3 (5 ADA bond)**: Email + "Works at [FAANG] ✓" (DIDz-verified employer)
 - **Level 4 (10 ADA bond)**: Phone + full verified professional profile
 
-The recipient sees **cryptographic verification badges** — not just claims. And the bond ensures only serious contacts invest in reaching higher levels.
+The recipient sees **cryptographic verification badges**, not just claims. And the bond ensures only serious contacts invest in reaching higher levels.
 
 ### 2. Dating (SouLink Integration)
 
@@ -166,7 +166,7 @@ A doctor shares their credentials with a new patient:
 - **Level 2**: Specialty + hospital affiliation ✓
 - **Level 3**: Direct contact for follow-up
 
-Patient knows the doctor is real and currently licensed — not just someone who claims to be.
+Patient knows the doctor is real and currently licensed, not just someone who claims to be.
 
 ---
 
@@ -185,7 +185,7 @@ Cross-context privacy preserved:
 • Conference reputation ≠ visible on dating
 • Dating reputation ≠ visible at work
 • But DIDz can prove: "This person has a clean record across ALL contexts"
-  (ZK proof — no details revealed, just the aggregate assertion)
+  (ZK proof, no details revealed, just the aggregate assertion)
 ```
 
 ---
@@ -196,12 +196,12 @@ These circuits could live in a shared DIDz × SelectConnect library:
 
 ```
 Shared Identity-Contact Circuits
-├── verifyCredentialForLevel()     — Check DIDz credential is valid for this reveal level
-├── bindCardToDID()                — Cryptographically link a SelectConnect card to a DIDz identity
-├── proveCleanReputation()         — ZK proof of clean SelectConnect reputation across contexts
-├── revokeCardOnCredentialRevoke() — Auto-invalidate card when DIDz credential is rescinded
-├── portableReputationProof()      — Prove aggregate reputation without revealing per-context details
-└── biometricCardBinding()         — Bind card to KYCz biometric liveness (anti-catfish)
+├── verifyCredentialForLevel()    , Check DIDz credential is valid for this reveal level
+├── bindCardToDID()               , Cryptographically link a SelectConnect card to a DIDz identity
+├── proveCleanReputation()        , ZK proof of clean SelectConnect reputation across contexts
+├── revokeCardOnCredentialRevoke(), Auto-invalidate card when DIDz credential is rescinded
+├── portableReputationProof()     , Prove aggregate reputation without revealing per-context details
+└── biometricCardBinding()        , Bind card to KYCz biometric liveness (anti-catfish)
 ```
 
 ---

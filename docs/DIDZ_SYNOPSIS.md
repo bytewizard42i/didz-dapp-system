@@ -1,6 +1,6 @@
-# The DIDz DApp System — What We're Building and Why It Matters
+# The DIDz DApp System, What We're Building and Why It Matters
 
-**Author**: John Santi (bytewizard42i) — Founder, EnterpriseZK Labs  
+**Author**: John Santi (bytewizard42i), Founder, EnterpriseZK Labs  
 **Credentials**: Midnight NightForce Bravo | Midnight Academy Triple Certified | Cardano Certified Blockchain Associate | Emurgo Certified Blockchain Business Consultant | Midnight Ambassador | Midnight Aliit (inactive)  
 **With**: Penny 🎀, Alice 🌟, Cassie 💜, Casie 🌙, Cara ✨  
 **Date**: March 2, 2026
@@ -11,7 +11,7 @@
 
 Every day, billions of people are forced to hand over their most sensitive personal information just to prove simple facts about themselves.
 
-- A 22-year-old shows her full driver's license — name, address, date of birth, license number — just to buy a bottle of wine.
+- A 22-year-old shows her full driver's license, name, address, date of birth, license number, just to buy a bottle of wine.
 - A voter reveals their entire identity to prove they're a citizen over 18.
 - A hospital asks for a patient's full background just to check a single compliance question.
 - A bank photocopies your passport and stores it in a database that will eventually be breached.
@@ -34,7 +34,7 @@ The **DIDz DApp System** is a privacy-preserving digital identity platform where
 - An election poll agent asks: *"Is this person a legal citizen, over 18, and not a felon?"* → **Yes.** Three facts confirmed in one instant. Zero personal data exposed.
 - A hospital asks: *"Has this person passed a background check?"* → **Yes.** No records, no paperwork, no liability.
 
-The verifier learns exactly what they need to know — **nothing more, nothing less** — and the answer is **mathematically guaranteed to be correct.** Not "probably correct." Not "we checked a database." Cryptographically, provably, irrevocably correct.
+The verifier learns exactly what they need to know, **nothing more, nothing less**, and the answer is **mathematically guaranteed to be correct.** Not "probably correct." Not "we checked a database." Cryptographically, provably, irrevocably correct.
 
 ---
 
@@ -43,15 +43,15 @@ The verifier learns exactly what they need to know — **nothing more, nothing l
 The DIDz DApp System has three roles:
 
 ### 1. The Holder (You)
-You create a pseudonymous digital identity — a **DIDz** — that's bound to you through biometrics (fingerprint, face scan, pulse/ox). Your private data (name, DOB, address, credentials) is stored in **encrypted private state** on the Midnight blockchain. No one can see it. No one can access it. Not even us.
+You create a pseudonymous digital identity, a **DIDz**, that's bound to you through biometrics (fingerprint, face scan, pulse/ox). Your private data (name, DOB, address, credentials) is stored in **encrypted private state** on the Midnight blockchain. No one can see it. No one can access it. Not even us.
 
-**There is exactly one type of DIDz.** The same identity primitive serves every subject: humans (biometric binding), organizations, AI agents (via AgenticDID delegation), animals, and real-world assets (via custodians — microchip, RFID, serial number, or cryptographic anchor, with a human or organization holding the wallet on the subject's behalf). What differs is never the DIDz itself, only the **credential types** attached to it (immutable vs. rescindable) and the binding method. One primitive, infinite subjects.
+**There is exactly one type of DIDz.** The same identity primitive serves every subject: humans (biometric binding), organizations, AI agents (via AgenticDID delegation), animals, and real-world assets (via custodians, microchip, RFID, serial number, or cryptographic anchor, with a human or organization holding the wallet on the subject's behalf). What differs is never the DIDz itself, only the **credential types** attached to it (immutable vs. rescindable) and the binding method. One primitive, infinite subjects.
 
 ### 2. The Trusted Issuer (DMV, Bank, Hospital, Government...)
-Trusted institutions verify your identity the traditional way — scan your license, check your passport, verify your bank account — and then **attest** to those facts on-chain. But here's the key: they don't store your data. They cryptographically sign that they verified it, and that signature lives in your private state. You carry the proof. They carry nothing.
+Trusted institutions verify your identity the traditional way, scan your license, check your passport, verify your bank account, and then **attest** to those facts on-chain. But here's the key: they don't store your data. They cryptographically sign that they verified it, and that signature lives in your private state. You carry the proof. They carry nothing.
 
 ### 3. The Verifier (Liquor Store, Employer, Voting Booth, Exchange...)
-Verifiers ask **ZKQueries** — zero-knowledge questions that return only yes or no. They never see the underlying data. They never store anything. They get a mathematically certain answer in seconds, and the interaction is completely private and unlinkable.
+Verifiers ask **ZKQueries**, zero-knowledge questions that return only yes or no. They never see the underlying data. They never store anything. They get a mathematically certain answer in seconds, and the interaction is completely private and unlinkable.
 
 ---
 
@@ -59,11 +59,11 @@ Verifiers ask **ZKQueries** — zero-knowledge questions that return only yes or
 
 This isn't a whitepaper concept. This is real, compiled, deployed technology.
 
-**Built on Midnight** — the privacy blockchain from the Cardano ecosystem. Midnight uses zero-knowledge proofs at the protocol level, meaning privacy isn't an add-on; it's the foundation.
+**Built on Midnight**, the privacy blockchain from the Cardano ecosystem. Midnight uses zero-knowledge proofs at the protocol level, meaning privacy isn't an add-on; it's the foundation.
 
-**Powered by Hyperledger Identus** — the open-source decentralized identity framework. DIDz identities follow W3C DID standards with anonymous credential (anon-cred) functionality.
+**Powered by Hyperledger Identus**, the open-source decentralized identity framework. DIDz identities follow W3C DID standards with anonymous credential (anon-cred) functionality.
 
-**Compiler-Verified Contracts** — Our KYCz Anchor contract compiles to 7 real ZK circuits on Compact v0.29.0:
+**Compiler-Verified Contracts**, Our KYCz Anchor contract compiles to 7 real ZK circuits on Compact v0.29.0:
 
 | Circuit | What It Proves |
 |---------|---------------|
@@ -88,13 +88,13 @@ These aren't simulations. These are real zero-knowledge circuits that generate r
 
 ### For Businesses
 - **Instant verification.** No manual ID checks, no background check delays, no paperwork.
-- **Zero liability.** You never touch, store, or process personal data — so you can't leak it.
+- **Zero liability.** You never touch, store, or process personal data, so you can't leak it.
 - **Revenue generation.** Trusted Issuers and Verifiers earn revenue for each verification call.
-- **Regulatory compliance.** GDPR, CCPA, KYC/AML — all satisfied without the usual data handling burden.
+- **Regulatory compliance.** GDPR, CCPA, KYC/AML, all satisfied without the usual data handling burden.
 
 ### For Governments
 - **Eliminate fraud.** Biometric binding (one fingerprint per DIDz) makes Sybil attacks and identity fraud mathematically impossible.
-- **Modernize services.** Voting, benefits, licensing — all verifiable in seconds with zero PII exposure.
+- **Modernize services.** Voting, benefits, licensing, all verifiable in seconds with zero PII exposure.
 - **Protect citizens.** No more centralized databases that become targets for nation-state hackers.
 
 ### For the World
@@ -106,11 +106,11 @@ These aren't simulations. These are real zero-knowledge circuits that generate r
 
 ## The Ecosystem
 
-DIDz.io is the **foundation layer** — the bedrock that every other product builds upon:
+DIDz.io is the **foundation layer**, the bedrock that every other product builds upon:
 
 | Product | Purpose | How It Uses DIDz |
 |---------|---------|-----------------|
-| **KYCz** | Identityless KYC verification | The no-frills base layer — proves KYC compliance without revealing identity |
+| **KYCz** | Identityless KYC verification | The no-frills base layer, proves KYC compliance without revealing identity |
 | **AgenticDID.io** | AI Agent identities | Extends DIDz for autonomous AI agents with delegation and trust chains |
 | **ProMingle.net** | Decentralized professional networking | DIDz-verified professional credentials and privacy-preserving connections |
 | **SouLink.me** | Social identity linking | DIDz-powered cross-platform identity verification |
@@ -122,13 +122,13 @@ DIDz.io is the **foundation layer** — the bedrock that every other product bui
 
 Every one of these products inherits the privacy guarantees of DIDz. Build once, verify everywhere.
 
-**Architecture plan (updated July 2026)** — the layered stack:
+**Architecture plan (updated July 2026)**, the layered stack:
 
-1. **Midnight Passport** (IOG/ARC) as the account/custody/naming *substrate* — we track and align with it rather than reinvent seedless onboarding.
-2. **DIDz** as the hierarchical privacy wallet and ZKQuery layer — one DIDz type, folderized credentials, RWA latitude built in from day one (equineProData, petProData, and helixchain are the first asset verticals).
-3. **AgenticDID** as the delegation layer — designed in from the start, not bolted on. Its scoped-grant engine is compiled and its protocol spec is being prepared for proposal to the Decentralized Identity Foundation as the privacy-preserving delegation profile of the agentic identity stack (see `AgenticDID/docs/DIF_STANDARDIZATION_PLAN.md`).
+1. **Midnight Passport** (IOG/ARC) as the account/custody/naming *substrate*, we track and align with it rather than reinvent seedless onboarding.
+2. **DIDz** as the hierarchical privacy wallet and ZKQuery layer, one DIDz type, folderized credentials, RWA latitude built in from day one (equineProData, petProData, and helixchain are the first asset verticals).
+3. **AgenticDID** as the delegation layer, designed in from the start, not bolted on. Its scoped-grant engine is compiled and its protocol spec is being prepared for proposal to the Decentralized Identity Foundation as the privacy-preserving delegation profile of the agentic identity stack (see `AgenticDID/docs/DIF_STANDARDIZATION_PLAN.md`).
 
-Interfaces follow open standards (W3C DID/VC, DIF Presentation Exchange, did:peer pairwise semantics) so any standards-compliant wallet or verifier interoperates — the zero-knowledge machinery stays under the hood.
+Interfaces follow open standards (W3C DID/VC, DIF Presentation Exchange, did:peer pairwise semantics) so any standards-compliant wallet or verifier interoperates, the zero-knowledge machinery stays under the hood.
 
 ---
 
@@ -140,7 +140,7 @@ Traditional identity systems were designed in an era when the biggest threat was
 
 DIDz doesn't fix the old model. **It replaces it.**
 
-With zero-knowledge proofs, a person can prove any fact about themselves — their age, their citizenship, their credentials, their compliance status — without revealing who they are. The math guarantees the answer is correct. The blockchain guarantees it can't be tampered with. The architecture guarantees that no one — not the verifier, not the issuer, not even EnterpriseZK — can see the underlying data.
+With zero-knowledge proofs, a person can prove any fact about themselves, their age, their citizenship, their credentials, their compliance status, without revealing who they are. The math guarantees the answer is correct. The blockchain guarantees it can't be tampered with. The architecture guarantees that no one, not the verifier, not the issuer, not even EnterpriseZK, can see the underlying data.
 
 **This is what "privacy by design" actually looks like when you have the cryptography to back it up.**
 
@@ -152,5 +152,5 @@ That's not a tagline. That's the plan.
 
 ---
 
-*EnterpriseZK Labs LLC — [didz.io](https://didz.io) — [enterprisezk.com](https://enterprisezk.com)*  
+*EnterpriseZK Labs LLC, [didz.io](https://didz.io), [enterprisezk.com](https://enterprisezk.com)*  
 *Built on Midnight. Powered by Cardano. Protected by zero-knowledge cryptography.*

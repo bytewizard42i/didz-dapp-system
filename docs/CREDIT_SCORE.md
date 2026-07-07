@@ -4,7 +4,7 @@
 **Status**: Design (contract additions validate via Midnight MCP before coding)
 **Canonical cross-repo spec**: `CryptoSure-me-app/docs/DIDZ_CREDIT_SCORE.md`
 
-DIDz is the **source of truth** for the ecosystem-wide **credit score** — a
+DIDz is the **source of truth** for the ecosystem-wide **credit score**, a
 privacy-preserving reputation signal that other products (CryptoSure, AgenticDID, RWAz)
 consume in zero knowledge. This formalizes the existing **Trust Score** oracle pattern
 (`docs/ORACLE_AND_API_INTEGRATION.md` §4) into a reusable, attested score.
@@ -71,5 +71,5 @@ Registered high-assurance oracle only; freshness windows defeat stale-score repl
 ## 6. Freshness
 
 `issuedAt` is committed and checked in ZK against a verifier-side window (mirrors DIDz POL
-freshness). A stale score is rejected — conduct declines eventually lower coverage/raise
+freshness). A stale score is rejected, conduct declines eventually lower coverage/raise
 premiums when re-scored.

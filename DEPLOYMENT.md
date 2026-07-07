@@ -1,4 +1,4 @@
-# DIDz.io — Deployment Guide
+# DIDz.io, Deployment Guide
 
 **Product role**: Foundational identity layer. Every DIDzMonolith product eventually consumes DIDz attestations, so DIDz.io is the first DApp to go live.
 **Current status**: Contracts shipped (`c5380f4`). DApp not yet scaffolded.
@@ -14,15 +14,15 @@ See the master roadmap at `PixyPi/DEPLOYMENT_ROADMAP.md` for ecosystem-wide patt
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │ Vercel (free)                                                   │
-│  ─ didz.io / didz-io.vercel.app — registration + attestation UI │
+│  ─ didz.io / didz-io.vercel.app, registration + attestation UI │
 └───────────────────┬─────────────────────────────────────────────┘
                     │ HTTPS
                     ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│ VPS (Hostinger KVM, Railway, Fly.io) — est. $5-15/mo           │
+│ VPS (Hostinger KVM, Railway, Fly.io), est. $5-15/mo           │
 │  ─ proof-server       :6300  (Docker, pre-baked ZK params)     │
 │  ─ identity-provider  :3000  (Node: Schnorr-sign credentials)  │
-│  ─ indexer            :8088  (optional — watches for new DIDs) │
+│  ─ indexer            :8088  (optional, watches for new DIDs) │
 └───────────────────┬─────────────────────────────────────────────┘
                     │ WebSocket
                     ▼
@@ -42,7 +42,7 @@ DIDz-io/
 ├── turbo.json                      # compact → build → typecheck → test → lint
 ├── package.json                    # Yarn 4 workspaces, root SDK deps
 ├── undeployed-compose.yml          # Local proof-server + indexer + node
-├── contracts/                      # ✅ Existing — DIDzRegistry + TrustedIssuerRegistry .compact
+├── contracts/                      # ✅ Existing, DIDzRegistry + TrustedIssuerRegistry .compact
 ├── didz-contract/                  # TS bindings + Vitest simulators
 │   ├── src/
 │   │   ├── witnesses.ts
@@ -85,7 +85,7 @@ DIDz-io/
 }
 ```
 
-**Do NOT copy Brick Towers' `midnight-identity` `package.json` verbatim** — they're on the older `midnight-js 0.2.5` series which is now outdated. Use the versions above instead. Brick Towers' repo is still useful for **architecture**, just not for SDK version pins.
+**Do NOT copy Brick Towers' `midnight-identity` `package.json` verbatim**, they're on the older `midnight-js 0.2.5` series which is now outdated. Use the versions above instead. Brick Towers' repo is still useful for **architecture**, just not for SDK version pins.
 
 ---
 
@@ -110,13 +110,13 @@ npx turbo run build       # Build all workspaces
 
 ### Dev loop
 ```bash
-# Terminal 1 — UI with hot reload
+# Terminal 1, UI with hot reload
 yarn workspace didz-ui dev              # http://localhost:5173
 
-# Terminal 2 — Identity provider API
+# Terminal 2, Identity provider API
 yarn workspace identity-provider-api dev # http://localhost:3000
 
-# Terminal 3 — (optional) watch contracts for changes
+# Terminal 3, (optional) watch contracts for changes
 yarn workspace didz-contract test:watch
 ```
 
@@ -143,7 +143,7 @@ The UI loads `/public/config.json` at startup. Example for testnet:
 }
 ```
 
-Swap `config.json` per environment — no rebuild required. Vercel supports this via per-environment deployments or edge middleware.
+Swap `config.json` per environment, no rebuild required. Vercel supports this via per-environment deployments or edge middleware.
 
 ---
 
@@ -162,7 +162,7 @@ Swap `config.json` per environment — no rebuild required. Vercel supports this
 5. First deploy builds and issues a `didz-io.vercel.app` URL
 
 ### Custom domain (didz.io)
-1. Buy `didz.io` — Hostinger's registrar is fine (just the domain, not hosting)
+1. Buy `didz.io`, Hostinger's registrar is fine (just the domain, not hosting)
 2. Vercel Dashboard → Domains → Add
 3. Update Hostinger DNS per Vercel's instructions (CNAME `@` → `cname.vercel-dns.com`)
 4. Vercel auto-provisions Let's Encrypt SSL
@@ -171,7 +171,7 @@ Swap `config.json` per environment — no rebuild required. Vercel supports this
 
 ## Deploying the Backend (Proof Server + IDP API)
 
-### Option A — Railway.app (easiest, ~$5/mo)
+### Option A, Railway.app (easiest, ~$5/mo)
 
 **Proof server:**
 1. Fork `bricktowers/midnight-proof-server` (or use their image directly)
@@ -185,7 +185,7 @@ Swap `config.json` per environment — no rebuild required. Vercel supports this
 3. Set env vars: `PROVIDER_SECRET_KEY`, `PROVIDER_ID`
 4. CNAME `idp.didz.io` → that Railway URL
 
-### Option B — Hostinger KVM VPS ($4.49/mo)
+### Option B, Hostinger KVM VPS ($4.49/mo)
 
 ```bash
 # On the VPS after ssh:
@@ -229,9 +229,9 @@ systemctl reload caddy
 
 ## Known Constraints
 
-- **Lace Wallet** does NOT expose a sign-message API. We handle this the same way Brick Towers does — users generate a local signing key pair, register its pubkey in the `SignatureRegistry` contract, and sign off-chain messages with the local key. The contract verifies the signature + the pubkey registration.
+- **Lace Wallet** does NOT expose a sign-message API. We handle this the same way Brick Towers does, users generate a local signing key pair, register its pubkey in the `SignatureRegistry` contract, and sign off-chain messages with the local key. The contract verifies the signature + the pubkey registration.
 - **ZK params are 3 GB**. Pre-bake them into the proof-server Docker image; don't rely on runtime download (it fails intermittently).
-- **Proof generation takes 3-30 seconds per TX**. Vercel's serverless functions are not suitable for proof generation — always proxy to a stateful VPS-hosted proof server.
+- **Proof generation takes 3-30 seconds per TX**. Vercel's serverless functions are not suitable for proof generation, always proxy to a stateful VPS-hosted proof server.
 
 ---
 

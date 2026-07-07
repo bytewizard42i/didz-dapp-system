@@ -1,8 +1,8 @@
-# DIDz.io DApp Scaffold — Phase 1 Status
+# DIDz.io DApp Scaffold, Phase 1 Status
 
 **Created**: Apr 17, 2026 by Penny 🎀
 **Reference architecture**: `bricktowers/midnight-identity` (layout) + `midnightntwrk/example-zkloan` (SDK versions)
-**Status**: Scaffold in progress — root config and `didz-api`/`didz-contract`/`didz-ui`/`identity-provider-api` workspace stubs.
+**Status**: Scaffold in progress, root config and `didz-api`/`didz-contract`/`didz-ui`/`identity-provider-api` workspace stubs.
 
 See `DEPLOYMENT.md` for production deployment plan and `docs/FI_STANDARDS_APPLIED_TO_DIDZ.md` for the protocol rules this scaffold encodes.
 

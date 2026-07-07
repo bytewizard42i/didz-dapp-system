@@ -16,7 +16,7 @@
 
 ---
 
-## Segment 1 — Dynamic intent shaping scope
+## Segment 1, Dynamic intent shaping scope
 
 **John:** "This machine too, is it dynamic in the sense that if I have my local
 agent and I tell it what I want, I give it my intent, that can limit the scope of
@@ -57,7 +57,7 @@ John. If you ever need anything else, you know where to find me! -Alice
 
 ---
 
-## Segment 2 — One entity, one DID; permanent identity vs revocable authority
+## Segment 2, One entity, one DID; permanent identity vs revocable authority
 
 **Alice:** John, I'll answer this as a protocol-design question, but I'm going to
 verify the DID-standard wording so the recommendation lines up with existing DID
@@ -183,7 +183,7 @@ and issue a corrected one, but you keep the record showing exactly what happened
 
 ---
 
-## Segment 3 — DIDZ as the universal top layer (humans, RWAs, governments)
+## Segment 3, DIDZ as the universal top layer (humans, RWAs, governments)
 
 **John:** "A DIDz for a human must expire after x years (they die) be rendered
 Null for voting and other activities. How do we address this? how do we make the
@@ -345,7 +345,7 @@ identity persists, but credentials and authority expire or revoke. -Alice
 
 ---
 
-## Segment 4 — Proof of life before voting; request for full write-up
+## Segment 4, Proof of life before voting; request for full write-up
 
 **John:** "maybe we could require a proof of life before voting for a DIDz voting.
 please make a full writeup for both the architecture and information in this whole

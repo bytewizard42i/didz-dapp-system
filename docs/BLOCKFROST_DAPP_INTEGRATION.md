@@ -1,4 +1,4 @@
-# Blockfrost Midnight — DApp Integration for DIDz Identity Products
+# Blockfrost Midnight, DApp Integration for DIDz Identity Products
 
 **Source**: https://docs.blockfrost.io/midnight/
 **Date**: April 21, 2026
@@ -28,13 +28,13 @@ const NETWORK = 'preprod'; // or 'mainnet', 'preview'
 const PROJECT_ID = process.env.BLOCKFROST_MIDNIGHT_PROJECT_ID;
 
 const providerConfig = {
-  // For midnight.js SDK — contract deployment & tx submission
+  // For midnight.js SDK, contract deployment & tx submission
   nodeRpcUrl: `https://rpc.midnight-${NETWORK}.blockfrost.io?project_id=${PROJECT_ID}`,
 
-  // For contract state queries — GraphQL
+  // For contract state queries, GraphQL
   indexerUrl: `https://midnight-${NETWORK}.blockfrost.io/api/v0?project_id=${PROJECT_ID}`,
 
-  // For real-time subscriptions — WebSocket
+  // For real-time subscriptions, WebSocket
   indexerWsUrl: `wss://midnight-${NETWORK}.blockfrost.io/api/v0/ws?project_id=${PROJECT_ID}`,
 };
 ```
@@ -111,7 +111,7 @@ const connectResult = await fetch(indexerUrl, {
 const sessionId = (await connectResult.json()).data.connect;
 
 // Step 2: Subscribe to shielded transactions
-// (via WebSocket — see WebSocket examples in monolith-docs)
+// (via WebSocket, see WebSocket examples in monolith-docs)
 
 // Step 3: Disconnect when done
 await fetch(indexerUrl, {
@@ -131,31 +131,31 @@ await fetch(indexerUrl, {
 ## 5. Per-Product Usage
 
 ### DIDz-io (Trust Registry)
-- `contractAction` — query Trust Registry contract state
-- `contractActions` subscription — watch for new issuer registrations
-- Node RPC — deploy Trust Registry, submit verification txs
+- `contractAction`, query Trust Registry contract state
+- `contractActions` subscription, watch for new issuer registrations
+- Node RPC, deploy Trust Registry, submit verification txs
 
 ### AgenticDID (Agent Registry)
-- `contractActions` subscription — monitor agent registrations and delegations in real-time
-- `contractAction` — query agent authorization tree state
-- Shielded txs — track agent staking tokens
+- `contractActions` subscription, monitor agent registrations and delegations in real-time
+- `contractAction`, query agent authorization tree state
+- Shielded txs, track agent staking tokens
 
 ### KYCz (Identity Verification)
-- `contractAction` — query KYC contract state for verified users count
-- `contractActions` — watch for new verifications as they happen
-- `unshieldedTransactions` — monitor token flows in wealth verification
+- `contractAction`, query KYC contract state for verified users count
+- `contractActions`, watch for new verifications as they happen
+- `unshieldedTransactions`, monitor token flows in wealth verification
 
 ### EnterpriseZK (Enterprise Compliance)
-- `contractActions` — audit trail of all compliance operations
-- `contractAction` — query current authorization state
-- `dustGenerationStatus` — monitor DUST for gas management
-- `dParameterHistory` + `termsAndConditionsHistory` — governance audit
+- `contractActions`, audit trail of all compliance operations
+- `contractAction`, query current authorization state
+- `dustGenerationStatus`, monitor DUST for gas management
+- `dParameterHistory` + `termsAndConditionsHistory`, governance audit
 
 ### SentinelDID (Security Monitoring)
-- ALL subscriptions — comprehensive chain monitoring
-- `contractActions` on ALL deployed DIDz contracts — anomaly detection
-- Block stream — network health monitoring
-- SPO queries — validator behavior analysis
+- ALL subscriptions, comprehensive chain monitoring
+- `contractActions` on ALL deployed DIDz contracts, anomaly detection
+- Block stream, network health monitoring
+- SPO queries, validator behavior analysis
 
 ---
 

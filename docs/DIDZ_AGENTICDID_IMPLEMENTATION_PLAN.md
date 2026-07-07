@@ -109,17 +109,17 @@ are fatal. Each has a proposed default; John's ruling is requested in §8.
 
 3. **One canonical DID vs pairwise per-counterparty DIDs.** ✅ **RESOLVED
    (John delegated, Jul 5 2026)**: both, stated together. One permanent
-   canonical DIDz per entity (the accountability anchor — like your SSN, it
+   canonical DIDz per entity (the accountability anchor, like your SSN, it
    never goes on the wire). Pairwise derived DIDs are what counterparties see,
    one per relationship, so merchants can't collude to track you. Every
    pairwise DID provably belongs to the canonical one in zero knowledge.
 
 4. **Spend limit semantics.** ✅ **RESOLVED (John, Jul 5 2026)**: TWO SEPARATE
-   properties, both optional, both enforced when set — `per_action_cap` and
+   properties, both optional, both enforced when set, `per_action_cap` and
    `cumulative_cap` (with on-chain `cumulative_spent` tracking). Implemented in
    `scoped-grant` v2, which also adds counterparty binding and a standardized
    **custom-constraints extension slot** (hash-committed off-chain descriptor +
-   X.509-style critical flag) for properties not yet invented — one shared
+   X.509-style critical flag) for properties not yet invented, one shared
    format, unknown-but-critical = reject, so custom stays interoperable.
    Delegation reserves the child's cumulative budget out of the parent's.
 
@@ -221,18 +221,18 @@ Repos that plausibly consume this architecture, and the *minimal* touch proposed
 (a short pointer doc, e.g. `docs/DIDZ_ARCHITECTURE_ALIGNMENT.md`, referencing this
 plan, not a full copy):
 
-- **KYCz** — base issuer; ProofOfLife/Death/Citizenship are KYCz-class credentials.
-- **realVote** — direct consumer of the proof-of-life voting stack.
-- **SentinelDID, SentinelAI** — agent identity + `AgentAuthorization` credentials.
-- **selectConnect, SCIFz** — scoped grants, progressive reveal, revocation already overlap.
-- **DownMan** — recovery controllers / estate = death-status + asset migration.
-- **RWAz** — the dedicated object/RWA branch repo; consumes DIDz root identity +
+- **KYCz**, base issuer; ProofOfLife/Death/Citizenship are KYCz-class credentials.
+- **realVote**, direct consumer of the proof-of-life voting stack.
+- **SentinelDID, SentinelAI**, agent identity + `AgentAuthorization` credentials.
+- **selectConnect, SCIFz**, scoped grants, progressive reveal, revocation already overlap.
+- **DownMan**, recovery controllers / estate = death-status + asset migration.
+- **RWAz**, the dedicated object/RWA branch repo; consumes DIDz root identity +
   lifecycle and owns ownership/provenance. Peer to AgenticDID.
-- **SilentLedger, equineProData, petProData, safeHealthData** — RWA/object
+- **SilentLedger, equineProData, petProData, safeHealthData**, RWA/object
   consumers that should build on `RWAz` rather than reinventing ownership.
-- **ProMingle, SouLink, PopCork, HuddleBridge** — DIDz-consumer credentials
+- **ProMingle, SouLink, PopCork, HuddleBridge**, DIDz-consumer credentials
   (professional, social, participation).
-- **EnterpriseZK PORTFOLIO, MidnightVitals** — ecosystem/portfolio references.
+- **EnterpriseZK PORTFOLIO, MidnightVitals**, ecosystem/portfolio references.
 
 Books (`book-How_to_Code_with_Midnight`, `book-Midnight-G4-Network-Enterprise`)
 may cite the architecture as a case study, but that is a separate editorial pass,
