@@ -11,7 +11,7 @@
 
 ---
 
-![DIDz Ecosystem Map](DIDz-ecosystem-map.png)
+![DIDzMonolith](docs/DIDzMonolith%20picture.png)
 
 ---
 
