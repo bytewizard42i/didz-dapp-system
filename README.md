@@ -155,7 +155,7 @@ DIDz.io is the **foundation layer**, everything else builds on top:
 | **[ProMingle.net](https://github.com/bytewizard42i/ProMingle_net)** | Decentralized professional networking | DIDz-verified professional credentials |
 | **[SouLink.me](https://github.com/bytewizard42i/SouLink_me)** | Social identity linking | DIDz-powered cross-platform verification |
 | **[PopCork](https://github.com/bytewizard42i/PopCork)** | Social media platform | DIDz-verified speakers and participants |
-| **[DownMan](https://github.com/bytewizard42i/DownMan)** | Crypto estate planning | DIDz-authenticated Shamir secret sharing |
+| **LegacyKey** | Crypto estate planning | DIDz-authenticated Shamir secret sharing |
 | **[safeHealthData.me](https://github.com/bytewizard42i/safeHealthData_me)** | Private health records | DIDz-protected medical data with selective disclosure |
 | **[PetProData](https://github.com/bytewizard42i/petProData)** | Companion animal records & identity | DIDz Animal-tier subject, persistent identity across ownership transfers |
 | **[EquinePro](https://github.com/bytewizard42i/equineProData)** | Equine identity, provenance, RWA | DIDz Animal-tier + RWA, lineage, breeding rights, tokenized economic interests |

@@ -19,7 +19,7 @@ contract, service, and consumer product must uphold.
 
 The constitution is **one document with appendices**. The root articles bind
 all branches. Appendix A adds AgenticDID-specific rules. Appendix B adds
-RWAz-specific rules. Consumer products (SelectConnect, KYCz, DownMan, etc.)
+RWAz-specific rules. Consumer products (SelectConnect, KYCz, LegacyKey, etc.)
 inherit the root articles without modification.
 
 The guiding principle of this constitution is:
@@ -77,7 +77,7 @@ The ecosystem is organized as three foundational pillars, with consumer products
 | **RWAz** | Object / real-world-asset identity branch | `RWAz` |
 
 Consumer products built on the engine include: SelectConnect (first paying
-product), PulseCheck, realVote, KYCz, EventRevolution, ProMingle, SouLink,
+product), LegacyKey, realVote, KYCz, EventRevolution, ProMingle, SouLink,
 SmartCart, onlyHumans, and others.
 
 The engine (`midnight-modules`) feeds all three pillars and consumer products.
@@ -498,7 +498,7 @@ The following repos are bound by this constitution:
 - `realVote`, proof-of-life-gated voting
 - `SentinelDID` / `SentinelAI`, agent identity + authorization
 - `SCIFz`, nullifier + Merkle-membership + revocation
-- `DownMan` (PulseCheck), estate planning, death status, asset migration
+- `LegacyKey` (formerly DownMan), estate planning, death status, asset migration
 - `SilentLedger`, RWA/object consumer
 - `equineProData` / `petProData`, animal identity (ObjectDIDz)
 - `safeHealthData`, health credentials

@@ -106,7 +106,7 @@ changes**, same leaves, same proofs, same nullifiers (no double-claim).
 - But DIDzRegistry has NO lost-key path: if the owner key is gone, the
   identity is stuck (README gap #1). Passport's model (recovery circuit
   proves "I know the seed behind the owner commitment", then rotates the
-  key) fits our engine's key-commitment pattern directly. DownMan
+  key) fits our engine's key-commitment pattern directly. LegacyKey
   (inheritance) and a social-recovery module belong on the roadmap sooner
   rather than later.
 

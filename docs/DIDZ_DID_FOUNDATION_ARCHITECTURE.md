@@ -103,7 +103,7 @@ The W3C spec defines 5 verification relationships. Each DIDz should support:
 ### 2.5 Multiple Controllers
 W3C spec supports **multiple DID controllers**, meaning a single DID can be controlled by more than one entity. This enables:
 - **Recovery**: A DIDz can have a backup controller (a trusted family member, a lawyer, etc.)
-- **DownMan integration**: Estate planning, add a dead-man's switch controller via Shamir shares
+- **LegacyKey integration**: Estate planning, add a dead-man's switch controller via Shamir shares
 - **Organizational DIDs**: Multiple admins control one organization DID
 - **Group control**: Require M-of-N signatures for critical DID operations (multi-sig)
 
@@ -196,7 +196,7 @@ KYCzAnchor.compact (current)       DIDzIdentity.compact (proposed)
 │                                   ├── presentCredential (new, selective disclosure)
 │                                   ├── delegateCapability (new, for AgenticDID)
 │                                   ├── rotateKey (new, key rotation)
-│                                   ├── addRecoveryController (new, DownMan)
+│                                   ├── addRecoveryController (new, LegacyKey)
 ├── revokeAnchor                    ├── revokeAnchor (inherited)
 │                                   ├── revokeCredential (new)
 │                                   ├── deactivateDID (new)
@@ -213,7 +213,7 @@ Define a catalog of credential types that ALL ecosystem products share:
 | `ProfessionalCredential` | Employer, University | ProMingle |
 | `AgentAuthorization` | AgenticDID Issuer | AgenticDID, SentinelAI |
 | `HealthRecord` | Hospital, Insurance | safeHealthData |
-| `AssetOwnership` | Exchange, Custodian | SilentLedger, DownMan |
+| `AssetOwnership` | Exchange, Custodian | SilentLedger, LegacyKey |
 | `SanctionsScreening` | Compliance Provider | KYCz, autoDiscovery.legal |
 
 ### 5.3 TypeScript SDK: `@didz/core`
@@ -296,7 +296,7 @@ The current KYCz contract uses a sealed `issuerKey` that can never change. In pr
 W3C spec section 9.9 discusses DID recovery. DIDz needs:
 - Recovery controllers (trusted parties who can help regain control)
 - Social recovery (M-of-N trusted contacts)
-- This dovetails perfectly with DownMan's Shamir secret sharing
+- This dovetails perfectly with LegacyKey's Shamir secret sharing
 
 ---
 

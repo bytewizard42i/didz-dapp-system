@@ -204,7 +204,7 @@ interface TrustedIssuer {
 | Issuer | Type | Domains | Products Served |
 |--------|------|---------|-----------------|
 | AgenticDID Foundation | COOPERATIVE | IDENTITY_INFRA | All products (root issuer) |
-| Bank of America | CORPORATION | FINANCIAL | AgenticDID, SilentLedger, DownMan |
+| Bank of America | CORPORATION | FINANCIAL | AgenticDID, SilentLedger, LegacyKey |
 | DMV / Government | GOVERNMENT_ENTITY | GOV_SERVICES, VOTING | DIDz-io, KYCz, GeoZ |
 | Stanford University | INSTITUTION | EDUCATION, RESEARCH, MEDICAL | ProMingle, safeHealthData |
 | Veterinary Practice | CORPORATION | VETERINARY, MEDICAL | PetProData |
@@ -247,7 +247,7 @@ This is the **single source of truth** for what credentials exist in the ecosyst
 | `PET_HEALTH_RECORD` | Vet Practice | PetProData |
 | `EQUINE_HEALTH_RECORD` | Equine Vet | EquineProData |
 | `EQUINE_OWNERSHIP` | Registry/Auction | EquineProData |
-| `ASSET_OWNERSHIP` | Exchange/Custodian | SilentLedger, DownMan |
+| `ASSET_OWNERSHIP` | Exchange/Custodian | SilentLedger, LegacyKey |
 | `FINANCIAL_ACCOUNT` | Bank | AgenticDID, SilentLedger |
 | `SOCIAL_ATTESTATION` | Peer | SouLink, PopCork |
 

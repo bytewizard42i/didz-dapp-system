@@ -149,7 +149,7 @@ are fatal. Each has a proposed default; John's ruling is requested in §8.
   `ObjectDIDz`/`RWADIDz` entity types + lifecycle only; the ownership-as-
   transferable-credential machinery (VIN-stays / title-changes), encumbrances,
   provenance, and fractionalization live in `bytewizard42i/RWAz`. Consumers:
-  `SilentLedger`, `DownMan`, `equineProData`, `petProData`, `safeHealthData`.
+  `SilentLedger`, `LegacyKey`, `equineProData`, `petProData`, `safeHealthData`.
 
 ## 6. Implementation plan, AgenticDID branch
 
@@ -225,7 +225,7 @@ plan, not a full copy):
 - **realVote**, direct consumer of the proof-of-life voting stack.
 - **SentinelDID, SentinelAI**, agent identity + `AgentAuthorization` credentials.
 - **selectConnect, SCIFz**, scoped grants, progressive reveal, revocation already overlap.
-- **DownMan**, recovery controllers / estate = death-status + asset migration.
+- **LegacyKey**, recovery controllers / estate = death-status + asset migration.
 - **RWAz**, the dedicated object/RWA branch repo; consumes DIDz root identity +
   lifecycle and owns ownership/provenance. Peer to AgenticDID.
 - **SilentLedger, equineProData, petProData, safeHealthData**, RWA/object

@@ -80,7 +80,7 @@ In MVP, consumer contracts accept a `didId: Bytes<32>` parameter and trust that 
 | `ANIMAL` | 2 | petProData (dogs, cats, exotics), equineProData (horses) |
 | `ORGANIZATION` | 3 | EnterpriseZK, Foundations, DAOs, corporate issuers |
 | `DEVICE` | 4 | GeoZ oracles, IoT sensors, future supply-chain items |
-| `OBJECT` | 5 | SilentLedger assets, DownMan inheritance items, RWA tokens |
+| `OBJECT` | 5 | SilentLedger assets, LegacyKey inheritance items, RWA tokens |
 | `OTHER` | 6 | Anything else, subject-defined via `subjectCommitment` |
 
 ---
@@ -150,7 +150,7 @@ Actual DID Document serialization and the `did:midnight` method spec publication
 
 ## What's Missing (Known Gaps / Future Work)
 
-1. **Recovery controllers**, W3C section 9.9 specifies recovery mechanisms. MVP has single-owner keys only. Multi-controller support (e.g., social recovery via Shamir shares, DownMan inheritance) is Phase 2.
+1. **Recovery controllers**, W3C section 9.9 specifies recovery mechanisms. MVP has single-owner keys only. Multi-controller support (e.g., social recovery via Shamir shares, LegacyKey inheritance) is Phase 2.
 2. **Service endpoints on-chain**, Currently services (API endpoints, messaging relays) are off-chain only. We may add a `serviceEndpoints` Map in Phase 2.
 3. **Credential schemas**, Machine-readable schemas for attestation types (e.g., "KYC_TIER_2 has these required fields") are not enforced on-chain. The off-chain SDK handles schema validation.
 4. **DIDComm / messaging**, The DIF encrypted messaging layer between DIDs is off-chain and not in scope here.

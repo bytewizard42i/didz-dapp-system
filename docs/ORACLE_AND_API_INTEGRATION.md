@@ -105,7 +105,7 @@ DIDz.io sits at the center of the ecosystem. Other repos depend on it:
 | **SouLink** | Privacy-preserving dating profile anchored to DID |
 | **PopCork** | Event attendance SBTs linked to DID |
 | **HuddleBridge** | Speaker/host verification via DID |
-| **DownMan** | Publisher verification via DID |
+| **LegacyKey** | Publisher verification via DID |
 
 ---
 

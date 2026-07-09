@@ -116,7 +116,7 @@ DIDz.io is the **foundation layer**, the bedrock that every other product builds
 | **SouLink.me** | Social identity linking | DIDz-powered cross-platform identity verification |
 | **PopCork** | Decentralized social media | DIDz-verified speakers and participants in social media spaces |
 | **[HuddleBridge](https://github.com/bytewizard42i/huddlebridge_app_me_us)** | Semi-decentralized video spaces (xSpaces/Zoom/Meet/Discord-stage) | DIDz-powered proof of authority for hosts, soulbound participation tokens, portable reputation, ZK-verified credentials for speakers. Anti-rug tech, session memory, plug-in architecture for all social media. Domains: huddlebridge.app, .me, .us |
-| **DownMan** | Crypto estate planning | DIDz-authenticated Shamir secret sharing for inheritance |
+| **LegacyKey** | Crypto estate planning | DIDz-authenticated Shamir secret sharing for inheritance |
 | **safeHealthData.me** | Private health records | DIDz-protected medical data with selective disclosure |
 | **MidnightVitals** | Real-time diagnostics | Cross-cutting debugging/monitoring for all DIDz-powered apps |
 
