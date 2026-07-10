@@ -498,7 +498,7 @@ The following repos are bound by this constitution:
 - `realVote`, proof-of-life-gated voting
 - `SentinelDID` / `SentinelAI`, agent identity + authorization
 - `SCIFz`, nullifier + Merkle-membership + revocation
-- `LegacyKey` (formerly DownMan), estate planning, death status, asset migration
+- `LegacyKey` (formerly LegacyKey), estate planning, death status, asset migration
 - `SilentLedger`, RWA/object consumer
 - `equineProData` / `petProData`, animal identity (ObjectDIDz)
 - `safeHealthData`, health credentials

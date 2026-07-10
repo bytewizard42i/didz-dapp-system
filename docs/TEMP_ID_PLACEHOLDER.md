@@ -1,7 +1,7 @@
 # tDIDz — Temporary Identity Placeholder (dev only)
 
 While real Midnight **DIDz** wiring is in progress, the DIDzMonolith data plane
-(HelixChain) uses a **temporary-ID authority** ("tDIDz" = temp DIDz) as a
+(HelixCTW) uses a **temporary-ID authority** ("tDIDz" = temp DIDz) as a
 swappable stand-in. This note exists so there is **no confusion** when you see
 `TEMP-*` labels or `id_scheme = 'temp'` anywhere in the ecosystem.
 
@@ -14,7 +14,7 @@ swappable stand-in. This note exists so there is **no confusion** when you see
 
 ## The four ecosystem classes (do NOT conflate)
 
-Powered by **DIDz + AgenticDID + RWAz + HelixChain**:
+Powered by **DIDz + AgenticDID + RWAz + HelixCTW**:
 
 | Class | Engine | What it is | Transferable? |
 |---|---|---|---|
@@ -24,5 +24,5 @@ Powered by **DIDz + AgenticDID + RWAz + HelixChain**:
 | Grant | **AgenticDID** | what an agent may DO for you | delegated |
 
 **Canonical spec** (authoritative, with full detail + migration path):
-`helixchain/docs/IDENTITY_PLACEHOLDER_SCHEME.md`
-Reference implementation: `helixchain/hackathon/app/src/identity.ts`
+`helixctw/docs/IDENTITY_PLACEHOLDER_SCHEME.md`
+Reference implementation: `helixctw/hackathon/app/src/identity.ts`

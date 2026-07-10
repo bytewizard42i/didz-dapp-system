@@ -125,7 +125,7 @@ Every one of these products inherits the privacy guarantees of DIDz. Build once,
 **Architecture plan (updated July 2026)**, the layered stack:
 
 1. **Midnight Passport** (IOG/ARC) as the account/custody/naming *substrate*, we track and align with it rather than reinvent seedless onboarding.
-2. **DIDz** as the hierarchical privacy wallet and ZKQuery layer, one DIDz type, folderized credentials, RWA latitude built in from day one (equineProData, petProData, and helixchain are the first asset verticals).
+2. **DIDz** as the hierarchical privacy wallet and ZKQuery layer, one DIDz type, folderized credentials, RWA latitude built in from day one (equineProData, petProData, and helixctw are the first asset verticals).
 3. **AgenticDID** as the delegation layer, designed in from the start, not bolted on. Its scoped-grant engine is compiled and its protocol spec is being prepared for proposal to the Decentralized Identity Foundation as the privacy-preserving delegation profile of the agentic identity stack (see `AgenticDID/docs/DIF_STANDARDIZATION_PLAN.md`).
 
 Interfaces follow open standards (W3C DID/VC, DIF Presentation Exchange, did:peer pairwise semantics) so any standards-compliant wallet or verifier interoperates, the zero-knowledge machinery stays under the hood.

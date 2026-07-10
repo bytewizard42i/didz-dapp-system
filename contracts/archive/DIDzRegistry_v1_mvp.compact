@@ -24,7 +24,7 @@
 //   - SouLink          → social identity linking
 //   - realVote         → voter identity and one-person-one-vote
 //   - DiscoveryManagement, sharedScience_me, SilentLedger, SentinelAI,
-//     proofOrBluff, CareToCoin, HuddleBridge, DownMan, PopCork, GeoZ, etc.
+//     proofOrBluff, CareToCoin, HuddleBridge, LegacyKey, PopCork, GeoZ, etc.
 //
 // INTEGRATION PATTERN (MVP)
 //   Consumer DApps accept a `didId: Bytes<32>` as input, then call DIDz.io's
@@ -89,7 +89,7 @@ export enum EntityType {
   ANIMAL,         // A non-human living thing (petProData, equineProData)
   ORGANIZATION,   // A company, gov agency, foundation, DAO (EnterpriseZK, etc.)
   DEVICE,         // An IoT device, sensor, vehicle (GeoZ, future SupplyChain)
-  OBJECT,         // An inanimate asset (SilentLedger, DownMan, RWA)
+  OBJECT,         // An inanimate asset (SilentLedger, LegacyKey, RWA)
   OTHER           // Anything else — subject-defined in the commitment
 }
 

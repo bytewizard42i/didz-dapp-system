@@ -1,13 +1,13 @@
-# Terraform modules (HelixChain integration)
+# Terraform modules (HelixCTW integration)
 
 This app provisions its shared-data-plane infrastructure from the central
 **DIDzM Terraform module compendium**, not by hand.
 
 - **Compendium repo**: `bytewizard42i/terraform-modules`
 - **Full usage guide**: see the compendium's `CONSUMING.md`
-- **Companion doc**: `docs/HELIXCHAIN_INTEGRATION.md` (which tables this app touches)
+- **Companion doc**: `docs/HELIXCTW_INTEGRATION.md` (which tables this app touches)
 
-## Module for this app: `helixchain-integration`
+## Module for this app: `helixctw-integration`
 
 Provisions, for DIDz-io: a per-app CockroachDB database, a least-privilege login
 role, table grants, and (optionally) the connection string in AWS Secrets
@@ -17,8 +17,8 @@ Manager. As the root identity layer, DIDz-io owns identity writes.
 
 ```hcl
 # infra/terraform/main.tf
-module "helixchain" {
-  source = "git::https://github.com/bytewizard42i/terraform-modules.git//modules/helixchain-integration?ref=v0.1.0"
+module "helixctw" {
+  source = "git::https://github.com/bytewizard42i/terraform-modules.git//modules/helixctw-integration?ref=v0.1.0"
 
   app_name     = "didz_io"
   db_password  = var.didz_io_db_password   # TF_VAR_didz_io_db_password
@@ -35,7 +35,7 @@ module "helixchain" {
 ```bash
 git submodule add https://github.com/bytewizard42i/terraform-modules.git \
   infra/terraform/vendor/didzm-modules
-# then source = "./vendor/didzm-modules/modules/helixchain-integration"
+# then source = "./vendor/didzm-modules/modules/helixctw-integration"
 ```
 
 ## Rules
