@@ -22,3 +22,19 @@ disclosed — e.g., "over 21" without revealing a birth date.
 - Mass credential probing
 - Revocation-status abuse
 - Requests for unnecessary identity attributes
+
+### Scoped Unlinkability
+
+The hardest inference-defense problem is cross-pseudonym budget abuse: a
+requester creates multiple DIDz identities to reset their per-identity privacy
+budget. Solving this by globally linking pseudonyms would undermine DIDz's
+privacy guarantees.
+
+A proposed direction is **scoped unlinkability**: within a specific protected
+query domain, a user proves in zero knowledge that they have not already
+consumed their query allowance — without revealing their global identity. This
+may involve nullifiers or context-specific pseudonyms aligned with Midnight's
+commitment/nullifier patterns.
+
+This is an active research area. The MVP scopes privacy budgets to a single
+identity within a single query domain.
