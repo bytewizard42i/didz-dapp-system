@@ -215,3 +215,36 @@ DIDz doesn't fix the old model. **It replaces it.** With zero-knowledge proofs, 
 *EnterpriseZK Labs LLC, [didz.io](https://didz.io), [enterprisezk.com](https://enterprisezk.com)*  
 *Built on Midnight. Powered by Cardano. Protected by zero-knowledge cryptography.*  
 *4x Midnight Hackathon Winner*
+
+---
+
+## The Existential Threat
+
+![The Existential Threat](docs/media/existential-threat.jpg)
+
+The convergence of autonomous Ai, mass surveillance, and centralized identity databases creates an existential threat to human autonomy. Every digital interaction becomes a data point in someone else's database. Every Ai agent operates without verifiable accountability. Every centralized identity system is a breach waiting to happen.
+
+**DIDzMonolith is the architectural answer.** Four engines, one ecosystem, zero-knowledge proofs on Midnight Network:
+
+| Engine | Role | What It Proves |
+|--------|------|----------------|
+| **DIDz** | Root identity layer | Who you are, without revealing who you are |
+| **AgenticDID** | Agent authority layer | That an Ai agent is authorized, without revealing by whom |
+| **RWAz** | Object/asset identity layer | What an asset is and who owns it, without exposing ownership data |
+| **HelixCTW** | Privacy-preserving data plane | Query and manage private data, without exposing raw facts |
+
+**This project** is part of the DIDzMonolith ecosystem, built on these four engines. The existential threat is real. The architecture is ready.
+
+---
+
+## Regulatory Compliance
+
+This project is part of the DIDzMonolith ecosystem and inherits the four-engine ZK architecture (DIDz + AgenticDID + RWAz + HelixCTW) that provides privacy-by-design advantages for regulatory compliance.
+
+**Applicable frameworks**: SOC 2, ISO 27001, PCI DSS, HIPAA, MiCA — depending on product function and jurisdiction.
+
+**Full compliance deep dive**: [`DIDzMonolith-docs/compliance/REGULATORY_COMPLIANCE_DEEP_DIVE.md`](../../DIDzMonolith-docs/compliance/REGULATORY_COMPLIANCE_DEEP_DIVE.md) — engine-by-engine control mappings, product compliance matrix, and implementation roadmap.
+
+**MiCA regulatory notes**: [`DIDzMonolith-docs/compliance/MICA_REGULATORY_NOTES.md`](../../DIDzMonolith-docs/compliance/MICA_REGULATORY_NOTES.md) — EU crypto-asset regulation product-by-product matrix.
+
+---
