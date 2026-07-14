@@ -5,7 +5,7 @@ import CompactStandardLibrary;
 // ===== DIDzRegistry v2: machine (1) — minting permanent DIDz identities =====
 //
 // WHAT THIS CONTRACT IS
-//   The root identity layer of the three-pillar architecture. Machine (1):
+//   The root identity engine of the DIDzM four-engine architecture. Machine (1):
 //   it MINTS permanent identities. Machine (2) — scoped-grant in
 //   midnight-modules — moves authority around; this contract never does.
 //

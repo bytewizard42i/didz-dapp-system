@@ -1,11 +1,11 @@
 # DIDz Constitution
 
-> **Status**: Draft v0.2, July 13, 2026
+> **Status**: Draft v0.1, July 5, 2026
 > **Author**: John M.P. Santi (EnterpriseZK Labs LLC)
 > **Drafted by**: Penny 🎀
 > **Canonical location**: `DIDz-io/docs/DIDZ_CONSTITUTION.md`
 > **Distribution**: Identical copy kept in DIDz-io, AgenticDID, RWAz, and
-> HelixCTW. Pointer docs in all DIDzM consumer repos reference
+> SelectConnect. Pointer docs in all other DIDz-ecosystem repos reference
 > this file. Keep copies in sync.
 
 ---
@@ -66,25 +66,21 @@ moves (RWAz settlement, escrow custody, abuse bonds).
 in imported historical documents and is left untouched as an archive
 artifact.
 
-### §4. Four-Engine Model
+### §4. Three-Pillar Model
 
-The ecosystem is one system powered by four engines, with conforming consumer
-products built outward from them:
+The ecosystem is organized as three foundational pillars, with consumer products built on top:
 
-| Engine | Governing responsibility | Repo |
-|--------|---------------------------|------|
-| **DIDz** | Root identity, credentials, issuers, controllers, and lifecycle | `DIDz-io` |
-| **AgenticDID** | Agent identity, delegated authority, limits, audit, and revocation | `AgenticDID` |
-| **RWAz** | Object identity, ownership, encumbrance, provenance, and governed transfer | `RWAz` |
-| **HelixCTW** | Data location, indexing, retrieval, verification, access gating, and composition | `HelixCTW` |
+| Pillar | Role | Repo |
+|--------|------|------|
+| **DIDz** | Universal root identity layer | `DIDz-io` |
+| **AgenticDID** | Agent identity + delegated authority branch | `AgenticDID` |
+| **RWAz** | Object / real-world-asset identity branch | `RWAz` |
 
 Consumer products built on the engine include: SelectConnect (first paying
 product), LegacyKey, realVote, KYCz, EventRevolution, ProMingle, SouLink,
 SmartCart, onlyHumans, and others.
 
-The shared implementation laboratory (`midnight-modules`) supplies reusable
-Compact patterns to the four engines and conforming consumers. It is not a
-separate engine and does not govern the four engines.
+The engine (`midnight-modules`) feeds all three pillars and consumer products.
 
 ---
 
@@ -383,7 +379,7 @@ this document with a date and rationale.
 ### §31. Repo Distribution
 
 The canonical copy of this constitution lives in `DIDz-io/docs/`. Identical
-copies are kept in `AgenticDID`, `RWAz`, and `HelixCTW`. All consumer
+copies are kept in `AgenticDID`, `RWAz`, and `selectConnect`. All other
 DIDz-ecosystem repos keep a pointer doc (`docs/DIDZ_CONSTITUTION_ALIGNMENT.md`)
 referencing this file.
 
@@ -487,23 +483,22 @@ a token. The underlying asset identity remains singular.
 
 The following repos are bound by this constitution:
 
-**Four engines (full copy):**
+**Core pillars (full copy):**
 - `DIDz-io`, root identity layer (canonical location)
-- `AgenticDID`, agent identity and authority engine
-- `RWAz`, object and real-world-asset engine
-- `HelixCTW`, data-layer engine
+- `AgenticDID`, agent branch
+- `RWAz`, object/RWA branch
+- `selectConnect`, first consumer product
 
-**Shared implementation laboratory:**
+**Engine:**
 - `midnight-modules`, shared Compact modules (scoped-grant, pol-credential,
   access-control, commitment-nullifier, merkle-membership, recovery-core)
 
 **Consumer products (pointer doc):**
-- `selectConnect`, gated contact-sharing consumer
 - `KYCz`, trusted-issuer credentials
 - `realVote`, proof-of-life-gated voting
 - `SentinelDID` / `SentinelAI`, agent identity + authorization
 - `SCIFz`, nullifier + Merkle-membership + revocation
-- `LegacyKey`, loose recovery and continuity ideation, not an established subsystem
+- `LegacyKey` (formerly LegacyKey), estate planning, death status, asset migration
 - `SilentLedger`, RWA/object consumer
 - `equineProData` / `petProData`, animal identity (ObjectDIDz)
 - `safeHealthData`, health credentials
@@ -518,7 +513,6 @@ The following repos are bound by this constitution:
 | Date | Amendment | By |
 |------|-----------|-----|
 | 2026-07-05 | Initial draft (v0.1) | John M.P. Santi, drafted by Penny |
-| 2026-07-13 | Replaced the three-pillar model with DIDzM's root-governed four-engine, inside-out model; classified HelixCTW as the data-layer engine and consumers as downstream adopters (v0.2) | John M.P. Santi and Clara |
 
 ---
 
