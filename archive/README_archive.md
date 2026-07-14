@@ -1,7 +1,5 @@
 # DIDz.io, Anonymous Digital Identity on Midnight
 
-> **Midnight technical rule:** Follow the [DIDzM technical reference policy](../DIDzMonolith-docs/midnight/MIDNIGHT_TECHNICAL_REFERENCE_POLICY.md) for version-matched Compact syntax, SDK behavior, and evidence labels.
-
 **"Revolutionizing Identity Verification with Accuracy, Security, and Privacy"**
 
 > Your DIDz gives you full control and privacy for your personal information and data, while allowing you to prove your credentials and other attributes to anyone you wish, and only with your permission.
@@ -10,14 +8,6 @@
 **Company**: [EnterpriseZK Labs LLC](https://enterprisezk.com), Pennsylvania, USA  
 **Blockchain**: [Midnight Network](https://midnight.network) (Cardano ecosystem)  
 **Status**: Architecture + Prototyping
-
-> **DIDzM alignment, July 13, 2026:** DIDz is the root identity engine in the
-> four-engine DIDzM system. It defines identity, issuer trust, credentials,
-> lifecycle, and privacy-preserving presentation primitives. Agent authority is
-> owned by AgenticDID, asset ownership and provenance by RWAz, and private data
-> orchestration by HelixCTW, the data-layer engine. Product and ecosystem claims
-> below describe the intended system unless they are tied to reproducible
-> implementation evidence.
 
 ---
 
@@ -153,11 +143,9 @@ DeFi · Government · Education · Enterprise · Commerce · Supply Chain · Med
 
 ---
 
-## DIDz Within the DIDzM System
+## The DIDz Ecosystem
 
-DIDz is the root identity engine. It supplies identity primitives to the other
-three engines and to conforming applications, but it does not absorb their
-domain responsibilities:
+DIDz.io is the **foundation layer**, everything else builds on top:
 
 | Product | Purpose | How It Uses DIDz |
 |---------|---------|-----------------|
@@ -167,7 +155,7 @@ domain responsibilities:
 | **[ProMingle.net](https://github.com/bytewizard42i/ProMingle_net)** | Decentralized professional networking | DIDz-verified professional credentials |
 | **[SouLink.me](https://github.com/bytewizard42i/SouLink_me)** | Social identity linking | DIDz-powered cross-platform verification |
 | **[PopCork](https://github.com/bytewizard42i/PopCork)** | Social media platform | DIDz-verified speakers and participants |
-| **LegacyKey** | Loose recovery and estate-planning ideation | Explores possible DIDz-authenticated recovery patterns; it is not an established DIDzM recovery subsystem |
+| **LegacyKey** | Crypto estate planning | DIDz-authenticated Shamir secret sharing |
 | **[safeHealthData.me](https://github.com/bytewizard42i/safeHealthData_me)** | Private health records | DIDz-protected medical data with selective disclosure |
 | **[PetProData](https://github.com/bytewizard42i/petProData)** | Companion animal records & identity | DIDz Animal-tier subject, persistent identity across ownership transfers |
 | **[EquinePro](https://github.com/bytewizard42i/equineProData)** | Equine identity, provenance, RWA | DIDz Animal-tier + RWA, lineage, breeding rights, tokenized economic interests |
@@ -243,7 +231,7 @@ The convergence of autonomous Ai, mass surveillance, and centralized identity da
 | **DIDz** | Root identity layer | Who you are, without revealing who you are |
 | **AgenticDID** | Agent authority layer | That an Ai agent is authorized, without revealing by whom |
 | **RWAz** | Object/asset identity layer | What an asset is and who owns it, without exposing ownership data |
-| **HelixCTW** | Data-layer engine | Query and manage private data, without exposing raw facts |
+| **HelixCTW** | Privacy-preserving data plane | Query and manage private data, without exposing raw facts |
 
 **This project** is part of the DIDzMonolith ecosystem, built on these four engines. The existential threat is real. The architecture is ready.
 
@@ -255,8 +243,8 @@ This project is part of the DIDzMonolith ecosystem and inherits the four-engine 
 
 **Applicable frameworks**: SOC 2, ISO 27001, PCI DSS, HIPAA, MiCA — depending on product function and jurisdiction.
 
-**Full compliance deep dive**: [`DIDzMonolith-docs/compliance/REGULATORY_COMPLIANCE_DEEP_DIVE.md`](../DIDzMonolith-docs/compliance/REGULATORY_COMPLIANCE_DEEP_DIVE.md) — engine-by-engine control mappings, product compliance matrix, and implementation roadmap.
+**Full compliance deep dive**: [`DIDzMonolith-docs/compliance/REGULATORY_COMPLIANCE_DEEP_DIVE.md`](../../DIDzMonolith-docs/compliance/REGULATORY_COMPLIANCE_DEEP_DIVE.md) — engine-by-engine control mappings, product compliance matrix, and implementation roadmap.
 
-**MiCA regulatory notes**: [`DIDzMonolith-docs/compliance/MICA_REGULATORY_NOTES.md`](../DIDzMonolith-docs/compliance/MICA_REGULATORY_NOTES.md) — EU crypto-asset regulation product-by-product matrix.
+**MiCA regulatory notes**: [`DIDzMonolith-docs/compliance/MICA_REGULATORY_NOTES.md`](../../DIDzMonolith-docs/compliance/MICA_REGULATORY_NOTES.md) — EU crypto-asset regulation product-by-product matrix.
 
 ---

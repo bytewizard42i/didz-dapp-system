@@ -1,14 +1,5 @@
 # DIDz.io, Architecture Aligned with W3C DID Core & DIF Standards
 
-> **Midnight technical rule:** Validate Compact and SDK statements against the [DIDzM technical reference policy](../../DIDzMonolith-docs/midnight/MIDNIGHT_TECHNICAL_REFERENCE_POLICY.md).
-
-> **Authority and status note, July 13, 2026:** This is a DIDz engine design
-> proposal governed by the DIDzM root architecture. Standards references and
-> proposed interfaces are not evidence that a DID method, SDK, recovery system,
-> or production deployment exists. DIDz owns root identity primitives. AgenticDID,
-> RWAz, and HelixCTW own agent authority, asset ownership and provenance, and
-> private data orchestration respectively.
-
 **Author**: Penny 🎀
 **Date**: March 3, 2026
 **Status**: Architecture Proposal
@@ -205,7 +196,7 @@ KYCzAnchor.compact (current)       DIDzIdentity.compact (proposed)
 │                                   ├── presentCredential (new, selective disclosure)
 │                                   ├── delegateCapability (new, for AgenticDID)
 │                                   ├── rotateKey (new, key rotation)
-│                                   ├── addRecoveryController (exploratory recovery proposal)
+│                                   ├── addRecoveryController (new, LegacyKey)
 ├── revokeAnchor                    ├── revokeAnchor (inherited)
 │                                   ├── revokeCredential (new)
 │                                   ├── deactivateDID (new)
@@ -305,8 +296,7 @@ The current KYCz contract uses a sealed `issuerKey` that can never change. In pr
 W3C spec section 9.9 discusses DID recovery. DIDz needs:
 - Recovery controllers (trusted parties who can help regain control)
 - Social recovery (M-of-N trusted contacts)
-- LegacyKey currently contains loose Shamir-based recovery ideation that may
-  inform this design. It is not an adopted or implemented DIDzM recovery system.
+- This dovetails perfectly with LegacyKey's Shamir secret sharing
 
 ---
 
