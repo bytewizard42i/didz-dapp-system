@@ -38,6 +38,38 @@ Every day, billions of people are forced to hand over their most sensitive perso
 
 ---
 
+## The DIDzM Premise
+
+The world's digital verification system is on its head. You must submit large
+amounts of personal information to prove a single thing — something that is
+really just a yes-or-no question:
+
+> *Does this person meet this minimum (or maximum) requirement?*
+
+Midnight flips this by answering **only the necessary question** with
+mathematical certainty of truthfulness for the asker:
+
+- Are you old enough?
+- Are you a non-felon?
+- Do you have an XYZ degree?
+- Do you have a valid driver's license?
+- Do you live within X miles of the job you are applying for?
+- Do you have allergies?
+- Do you have medical insurance?
+- Do you qualify for this loan?
+- Do you have a reputation for XYZ?
+- Do you rightfully own this asset?
+- Do you have the authority to open this door?
+
+Every question above is a **yes or no**. Today, answering any one of them
+requires surrendering your full identity, your documents, your history, and your
+privacy to a stranger who will store it in a database that will eventually be
+breached. DIDz answers each with a zero-knowledge proof — mathematically
+certain, cryptographically verifiable, and revealing **nothing** beyond the
+answer itself.
+
+---
+
 ## The Breakthrough
 
 **What if you could prove facts about yourself without revealing who you are?**
