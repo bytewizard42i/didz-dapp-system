@@ -9,7 +9,19 @@
 **Website**: [didz.io](https://didz.io)  
 **Company**: [EnterpriseZK Labs LLC](https://enterprisezk.com), Pennsylvania, USA  
 **Blockchain**: [Midnight Network](https://midnight.network) (Cardano ecosystem)  
-**Status**: Architecture + Prototyping
+**Status**: Contracts verified & chain-deployed — TestWired (localnet), preprod in progress
+**Stage**: TestWired via didz-kernel's `@didz/adapter-midnight` (see `DIDzMonolith-docs/standards/BUILD_STAGES.md`)
+
+> **Aug 2, 2026 status:** `DIDzRegistry` (17 circuits) and
+> `TrustedIssuerRegistry` (11 circuits) compile clean on the current
+> toolchain (compactc 0.31.1, 18/18 structural tests) with full ZK key
+> generation. DIDzRegistry is DEPLOYED and exercised on a local Midnight
+> network with real ZK proofs — register → suspend → reactivate → attest →
+> prove, all chain-confirmed — via the didz-kernel Midnight adapter
+> (chunked deploy: lean deploy + verifier-key maintenance inserts, since
+> 17-circuit single-tx deploys exceed per-block write budgets). Preprod
+> deployment is in flight. The SDK packages (didz-api / didz-ui /
+> identity-provider-api) remain early scaffolds.
 
 > **DIDzM alignment, July 13, 2026:** DIDz is the root identity engine in the
 > four-engine DIDzM system. It defines identity, issuer trust, credentials,
@@ -117,7 +129,7 @@ Verifiers ask **ZKQueries**, zero-knowledge questions that return only yes or no
 
 ## Compiler-Verified ZK Circuits
 
-This isn't a whitepaper concept. The KYCz Anchor contract compiles to **7 real ZK circuits** on Compact v0.29.0:
+This isn't a whitepaper concept. The KYCz Anchor contract compiled to **7 real ZK circuits** back on Compact v0.29.0, and the current registries compile to **28 circuits** (17 + 11) on compactc 0.31.1 — always verify the live toolchain against the [support matrix](https://docs.midnight.network/relnotes/support-matrix):
 
 | Circuit | What It Proves |
 |---------|---------------|

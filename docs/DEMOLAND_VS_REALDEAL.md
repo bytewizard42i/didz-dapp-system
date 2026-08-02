@@ -1,7 +1,15 @@
 # DIDz-io, demoLand vs realDeal
 
-> Convention: every DIDzMonolith product ships two modes.
-> Canonical spec: `~/PixyPi/docs/DEMOLAND_AUTH_STANDARD.md`
+> **CONVENTION UPDATED Aug 2, 2026 — now THREE stages:**
+> **DemoLand → TestWired → RealDeal.** TestWired = the same product wired
+> to TEST infrastructure (Midnight localnet/preprod, test-mode APIs) with
+> real transactions and real ZK proofs against test tokens. Canonical
+> definition: `DIDzMonolith-docs/standards/BUILD_STAGES.md` (supersedes the
+> two-stage description below; auth spec remains
+> `~/PixyPi/docs/DEMOLAND_AUTH_STANDARD.md`).
+>
+> DIDz-io's TestWired reference: the didz-kernel Midnight adapter runs the
+> real compiled DIDzRegistry on localnet with real proofs (REALDEAL_TEST).
 
 ## demoLand (current)
 
