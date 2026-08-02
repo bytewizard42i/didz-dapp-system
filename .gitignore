@@ -58,3 +58,6 @@ private-state-store/
 
 # Windows Mark-of-the-Web sidecars (never commit)
 *:Zone.Identifier
+
+# Full ZK key builds (prover keys are ~56MB binaries — never commit; regenerate with: compact compile contracts/DIDzRegistry.compact build-zk/didz-registry)
+build-zk/
