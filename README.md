@@ -22,6 +22,14 @@
 > 17-circuit single-tx deploys exceed per-block write budgets). Preprod
 > deployment is in flight. The SDK packages (didz-api / didz-ui /
 > identity-provider-api) remain early scaffolds.
+>
+> **Issuer admission (the security-critical ceremony):** prospective
+> trusted issuers exist FIRST in `TestTownDIDz` — the world-before-the-
+> trust-system test population — carrying dossiers of independently
+> confirmable evidence (EIN, incorporation, licenses). DIDz.io's onboarding
+> gate cross-checks them against TestTown's authorities of record before
+> TrustedIssuerRegistry enrollment, and TestTown's `VILLAIN--*` impostors
+> must be REFUSED (see `TestTownDIDz/docs/THREAT_MODEL.md`).
 
 > **DIDzM alignment, July 13, 2026:** DIDz is the root identity engine in the
 > four-engine DIDzM system. It defines identity, issuer trust, credentials,
