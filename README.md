@@ -225,6 +225,12 @@ domain responsibilities:
 | **[EquinePro](https://github.com/bytewizard42i/equineProData)** | Equine identity, provenance, RWA | DIDz Animal-tier + RWA, lineage, breeding rights, tokenized economic interests |
 | **[GeoZ](https://github.com/bytewizard42i/GeoZ_us_app_Midnight-Oracle)** | Geolocation oracle | Privacy-preserving location proofs for DIDz (jurisdiction, residency) |
 | **[MidnightVitals](https://github.com/bytewizard42i/MidnightVitals)** | Real-time diagnostics | Cross-cutting debugging/monitoring for all DIDz-powered apps |
+| **NIGHTGATE / NIGHTGATE-MCP** | Planned service adapter and Ai tool bridge | Transports approved DIDz operations and evidence through CAP/OData without replacing DIDz identity, issuer, lifecycle, rotation, or recovery authority |
+
+NIGHTGATE is a planned edge adapter, not a fifth DIDzM engine or a source of
+identity or authority. NIGHTGATE-MCP bearer grants authorize transport calls
+only; they are not AgenticDID scoped grants or ZK delegation proofs. See the
+[NIGHTGATE integration boundary](docs/NIGHTGATE_INTEGRATION.md).
 
 ---
 
@@ -251,6 +257,7 @@ domain responsibilities:
 | [KYCz Biometric Verification](docs/KYCZ_BIOMETRIC_VERIFICATION.md) | 8-factor liveness detection approach |
 | [KYCz Deep Dive Reference](docs/KYCZ_DEEP_DIVE_REFERENCE.md) | Full architecture reference |
 | [Website Content](docs/DIDZ_WEBSITE_CONTENT.md) | Captured website copy and value propositions |
+| [NIGHTGATE Integration](docs/NIGHTGATE_INTEGRATION.md) | Planned CAP/OData service edge and Ai tool boundary |
 
 ---
 
