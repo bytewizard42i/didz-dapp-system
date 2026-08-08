@@ -1,6 +1,6 @@
 # DIDz.io, Anonymous Digital Identity on Midnight
 
-> **Midnight technical rule:** Follow the [DIDzM technical reference policy](../DIDzMonolith-docs/midnight/MIDNIGHT_TECHNICAL_REFERENCE_POLICY.md) for version-matched Compact syntax, SDK behavior, and evidence labels.
+> **Midnight technical rule:** In the DIDzMonolith checkout, follow the [DIDzM sources-of-truth policy](../DIDzMonolith-docs/midnight/MIDNIGHT_SOURCES_OF_TRUTH.md) for source routing and the [current Midnight schema](../DIDzMonolith-docs/midnight/MIDNIGHT_CURRENT_SCHEMA.md) for architecture, integration, and evidence labels.
 
 **"Revolutionizing Identity Verification with Accuracy, Security, and Privacy"**
 
