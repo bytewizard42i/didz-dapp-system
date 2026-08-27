@@ -21,7 +21,7 @@
 
 ## The Problem
 
-Every day, billions of people are forced to hand over their most sensitive personal information just to prove simple facts about themselves.
+Today's verification process is on its head. Every day, billions of people are forced to hand over many of their most sensitive personal information just to prove a single fact about themselves.
 
 - A 22-year-old shows her full driver's license, name, address, date of birth, license number, just to buy a bottle of wine.
 - A voter reveals their entire identity to prove they're a citizen over 18.
