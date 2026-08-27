@@ -1,47 +1,21 @@
-# DIDz.io, Anonymous Digital Identity on Midnight
+![DIDzMonolith](docs/DIDzMonolith%20picture.png)
 
-> **Midnight technical rule:** In the DIDzMonolith checkout, follow the [DIDzM sources-of-truth policy](../DIDzMonolith-docs/midnight/MIDNIGHT_SOURCES_OF_TRUTH.md) for source routing and the [current Midnight schema](../DIDzMonolith-docs/midnight/MIDNIGHT_CURRENT_SCHEMA.md) for architecture, integration, and evidence labels.
+# DIDz.io — Anonymous Digital Identity on Midnight
 
 **"Revolutionizing Identity Verification with Accuracy, Security, and Privacy"**
 
 > Your DIDz gives you full control and privacy for your personal information and data, while allowing you to prove your credentials and other attributes to anyone you wish, and only with your permission.
 
-**Website**: [didz.io](https://didz.io)  
-**Company**: [EnterpriseZK Labs LLC](https://enterprisezk.com), Pennsylvania, USA  
-**Blockchain**: [Midnight Network](https://midnight.network) (Cardano ecosystem)  
-**Status**: Contracts verified & chain-deployed — TestWired (localnet), preprod in progress
-**Stage**: TestWired via didz-kernel's `@didz/adapter-midnight` (see `DIDzMonolith-docs/standards/BUILD_STAGES.md`)
+| | |
+|---|---|
+| **Website** | [didz.io](https://didz.io) |
+| **Company** | [EnterpriseZK Labs LLC](https://enterprisezk.com), Pennsylvania, USA |
+| **Blockchain** | [Midnight Network](https://midnight.network) (Cardano ecosystem) |
+| **Role in DIDzM** | Root identity engine of the four-engine DIDzM system |
+| **Status** | Contracts verified & chain-deployed — TestWired (localnet), preprod in progress |
+| **Stage** | TestWired via didz-kernel's `@didz/adapter-midnight` ([BUILD_STAGES](../DIDzMonolith-docs/standards/BUILD_STAGES.md)) |
 
-> **Aug 2, 2026 status:** `DIDzRegistry` (17 circuits) and
-> `TrustedIssuerRegistry` (11 circuits) compile clean on the current
-> toolchain (compactc 0.31.1, 18/18 structural tests) with full ZK key
-> generation. DIDzRegistry is DEPLOYED and exercised on a local Midnight
-> network with real ZK proofs — register → suspend → reactivate → attest →
-> prove, all chain-confirmed — via the didz-kernel Midnight adapter
-> (chunked deploy: lean deploy + verifier-key maintenance inserts, since
-> 17-circuit single-tx deploys exceed per-block write budgets). Preprod
-> deployment is in flight. The SDK packages (didz-api / didz-ui /
-> identity-provider-api) remain early scaffolds.
->
-> **Issuer admission (the security-critical ceremony):** prospective
-> trusted issuers exist FIRST in `TestTownDIDz` — the world-before-the-
-> trust-system test population — carrying dossiers of independently
-> confirmable evidence (EIN, incorporation, licenses). DIDz.io's onboarding
-> gate cross-checks them against TestTown's authorities of record before
-> TrustedIssuerRegistry enrollment, and TestTown's `VILLAIN--*` impostors
-> must be REFUSED (see `TestTownDIDz/docs/THREAT_MODEL.md`).
-
-> **DIDzM alignment, July 13, 2026:** DIDz is the root identity engine in the
-> four-engine DIDzM system. It defines identity, issuer trust, credentials,
-> lifecycle, and privacy-preserving presentation primitives. Agent authority is
-> owned by AgenticDID, asset ownership and provenance by RWAz, and private data
-> orchestration by HelixCTW, the data-layer engine. Product and ecosystem claims
-> below describe the intended system unless they are tied to reproducible
-> implementation evidence.
-
----
-
-![DIDzMonolith](docs/DIDzMonolith%20picture.png)
+> **Midnight technical rule:** In the DIDzMonolith checkout, follow the [DIDzM sources-of-truth policy](../DIDzMonolith-docs/midnight/MIDNIGHT_SOURCES_OF_TRUTH.md) for source routing and the [current Midnight schema](../DIDzMonolith-docs/midnight/MIDNIGHT_CURRENT_SCHEMA.md) for architecture, integration, and evidence labels.
 
 ---
 
@@ -106,23 +80,47 @@ The answer is **mathematically guaranteed to be correct**, not "probably correct
 
 ---
 
-## Subjects of DIDz, Who (or What) Can Have an Identity
+## Current Status (August 2026)
 
-DIDz is a **polymorphic identity substrate**. The same core registry and trusted-issuer machinery serves any entity that needs verifiable, privacy-preserving identity. Each subject type is a tier built on the same foundation, not a separate system.
+`DIDzRegistry` (17 circuits) and `TrustedIssuerRegistry` (11 circuits) compile
+clean on the current toolchain (compactc 0.31.1, 18/18 structural tests) with
+full ZK key generation. DIDzRegistry is **deployed and exercised on a local
+Midnight network with real ZK proofs** — register → suspend → reactivate →
+attest → prove, all chain-confirmed — via the didz-kernel Midnight adapter
+(chunked deploy: lean deploy + verifier-key maintenance inserts, since
+17-circuit single-tx deploys exceed per-block write budgets). Preprod
+deployment is in flight. The SDK packages (didz-api / didz-ui /
+identity-provider-api) remain early scaffolds.
+
+**Issuer admission (the security-critical ceremony):** prospective trusted
+issuers exist FIRST in [`TestTownDIDz`](../TestTownDIDz/) — the
+world-before-the-trust-system test population — carrying dossiers of
+independently confirmable evidence (EIN, incorporation, licenses). DIDz.io's
+onboarding gate cross-checks them against TestTown's authorities of record
+before TrustedIssuerRegistry enrollment, and TestTown's `VILLAIN--*` impostors
+must be REFUSED (see `TestTownDIDz/docs/THREAT_MODEL.md`).
+
+---
+
+## Subjects of DIDz — Who (or What) Can Have an Identity
+
+DIDz is a **polymorphic identity substrate**. The same core registry and trusted-issuer machinery serves any entity that needs verifiable, privacy-preserving identity. Each subject type is a tier built on the same foundation, not a separate system — the seven on-chain EntityType tiers of DIDzRegistry v2, mirrored by the didz-kernel's seven-tier `@didz/wallet`:
 
 | Tier | Subject | Real-world examples | DIDzMonolith vertical |
 |------|---------|--------------------|-----------------------|
 | **Human** | Individual people | Citizens, customers, patients, voters, employees | DIDz.io (this repo), KYCz |
-| **Organization** | Businesses, institutions, governments | Companies, universities, hospitals, agencies, NGOs | DIDz.io org tier, EnterpriseZK Labs |
 | **Agent** | Autonomous Ai agents | LLM agents, automated services, delegated workers | [AgenticDID](https://github.com/bytewizard42i/AgenticDID_io_me) |
+| **Organization** | Businesses, institutions, governments | Companies, universities, hospitals, agencies, NGOs | DIDz.io org tier, EnterpriseZK Labs |
 | **Animal** | Living non-human subjects | Companion animals, equine athletes, livestock, exotics | [PetProData](https://github.com/bytewizard42i/petProData), [EquinePro](https://github.com/bytewizard42i/equineProData) |
-| **Object / RWA** | Real-world assets and instruments | Artworks, deeds, vehicles, equipment, supply-chain SKUs, scientific instruments | (cross-cutting; see [Edda Labs RWA Patterns](docs/EDDALABS_RWA_PATTERNS_FOR_DIDZ.md)) |
+| **Device** | IoT devices and instruments | Sensors, hardware anchors, scientific instruments | (cross-cutting; kernel device tier) |
+| **Object / RWA** | Real-world assets and instruments | Artworks, deeds, vehicles, equipment, supply-chain SKUs | [RWAz](https://github.com/bytewizard42i/RWAz); see [Edda Labs RWA Patterns](docs/EDDALABS_RWA_PATTERNS_FOR_DIDZ.md) |
+| **Location** | Geographic anchors | Jurisdiction proofs, privacy-preserving location attestation | [GeoZ](https://github.com/bytewizard42i/GeoZ_us_app_Midnight-Oracle) |
 
-For non-human subjects (animals, objects, RWAs), the **Holder role is fulfilled by a custodian or owner**, a human or organization that controls the subject's DIDz wallet on its behalf. The Trust Triangle below applies identically; only the binding mechanism differs (microchip, RFID, serial number, geolocation, or biometric for the custodian).
+For non-human subjects, the **Holder role is fulfilled by a custodian or owner** — a human or organization that controls the subject's DIDz wallet on its behalf. The Trust Triangle below applies identically; only the binding mechanism differs (microchip, RFID, serial number, geolocation, or biometric for the custodian).
 
 ---
 
-## How It Works, The Trust Triangle
+## How It Works — The Trust Triangle
 
 ### 1. The Holder (You, or a Subject You Custody)
 You create a pseudonymous digital identity, a **DIDz**, bound to a subject through an appropriate primitive: biometrics (fingerprint, face scan, pulse/ox) for humans, microchip or RFID for animals, serial number or cryptographic anchor for objects and RWAs. Private data is stored in **encrypted private state** on the Midnight blockchain. No one can see it. Not even us. For non-human subjects, a custodian (human or organization) holds the wallet on the subject's behalf.
@@ -174,7 +172,7 @@ DIDz organizes credentials in a folderized smart contract structure:
     └── 📄 Vaccination Record (rescindable)
 ```
 
-**Immutable** credentials (PhD, citizenship) are permanent. **Rescindable** credentials (licenses, employment) can be revoked by issuers.
+**Immutable** credentials (PhD, citizenship) are permanent. **Rescindable** credentials (licenses, employment) can be revoked by issuers. Non-human tiers provision their own folder sets (title, provenance, encumbrances for assets; health, lineage for animals) — see the didz-kernel `@didz/wallet` tier catalog.
 
 ---
 
@@ -207,9 +205,13 @@ DeFi · Government · Education · Enterprise · Commerce · Supply Chain · Med
 
 ## DIDz Within the DIDzM System
 
-DIDz is the root identity engine. It supplies identity primitives to the other
-three engines and to conforming applications, but it does not absorb their
-domain responsibilities:
+DIDz is the root identity engine in the four-engine DIDzM system. It defines
+identity, issuer trust, credentials, lifecycle, and privacy-preserving
+presentation primitives. Agent authority is owned by AgenticDID, asset
+ownership and provenance by RWAz, and private data orchestration by HelixCTW,
+the data-layer engine. DIDz supplies identity primitives to the other three
+engines and to conforming applications, but it does not absorb their domain
+responsibilities:
 
 | Product | Purpose | How It Uses DIDz |
 |---------|---------|-----------------|
@@ -237,7 +239,8 @@ only; they are not AgenticDID scoped grants or ZK delegation proofs. See the
 ## Technology Stack
 
 - **Blockchain**: Midnight Network (privacy-first, ZK-native)
-- **Smart Contracts**: Compact language (pragma >= 0.20)
+- **Smart Contracts**: Compact language (pragma tracks the current language range — verify against the [support matrix](https://docs.midnight.network/relnotes/support-matrix))
+- **Kernel & Adapters**: [didz-kernel](../didz-kernel/) — protocol types, provider seams, conformance suite, `@didz/adapter-midnight`
 - **Identity Framework**: Hyperledger Identus (W3C DID standards + anon-creds)
 - **Biometrics**: 8-factor weighted liveness score (face, pulse, voice, depth)
 - **Frontend**: React + TypeScript + TailwindCSS
@@ -263,13 +266,19 @@ only; they are not AgenticDID scoped grants or ZK delegation proofs. See the
 
 ## Build Pipeline
 
+DIDz follows the DIDzM house convention — **DemoLand → TestWired → RealDeal**
+([BUILD_STAGES](../DIDzMonolith-docs/standards/BUILD_STAGES.md)):
+
 ```
-Ideation → Architecture → DemoLand → Backend Skeleton → RealDeal
-                ▲
-            WE ARE HERE
+DemoLand → TestWired → RealDeal
+              ▲
+          WE ARE HERE
 ```
 
-**Current Phase**: Architecture, Binding model, assertion schema, biometric approach, and ZK circuits defined. KYCz anchor contract compiles. DemoLand prototyping next.
+**Current Phase**: TestWired. Registries deployed and exercised on a local
+Midnight network with real ZK proofs via the didz-kernel Midnight adapter;
+preprod deployment in flight. DemoLand remains available for offline demos
+(`frontend-demoland`, portal on port 3010).
 
 ---
 
@@ -280,12 +289,6 @@ Ideation → Architecture → DemoLand → Backend Skeleton → RealDeal
 DIDz doesn't fix the old model. **It replaces it.** With zero-knowledge proofs, a person can prove any fact about themselves without revealing who they are. The math guarantees the answer is correct. The blockchain guarantees it can't be tampered with.
 
 *The Foundation For Reimagining the World's Digital Systems.*
-
----
-
-*EnterpriseZK Labs LLC, [didz.io](https://didz.io), [enterprisezk.com](https://enterprisezk.com)*  
-*Built on Midnight. Powered by Cardano. Protected by zero-knowledge cryptography.*  
-*4x Midnight Hackathon Winner*
 
 ---
 
@@ -319,3 +322,7 @@ This project is part of the DIDzMonolith ecosystem and inherits the four-engine 
 **MiCA regulatory notes**: [`DIDzMonolith-docs/compliance/MICA_REGULATORY_NOTES.md`](../DIDzMonolith-docs/compliance/MICA_REGULATORY_NOTES.md) — EU crypto-asset regulation product-by-product matrix.
 
 ---
+
+*EnterpriseZK Labs LLC, [didz.io](https://didz.io), [enterprisezk.com](https://enterprisezk.com)*  
+*Built on Midnight. Powered by Cardano. Protected by zero-knowledge cryptography.*  
+*4x Midnight Hackathon Winner*
