@@ -54,9 +54,20 @@ DIDz is a **polymorphic identity substrate**. The same registry, the same truste
 
 Non-human tiers are custodied by a human or organization that holds the wallet on the subject's behalf — but the identity belongs to the subject, not the custodian.
 
-### Soul-bound by design
+### Soul-bound by design — and deliberately not an NFT
 
 A DIDz identity is **not an NFT**. It has no transfer operation. Keys can rotate; identity never moves. This makes the soul-binding stronger than typical NFT standards — it's not a convention, it's an architectural absence. Your identity is yours for life (or for the life of the asset).
+
+Concretely, the current architecture is: a DIDz is an **anchor — a cryptographic commitment (hash) in the on-chain registry** — that carries with it a **hierarchical, tiered smart-contract wallet** (the folderized credential structure below). The anchor never moves; the wallet it carries is where credentials, grants, and proofs live. Ownership semantics for transferable things (assets, titles) live in **RWAz**, not in the identity itself — an asset's own DIDz wallet gets *mounted* into the current titleholder's wallet, so the thing that transfers is custody of the wallet, never the identity.
+
+**Open research paths** (we list these honestly — the anchor model is our working ruling, not dogma):
+
+| Path | Idea | Trade-off |
+|---|---|---|
+| **Anchor hash + tiered wallet** (current) | Registry commitment carries a hierarchical smart-contract wallet | Maximum flexibility; soul-binding by architectural absence of transfer |
+| Soul-bound token (SBT-style) | Non-transferable token standard | Interop with token tooling, but "non-transferable token" is a patch on a transfer-first design — can be wrapped or overridden |
+| Pure off-chain DID + on-chain proofs only | Identity lives entirely in holder state; chain sees only proofs | Strongest privacy, but weakens registry-anchored lifecycle (suspend/reactivate/revoke) |
+| Hybrid: anchor + per-context pairwise DIDs | One root anchor, unlinkable pairwise child DIDs per relationship | Best unlinkability; key-management complexity (our key-derivation ruling favors independent keys per DIDz for exactly this reason) |
 
 ### The hierarchical privacy wallet
 
