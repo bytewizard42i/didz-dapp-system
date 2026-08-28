@@ -178,28 +178,48 @@ Key circuits include:
 
 ### The didz-kernel — protocol operating system
 
-The contracts are wrapped by the **didz-kernel** — the "operating system for trust in the agentic economy." It defines protocol types, provider interfaces, a conformance test suite, and the adapter layer that connects DIDz to Midnight (and future chains). Eleven packages:
+The contracts are wrapped by the **didz-kernel** — the "operating system for trust in the agentic economy." It defines protocol types, **five provider seams**, a conformance test suite, and the adapter layer that connects DIDz to Midnight (and future chains). The five seams separate the questions existing systems conflate:
+
+| Question | Engine | Kernel seam |
+|---|---|---|
+| WHO exists? | DIDz | `IdentityProvider` |
+| WHAT may act, within what bounds? | AgenticDID | `AuthorityProvider` |
+| WHAT objects exist, who holds them? | RWAz | `ObjectProvider` |
+| WHAT data, at what visibility tier? | HelixCTW | `DataGateway` |
+| Is THIS exact action allowed right now? | Enforcement (concept) | `EnforcementGate` |
+
+Ten packages plus two narrated example demos:
 
 ```
 didz-kernel/packages/
 ├── kernel-types          ← protocol vocabulary & shared types
-├── kernel-core           ← registry logic, credential lifecycle
-├── kernel-conformance    ← the conformance test suite
-├── kernel-demoland       ← offline demo harness
+├── kernel-core           ← the five provider seams + Kernel orchestrator
+├── kernel-conformance    ← the executable meaning of "conforms to the DIDz Protocol"
+├── kernel-demoland       ← deterministic in-memory reference providers
 ├── wallet                ← 7-tier hierarchical privacy wallet
-├── adapter-midnight      ← Midnight Network adapter (TestWired)
-├── adapter-midnight-localnet  ← localnet dev adapter
-├── adapter-helixctw      ← data-layer engine adapter
-├── adapter-nightgate     ← edge service adapter (planned)
-├── admission-gate        ← issuer admission ceremony
-└── ...
+├── adapter-midnight      ← identity + object + AUTHORITY seams on real compiled circuits
+├── adapter-midnight-localnet ← real ZK transactions on a live local Midnight network
+├── adapter-helixctw      ← data plane: tiered queries, commitment storage, cold docs
+├── adapter-nightgate     ← read-only service edge (locally verified)
+├── admission-gate        ← trusted-issuer admission ceremony (villain-tested)
+└── examples/             ← agent-shopping + "A Day in TestTown" narrated demos
 ```
+
+**~114 tests green** across the workspace, and every externally visible output carries an honest **evidence label** — `MOCK`, `REALDEAL_TEST`, `REALDEAL`, or `PLANNED` — so no demo ever masquerades as a deployment.
+
+**The authority seam is already real.** The Midnight adapter backs `AuthorityProvider` with compiled scoped-grant v2 circuits: two-cap spend budgets, attenuation-only delegation (a delegate can never hold more authority than its delegator), on-chain budget reservation, and cascade revocation. This is the AgenticDID pillar running through the same kernel that runs identity.
+
+**The data plane is TestWired too.** The `adapter-helixctw` data plane runs its hot layer on a live CockroachDB Cloud cluster (seeded with 20 citizens, 4 assets, and 35 hash-indexed documents) and its cold layer on Filecoin — with retrieval + hash-verification proven end-to-end on a real IPFS node. Credentials are stored as **commitments, never raw claims**.
+
+### The formal specification — didz-protocol v0.1
+
+The protocol itself is written up as an RFC-style formal specification (`FORMAL_SPECS_W3C_DIF/didz-protocol-v0.1.md`) — RFC 2119 normative language with plain-English sidebars — targeting eventual W3C/DIF community submission. The conformance suite is the executable form of the spec: any adapter that passes it is a lawful implementation. We're not just building a product; we're specifying a protocol.
 
 ### TestTownDIDz — the world before the trust system
 
-Before an institution can become a Trusted Issuer on DIDz, it must first exist in **TestTownDIDz** — our simulated world-before-the-trust-system. TestTown is a generated population of dossiers with independently confirmable evidence (EINs, incorporation records, licenses). DIDz's admission gate cross-checks prospective issuers against TestTown's authorities of record.
+Before an institution can become a Trusted Issuer on DIDz, it must first exist in **TestTownDIDz** — our simulated world-before-the-trust-system. TestTown is a generated population of dossiers with independently confirmable evidence (EINs, incorporation records, licenses): **35 organizations, 20 citizens, plus animals and asset dossiers spanning every lifecycle stage**. DIDz's admission gate cross-checks prospective issuers against TestTown's authorities of record.
 
-Critically, TestTown includes **villain impostors** (`VILLAIN--*` dossiers) — fabricated entities with plausible-looking but fake credentials. The admission gate **must refuse them**. This is our security-critical ceremony: if the gate can't reject a villain, the system isn't ready.
+Critically, TestTown includes **villain impostors** (`VILLAIN--*` dossiers, 3 among the organizations) — fabricated entities with plausible-looking but fake credentials. The admission gate **must refuse them**. This is our security-critical ceremony: if the gate can't reject a villain, the system isn't ready. The whole stack runs as a narrated, one-command story — **"A Day in TestTown"** (`npm run demo`) — on real compiled circuits.
 
 ### Build stages — honest about where we are
 
@@ -211,9 +231,9 @@ DemoLand → TestWired → RealDeal
           WE ARE HERE
 ```
 
-- **DemoLand**: Offline demos, portal on port 3010 — available now.
-- **TestWired** (current): Registries deployed and exercised on a local Midnight network with **real ZK proofs** — register → suspend → reactivate → attest → prove, all chain-confirmed — via the didz-kernel Midnight adapter. Preprod deployment is in flight.
-- **RealDeal**: Mainnet. Not yet.
+- **DemoLand**: Offline demos, portal on port 3010, narrated kernel demos — available now.
+- **TestWired** (current): DIDzRegistry (all 17 circuits) **and** RWAz's `rwa_registry` deployed and exercised on a local Midnight network with **real ZK proofs** — register → suspend → reactivate → attest → prove, all chain-confirmed — via the didz-kernel Midnight adapters. The data plane is TestWired on CockroachDB Cloud + Filecoin. Preprod deployment is in flight, with a funded deployment wallet (17,000 tNIGHT) and dust registration already on-chain.
+- **RealDeal**: Mainnet. Not yet — and we say so with evidence labels, not asterisks.
 
 The deploy itself required a **chunked strategy**: 17-circuit single-transaction deploys exceed Midnight's per-block write budget, so we split into a lean deploy followed by verifier-key maintenance inserts. That was a hard-won lesson.
 
@@ -256,7 +276,10 @@ The founder is openly a vibe-coder — he uses AI to build, and he's transparent
 | **Compiler** | compactc 0.31.1 (language pragma 0.23) | Current stable toolchain — verified against the [support matrix](https://docs.midnight.network/relnotes/support-matrix) |
 | **ZK Proofs** | 28 compiled circuits (17 + 11) | Real, compiler-verified zero-knowledge circuits |
 | **Identity Framework** | Hyperledger Identus | W3C DID standards + AnonCreds interop |
-| **Kernel** | didz-kernel (11 TypeScript packages) | Protocol types, provider seams, conformance suite |
+| **Kernel** | didz-kernel (10 TypeScript packages + 2 narrated demos) | Five provider seams, conformance suite, ~114 tests green |
+| **Protocol Spec** | didz-protocol v0.1 (RFC-style) | Formal specification targeting W3C/DIF community submission |
+| **Data Plane (hot)** | CockroachDB Cloud | TestWired hot layer — tiered queries, commitment storage |
+| **Data Plane (cold)** | Filecoin + IPFS (Lighthouse) | Hash-verified cold-document retrieval, proven end-to-end |
 | **Backend** | Bun 1.2+ / TypeScript | Fast runtime, first-class TS |
 | **Frontend** | React + TypeScript + TailwindCSS | DemoLand portal + future dApp UI |
 | **Biometrics** | 8-factor weighted liveness score | Face, pulse, voice, depth — for human binding |
@@ -307,8 +330,9 @@ The founder is a vibe-coder. He's transparent about it. He's won four hackathons
 ### Near-term (2027)
 
 - **RealDeal (mainnet)** — Graduate from TestWired to mainnet deployment with audited contracts.
-- **AgenticDID integration** — Wire the agent-authority engine into DIDz's delegation primitives so AI agents can act with verifiable, bounded authority.
-- **RWAz integration** — Connect the asset-identity engine so real-world assets carry their own soul-bound DIDz wallets, mounted into the current titleholder's wallet.
+- **AgenticDID deepening** — The agent-authority seam already runs on real compiled scoped-grant circuits (two-cap budgets, attenuation-only delegation, cascade revocation) through the kernel; next is taking the delegation chain end-to-end on preprod and productizing the agent wallet tier.
+- **RWAz deepening** — The `rwa_registry` is already deployed alongside DIDzRegistry on localnet; next is the asset-wallet "digital glovebox" — real-world assets carrying their own soul-bound DIDz wallets, mounted into the current titleholder's wallet on title transfer.
+- **Protocol spec submission** — Promote `didz-protocol v0.1` to a public tagged release and begin the W3C/DIF community submission process.
 - **Trusted Issuer onboarding pipeline** — Productionize the TestTown → admission-gate → registry ceremony for real institutions.
 
 ### Long-term vision
@@ -325,8 +349,8 @@ The founder is a vibe-coder. He's transparent about it. He's won four hackathons
 |---|---|
 | **DIDz.io repo** | [github.com/bytewizard42i/didz-dapp-system](https://github.com/bytewizard42i/didz-dapp-system) |
 | **DIDzMonolith (umbrella)** | [github.com/bytewizard42i/DIDzMonolith](https://github.com/bytewizard42i/DIDzMonolith) |
-| **AgenticDID (sister project)** | [github.com/bytewizard42i/AgenticDID_io_me](https://github.com/bytewizard42i/AgenticDID_io_me) |
-| **RWAz (sister project)** | [github.com/bytewizard42i/RWAz](https://github.com/bytewizard42i/RWAz) |
+| **AgenticDID (pillar project)** | [github.com/bytewizard42i/AgenticDID_io_me](https://github.com/bytewizard42i/AgenticDID_io_me) |
+| **RWAz (pillar project)** | [github.com/bytewizard42i/RWAz](https://github.com/bytewizard42i/RWAz) |
 | **didz-kernel** | `DIDzMonolith/didz-kernel` |
 | **TestTownDIDz** | `DIDzMonolith/TestTownDIDz` |
 | **Founder's story** | [youtu.be/yihfR4Zb70U](https://youtu.be/yihfR4Zb70U) |

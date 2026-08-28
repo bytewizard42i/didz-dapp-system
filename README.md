@@ -15,6 +15,8 @@
 | **Status** | Contracts verified & chain-deployed — TestWired (localnet), preprod in progress |
 | **Stage** | TestWired via didz-kernel's `@didz/adapter-midnight` ([BUILD_STAGES](../DIDzMonolith-docs/standards/BUILD_STAGES.md)) |
 
+> **🏛️ DIDzM Pillar Repo** — This repository stands alone, but it is one of the three pillars of the [DIDzMonolith](https://github.com/bytewizard42i/DIDzMonolith) ecosystem — **DIDz** (root identity, this repo) · **[AgenticDID](https://github.com/bytewizard42i/AgenticDID_io_me)** (agent authority) · **[RWAz](https://github.com/bytewizard42i/RWAz)** (asset identity) — sharing one kernel ([didz-kernel](../didz-kernel/)), one conformance suite, and one philosophy: *prove without revealing*, on Midnight.
+
 > **Midnight technical rule:** In the DIDzMonolith checkout, follow the [DIDzM sources-of-truth policy](../DIDzMonolith-docs/midnight/MIDNIGHT_SOURCES_OF_TRUTH.md) for source routing and the [current Midnight schema](../DIDzMonolith-docs/midnight/MIDNIGHT_CURRENT_SCHEMA.md) for architecture, integration, and evidence labels.
 
 ---
