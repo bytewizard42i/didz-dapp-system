@@ -8,6 +8,8 @@
 
 DIDz is an ambitious, nation-state-level project. We are building the privacy-preserving architecture for the world's identity - the identity substrate that governments, institutions, enterprises, and individuals will rely on when the old model of "hand over everything to prove anything" finally collapses under its own weight. Think of it as what Commerce Bank did for branch banking - a single, radical bet on a better architecture that eventually became Toronto-Dominion. We're making that bet for digital identity: one perfect identity primitive, proven with zero-knowledge proofs, deployed on the Midnight Network.
 
+The alternative is not theoretical. Without a privacy-preserving identity architecture, the convergence of autonomous AI, mass data collection, and centralized identity databases leads in one direction: a 1984-style Orwellian surveillance state of unprecedented human proportions. Every digital interaction becomes a data point in someone else's database. Every AI agent operates without verifiable accountability. Every identity system becomes a breach target and a control mechanism. DIDz exists to make that future architecturally impossible - not by regulation, but by mathematics. When the data is never collected, it can never be breached. When the proof reveals nothing beyond the answer, there is nothing to surveil.
+
 This submission covers the **DIDz DApp System** - the root identity engine of the DIDzMonolith ecosystem. It is one of three companion projects we are submitting: **DIDz** (root identity), **AgenticDID** (agent authority), and **RWAz** (real-world-asset identity). Together they form a three-pillar model for proving without revealing.
 
 ---
@@ -227,6 +229,8 @@ didz-kernel/packages/
 
 The protocol itself is written up as an RFC-style formal specification (`FORMAL_SPECS_W3C_DIF/didz-protocol-v0.1.md`) - RFC 2119 normative language with plain-English sidebars - targeting eventual W3C/DIF community submission. The conformance suite is the executable form of the spec: any adapter that passes it is a lawful implementation. We're not just building a product; we're specifying a protocol.
 
+**This is deliberately not "One Ring to rule them all."** The DIDz Protocol is designed to be **modular and interoperable**. We are creating formalized standards so that others can build their own conforming implementations - different chains, different credential models, different issuer ecosystems - all interoperable through the shared protocol vocabulary and conformance suite. The goal is an **adopted method** for creating privacy-preserving digital identity for the masses, not a monopoly on identity. One soul-bound DID per human, agent, animal, organization, and object - but many compatible ways to get there. The protocol defines the rules; the ecosystem builds the diversity.
+
 ### TestTownDIDz - the world before the trust system
 
 Before an institution can become a Trusted Issuer on DIDz, it must first exist in **TestTownDIDz** - our simulated world-before-the-trust-system. TestTown is a generated population of dossiers with independently confirmable evidence (EINs, incorporation records, licenses): **35 organizations, 20 citizens, plus animals and asset dossiers spanning every lifecycle stage**. DIDz's admission gate cross-checks prospective issuers against TestTown's authorities of record.
@@ -351,6 +355,7 @@ The founder is a vibe-coder. He's transparent about it. He's won four hackathons
 
 - **The identity layer for a world that no longer trusts the systems it was given.**
 - DIDz as the root identity substrate for governments, enterprises, and the agentic economy - the architecture that makes centralized identity databases obsolete, the same way the internet made the reference desk obsolete.
+- **Formalized, open standards** so others can build conforming implementations - modular, interoperable, and diverse. Not one system to rule them all, but one adopted method for privacy-preserving identity that prevents the 1984 surveillance nightmare while giving every human, agent, animal, organization, and object exactly one soul-bound DID.
 - One perfect identity, scaled to necessity, infinitely.
 
 ---

@@ -298,9 +298,9 @@ DIDz doesn't fix the old model. **It replaces it.** With zero-knowledge proofs, 
 
 ![The Existential Threat](docs/media/existential-threat.jpg)
 
-The convergence of autonomous Ai, mass surveillance, and centralized identity databases creates an existential threat to human autonomy. Every digital interaction becomes a data point in someone else's database. Every Ai agent operates without verifiable accountability. Every centralized identity system is a breach waiting to happen.
+The convergence of autonomous Ai, mass surveillance, and centralized identity databases creates an existential threat to human autonomy. Every digital interaction becomes a data point in someone else's database. Every Ai agent operates without verifiable accountability. Every centralized identity system is a breach waiting to happen. Without a privacy-preserving identity architecture, this convergence leads in one direction: a 1984-style Orwellian surveillance state of unprecedented human proportions.
 
-**DIDzMonolith is the architectural answer.** Four engines, one ecosystem, zero-knowledge proofs on Midnight Network:
+**DIDzMonolith is the architectural answer.** Not regulation - mathematics. When the data is never collected, it can never be breached. When the proof reveals nothing beyond the answer, there is nothing to surveil. Four engines, one ecosystem, zero-knowledge proofs on Midnight Network:
 
 | Engine | Role | What It Proves |
 |--------|------|----------------|
