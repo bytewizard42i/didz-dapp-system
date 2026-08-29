@@ -8,6 +8,8 @@ Because I loved the idea of privacy preserving digital identity with Midnight, I
 
 > Video: https://youtu.be/yihfR4Zb70U?si=AqufnE6kkmaRMPHu
 
+Shortly afterward, I created the broader **Job Application Scenario**: instead of surrendering an invasive synopsis of your life before a first interview, prove only the qualifications the employer lawfully needs to know. Prove that you are over 18, live within the required commuting jurisdiction, have no disqualifying felony, hold the required degree, and possess a valid driver's license, without revealing the underlying personal details. The bartender explains one private proof; the job application explains a complete decision assembled from several private proofs. The full scenario appears in the [G-4 Midnight enterprise book](https://github.com/bytewizard42i/book-Midnight-Network-Enterprise/blob/main/FULL_BOOK.md#the-job-application-scenario).
+
 I have pushed very hard over the last two years to get Midnight in the direction that it is in: privacy preserving digital identity at its core, powering the reimagined, next generation of digital systems for enterprise corporations, institutions, and governments. DIDz is the direct expression of that thesis.
 
 ---

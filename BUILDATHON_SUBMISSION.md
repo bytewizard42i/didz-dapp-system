@@ -16,7 +16,11 @@ This submission covers the **DIDz DApp System** - the root identity engine of th
 
 DIDz lets any entity - a human, an AI agent, a company, an animal, or a physical object - hold a **soul-bound, privacy-preserving digital identity** on the Midnight Network, and prove facts about themselves with zero-knowledge proofs that reveal **nothing** beyond the answer itself.
 
-### The canonical scenario
+### Two canonical scenarios
+
+We created two complementary scenarios to make zero-knowledge identity understandable: **the Bartender Scenario**, introduced at the inaugural Midnight hackathon, and the broader **Job Application Scenario**, later presented in the G-4 Midnight enterprise book.
+
+#### 1. The Bartender Scenario: prove one fact, not your identity
 
 A liquor store asks: *"Is this person old enough?"*
 
@@ -24,7 +28,15 @@ Today, the customer hands over a driver's license - name, address, date of birth
 
 With DIDz, the store submits a **ZKQuery**. The answer comes back: **Yes.** Cryptographically guaranteed. No name. No birthday. No address. No data stored. No data breached. The math proves the answer is correct; the blockchain proves it can't be tampered with.
 
-### Beyond the bartender
+#### 2. The Job Application Scenario: prove a qualified person, not a dossier
+
+A traditional job application is effectively a single-source-of-truth synopsis of a person's life. Before the first interview, an applicant gives a near-stranger their address, education, employment history, license information, and other identity-bearing facts. If the applicant is rejected, they must simply trust that every copy will be secured or destroyed.
+
+DIDz turns that application into a sequence of minimized proofs. An applicant can prove that they are over 18, live within the required commuting jurisdiction, have no disqualifying felony, hold the required degree, and possess a valid driver's license, without revealing their exact age, home address, background report, diploma identifiers, or license number. The employer learns what it needs to make a lawful decision, not everything it could collect about the person.
+
+The bartender demonstrates **one fact without identity disclosure**. The job application demonstrates **a complete real-world decision assembled from several selectively disclosed proofs**. Together they show how DIDz can replace invasive forms and centralized dossiers, not merely redact them.
+
+### Beyond the bartender and the application
 
 That same primitive scales to every verification interaction in the economy:
 
@@ -95,9 +107,9 @@ Every DIDz carries a folderized credential wallet - think Google Drive for proof
 
 ## The Problem It Solves
 
-### The world's identity verification system is built backwards
+### The world's identity-based verification system is on its head
 
-Every day, billions of people are forced to surrender their most sensitive personal information to prove simple, binary facts about themselves:
+Every day, billions of people are forced to surrender many pieces of their most sensitive personal information to prove one simple, binary fact about themselves:
 
 - A 22-year-old shows her full driver's license - name, address, DOB, license number - to buy a bottle of wine.
 - A voter reveals their entire identity to prove they're a citizen over 18.
@@ -353,7 +365,8 @@ The founder is a vibe-coder. He's transparent about it. He's won four hackathons
 | **RWAz (pillar project)** | [github.com/bytewizard42i/RWAz](https://github.com/bytewizard42i/RWAz) |
 | **didz-kernel** | `DIDzMonolith/didz-kernel` |
 | **TestTownDIDz** | `DIDzMonolith/TestTownDIDz` |
-| **Founder's story** | [youtu.be/yihfR4Zb70U](https://youtu.be/yihfR4Zb70U) |
+| **Bartender Scenario and founder's story** | [youtu.be/yihfR4Zb70U](https://youtu.be/yihfR4Zb70U) |
+| **Job Application Scenario source** | [G-4 Midnight enterprise book](https://github.com/bytewizard42i/book-Midnight-Network-Enterprise/blob/main/FULL_BOOK.md#the-job-application-scenario) |
 | **Company** | [EnterpriseZK Labs LLC](https://enterprisezk.com) · [didz.io](https://didz.io) |
 
 ---

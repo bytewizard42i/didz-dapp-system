@@ -78,7 +78,7 @@ The **DIDz DApp System** is a privacy-preserving digital identity platform where
 
 The answer is **mathematically guaranteed to be correct**, not "probably correct," not "we checked a database." Cryptographically, provably, irrevocably correct via zero-knowledge proofs.
 
-> That "is this person old enough?" example is the **canonical bartender scenario** John introduced at the inaugural Midnight hackathon to explain privacy preserving digital identity. For the story behind it (and the founder's full origin story in his own words), see [`docs/FOUNDER_STORY.md`](docs/FOUNDER_STORY.md).
+> John created two foundational explanations for zero-knowledge identity: the **Bartender Scenario**, introduced at the inaugural Midnight hackathon, proves one fact without revealing identity; the later **Job Application Scenario** shows how several minimized proofs can replace an invasive personal dossier. For the origin story, see [`docs/FOUNDER_STORY.md`](docs/FOUNDER_STORY.md). For the complete Job Application Scenario, see the [G-4 Midnight enterprise book](https://github.com/bytewizard42i/book-Midnight-Network-Enterprise/blob/main/FULL_BOOK.md#the-job-application-scenario).
 
 ---
 
