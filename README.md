@@ -64,6 +64,13 @@ breached. DIDz answers each with a zero-knowledge proof — mathematically
 certain, cryptographically verifiable, and revealing **nothing** beyond the
 answer itself.
 
+**Design principle — authority is a receipt, not a session.** A DIDz is not a
+login. Revocation, suspension, and terminal statuses are recorded as receipts,
+never as deleted rows; capabilities are issued per release and rotated, never
+held as permanent keys; and a restored system recovers its context, never its
+authority. Canon:
+[AUTHORITY_IS_A_RECEIPT.md](https://github.com/bytewizard42i/DIDzMonolith/blob/main/DIDzMonolith-docs/standards/AUTHORITY_IS_A_RECEIPT.md).
+
 ---
 
 ## The Breakthrough
