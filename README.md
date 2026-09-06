@@ -335,3 +335,10 @@ This project is part of the DIDzMonolith ecosystem and inherits the four-engine 
 *EnterpriseZK Labs LLC, [didz.io](https://didz.io), [enterprisezk.com](https://enterprisezk.com)*  
 *Built on Midnight. Powered by Cardano. Protected by zero-knowledge cryptography.*  
 *4x Midnight Hackathon Winner*
+
+
+## Shared sign-in options
+
+See [the shared sign-in module pointer](SIGN_IN_SELECTIONS.md) for reusable choice
+configuration and this repository's integration boundaries. This documentation
+pointer does not activate authentication.
