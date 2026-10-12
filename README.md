@@ -25,8 +25,8 @@
 
 Today's verification process is on its head. Every day, billions of people are forced to hand over many of their most sensitive personal information just to prove a single fact about themselves.
 
-- A 22-year-old shows her full driver's license, name, address, date of birth, license number, just to buy a bottle of wine.
-- A voter reveals their entire identity to prove they're a citizen over 18.
+- A 22-year-old shows her full driver's license, name, address, date of birth, and license number, just to buy a bottle of wine.
+- A voter reveals their entire identity and address to prove they're a citizen over 18.
 - A hospital asks for a patient's full background just to check a single compliance question.
 - A bank photocopies your passport and stores it in a database that will eventually be breached.
 
