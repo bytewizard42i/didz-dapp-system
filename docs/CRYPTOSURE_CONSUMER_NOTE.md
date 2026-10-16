@@ -8,8 +8,8 @@ DIDz-family instruments as sealed black boxes:
 
 | Instrument | Role for CryptoSure | Spec |
 |---|---|---|
-| **KYCz** | Trusted issuer runs full KYC, seals the result; CryptoSure receives a credential commitment and a ZK proof of "qualifies at level X". Trap door (lawful access) stays with the issuer. | `KYCz/docs/integrations/cryptosure/CRYPTOSURE_FACADE_INTEGRATION.md` |
-| **GeoZ** | Proves the holder is in a licensed jurisdiction without revealing where. Residency via KYCz by default; presence via GeoZ for transfer coverage. | `GeoZ/docs/integrations/cryptosure/CRYPTOSURE_GEO_INTEGRATION.md` |
+| **KYCz** (privacy-preserving KYC protocol; KYC = Know Your Customer, regulated identity verification) | Trusted issuer runs full KYC, seals the result; CryptoSure receives a credential commitment and a ZK (zero-knowledge) proof of "qualifies at level X". Trap door (lawful access) stays with the issuer. | `KYCz/docs/integrations/cryptosure/CRYPTOSURE_FACADE_INTEGRATION.md` |
+| **GeoZ** (privacy-preserving location oracle) | Proves the holder is in a licensed jurisdiction without revealing where. Residency via KYCz by default; presence via GeoZ for transfer coverage. | `GeoZ/docs/integrations/cryptosure/CRYPTOSURE_GEO_INTEGRATION.md` |
 
 CryptoSure adds one check of its own, wallet-address denylist screening,
 and proves all three in one circuit. Contract:
